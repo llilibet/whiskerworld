@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 /**
- * Verifica se o token JWT foi enviado e é válido.
- * Se ok, coloca os dados do usuário em req.usuario.
+ * verifica se o token JWT foi enviado e é válido.
+ * se ok, coloca os dados do usuário em req.usuario.
  */
 function autenticarToken(req, res, next) {
   const authHeader = req.headers["authorization"];
@@ -30,7 +30,7 @@ function autenticarToken(req, res, next) {
 }
 
 
-// Garante que o usuário autenticado é ADMIN.
+// garante que o usuário autenticado é ADMIN.
 function apenasAdmin(req, res, next) {
   if (!req.usuario || req.usuario.tipo !== "ADMIN") {
     return res

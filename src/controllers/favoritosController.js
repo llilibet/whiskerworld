@@ -84,10 +84,8 @@ async function listarMeusFavoritos(req, res) {
   }
 }
 
-/**
- * DELETE /favoritos/:animal_id
- * Remove um animal dos favoritos do usuário logado
- */
+// remove um animal dos favoritos do usuário logado
+
 async function removerFavorito(req, res) {
   const usuarioId = req.usuario.id;
   const { animal_id } = req.params;

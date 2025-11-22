@@ -1,9 +1,6 @@
 const pool = require("../database/connection");
 
-/**
- * GET /animais
- * Lista animais, opcionalmente filtrando por tipo (?tipo=GATO ou ?tipo=CAO)
- */
+// lista animais, opcionalmente filtrando por tipo (?tipo=GATO ou ?tipo=CAO)
 async function listarAnimais(req, res) {
   const { tipo } = req.query;
 
@@ -29,10 +26,8 @@ async function listarAnimais(req, res) {
   }
 }
 
-/**
- * GET /animais/:id
- * Detalhes de um animal específico
- */
+// detalhes de um animal específico
+
 async function obterAnimalPorId(req, res) {
   const { id } = req.params;
 
@@ -54,10 +49,7 @@ async function obterAnimalPorId(req, res) {
   }
 }
 
-/**
- * POST /animais
- * Cria um novo animal (apenas ADMIN)
- */
+// cria um novo animal (apenas ADMIN)
 async function criarAnimal(req, res) {
   const {
     nome,
@@ -121,10 +113,7 @@ async function criarAnimal(req, res) {
   }
 }
 
-/**
- * PUT /animais/:id
- * Atualiza dados de um animal (apenas ADMIN)
- */
+// atualiza dados de um animal (apenas ADMIN)
 async function atualizarAnimal(req, res) {
   const { id } = req.params;
   const {
@@ -185,10 +174,7 @@ async function atualizarAnimal(req, res) {
   }
 }
 
-/**
- * DELETE /animais/:id
- * Remove um animal (apenas ADMIN)
- */
+// remove um animal (apenas ADMIN)
 async function deletarAnimal(req, res) {
   const { id } = req.params;
 

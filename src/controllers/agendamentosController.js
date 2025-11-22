@@ -1,9 +1,6 @@
 const pool = require("../database/connection");
 
-/**
- * POST /agendamentos
- * Cria um agendamento para o usuário logado
- */
+// cria o gendamento para o usuário logado
 async function criarAgendamento(req, res) {
   const { animal_id, data_visita, hora_visita, observacoes } = req.body;
   const usuarioId = req.usuario.id; // vem do token
@@ -53,10 +50,7 @@ async function criarAgendamento(req, res) {
   }
 }
 
-/**
- * GET /agendamentos/me
- * Lista os agendamentos do usuário logado
- */
+ // lista os agendamentos do usuário logado
 async function listarMeusAgendamentos(req, res) {
   const usuarioId = req.usuario.id;
 
@@ -80,10 +74,7 @@ async function listarMeusAgendamentos(req, res) {
   }
 }
 
-/**
- * GET /agendamentos
- * Lista todos os agendamentos (apenas ADMIN)
- */
+ // lista todos os agendamentos (apenas ADMIN)
 async function listarTodosAgendamentos(req, res) {
   try {
     const [rows] = await pool.query(
@@ -104,11 +95,7 @@ async function listarTodosAgendamentos(req, res) {
       .json({ mensagem: "Erro interno ao listar agendamentos." });
   }
 }
-
-/**
- * PUT /agendamentos/:id/status
- * Atualiza o status (PENDENTE / CONFIRMADO / CANCELADO) – apenas ADMIN
- */
+// atualiza o status (PENDENTE / CONFIRMADO / CANCELADO) – apenas ADMIN
 async function atualizarStatusAgendamento(req, res) {
   const { id } = req.params;
   const { status } = req.body;
