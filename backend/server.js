@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 
@@ -16,6 +17,8 @@ app.use("/usuarios", usuariosRoutes);
 app.use("/animais", animaisRoutes);
 app.use("/agendamentos", agendamentosRoutes);
 app.use("/favoritos", favoritosRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 app.listen(process.env.PORT, () => {
   console.log("=====================================");

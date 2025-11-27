@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whiskerworld - Cadastro</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <img src="img/logo-simbolo.png" alt="Whiskerworld" style="height:40px; margin-right:8px;" />
+        <img src="img/logo-whiskerworld.png" alt="Whiskerworld" style="height:34px;" />
+      </div>
+      <a href="index.html" class="header-link">Sobre</a>
+    </header>
+
+    <main class="main-content">
+      <div class="card">
+        <h1>Cadastro</h1>
+
+        <form id="cadastro-form">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" required />
+          </div>
+
+          <!-- IMPORTANTE! O tipo do usuário -->
+          <input type="hidden" id="tipo" name="tipo" value="ADOTANTE" />
+
+          <button type="submit" class="btn">Cadastrar</button>
+        </form>
+
+        <p style="margin-top:16px;">
+          Já tem conta?
+          <a href="login.html">Fazer login</a>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/cadastro.js"></script>
+</body>
+</html>

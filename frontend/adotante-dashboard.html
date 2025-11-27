@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Área do Adotante - Whiskerworld</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* pequenas regras locais */
+    .user-header { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:16px 0; }
+    .user-badge { display:flex; gap:10px; align-items:center; }
+    .user-name { font-weight:700; color:#3b3b3b; }
+    .container { max-width:1100px; margin:28px auto; padding:0 18px; }
+    .section { margin-bottom:22px; }
+    .section h2 { margin:0 0 10px 0; font-size:20px; }
+    .favorites-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; }
+    .fav-card { background:#fff7e0; border-radius:12px; padding:12px; text-align:center; box-shadow:0 8px 18px rgba(0,0,0,0.06); position:relative; }
+    .fav-card img { width:100%; height:120px; object-fit:cover; border-radius:8px; margin-bottom:8px;}
+    .fav-actions { display:flex; justify-content:center; gap:8px; }
+    .btn-small { padding:6px 10px; border-radius:999px; border:none; cursor:pointer; background:#d5e9c8; }
+    .btn-danger { background:#ffd6d6; }
+    .agend-list { display:flex; flex-direction:column; gap:10px; }
+    .agend-item { background:#fff; padding:12px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 6px 14px rgba(0,0,0,0.04); }
+    .muted { color:#666; font-size:13px; }
+    /* modal simples */
+    .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; z-index:50; }
+    .modal { background:#fff; padding:18px; border-radius:12px; width:360px; max-width:95%; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="user-header">
+      <div class="user-badge">
+        <img src="img/logo-simbolo.png" alt="logo" style="height:44px; margin-right:8px;">
+        <div>
+          <div class="small muted">Bem-vinda/o,</div>
+          <div class="user-name" id="user-name">Usuário</div>
+        </div>
+      </div>
+
+      <div>
+        <button id="btn-logout" class="btn">Logout</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Meus Favoritos</h2>
+      <div id="favorites" class="favorites-grid">
+        <!-- cards de favoritos -->
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Meus Agendamentos</h2>
+      <div id="agendamentos" class="agend-list">
+        <!-- lista de agendamentos -->
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+  <h2>Explorar Animais</h2>
+  <div style="display:flex; gap:18px; margin-top:12px; align-items:center;">
+    <button class="btn" onclick="window.location.href='escolha-perfil.html'">Procurar</button>
+    <button class="btn" onclick="window.location.href='animais-gatos.html'">Ver Gatos</button>
+    <button class="btn" onclick="window.location.href='animais-caes.html'">Ver Cães</button>
+  </div>
+</div>
+
+
+  <!-- Modal de agendamento -->
+  <div id="modal-agendar-bg" class="modal-bg">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Agendar visita</h3>
+      <form id="form-agendamento">
+        <input type="hidden" id="ag-animal-id" />
+        <div class="form-group">
+          <label for="data-visita">Data</label>
+          <input type="date" id="data-visita" required />
+        </div>
+        <div class="form-group">
+          <label for="hora-visita">Hora</label>
+          <input type="time" id="hora-visita" required />
+        </div>
+        <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" id="modal-cancel" class="btn btn-danger">Cancelar</button>
+          <button type="submit" class="btn">Agendar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/adotante-dashboard.js"></script>
+
+</body>
+</html>

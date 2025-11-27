@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Cadastrar / Editar Animal</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ajustes rápidos para o formulário */
+    .card { max-width:720px; margin:20px auto; padding:20px; }
+    .row { display:flex; gap:12px; }
+    .col { flex:1; }
+    .preview-img { width:140px; height:140px; border-radius:12px; object-fit:cover; border:1px solid #ddd; }
+    .muted { color:#666; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <img src="img/logo-simbolo.png" alt="Whiskerworld" style="height:40px; margin-right:8px;" />
+        <img src="img/logo-whiskerworld.png" alt="Whiskerworld" style="height:34px;" />
+      </div>
+      <a href="admin-dashboard.html" class="header-link">Voltar</a>
+    </header>
+
+    <main class="main-content">
+      <div class="card">
+        <h1 id="form-title">Cadastrar animal</h1>
+
+        <form id="form-animal" enctype="multipart/form-data">
+          <input type="hidden" id="animal-id" />
+
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required />
+          </div>
+
+          <div class="row">
+            <div class="col form-group">
+              <label for="idade">Idade</label>
+              <input type="text" id="idade" name="idade" placeholder="Ex: 3 anos" />
+            </div>
+            <div class="col form-group">
+              <label for="sexo">Sexo</label>
+              <select id="sexo" name="sexo" required>
+                <option value="">Selecione</option>
+                <option value="MACHO">Macho</option>
+                <option value="FEMEA">Fêmea</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col form-group">
+              <label for="tipo">Tipo</label>
+              <select id="tipo" name="tipo" required>
+                <option value="">Selecione</option>
+                <option value="GATO">Gato</option>
+                <option value="CAO">Cão</option>
+              </select>
+            </div>
+            <div class="col form-group">
+              <label for="vacinado">Vacinado?</label>
+              <select id="vacinado" name="vacinado">
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" name="descricao" rows="3" style="width:100%;"></textarea>
+          </div>
+
+          <div class="row" style="align-items:center;">
+            <div class="col form-group">
+              <label for="foto">Foto do animal</label>
+              <input type="file" id="foto" name="foto" accept="image/*" />
+              <div class="muted">Deixe em branco para manter a foto atual (ao editar).</div>
+            </div>
+
+            <div style="width:160px; text-align:center;">
+              <div style="margin-bottom:8px;">Preview</div>
+              <img id="preview-foto" class="preview-img" src="https://placekitten.com/300/300" alt="preview" />
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <button type="submit" class="btn" id="btn-submit">Cadastrar</button>
+            <button type="button" class="btn btn-danger" id="btn-cancel" style="margin-left:8px;">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/admin-cadastrar-animal.js"></script>
+</body>
+</html>

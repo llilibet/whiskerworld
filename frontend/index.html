@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whiskerworld - Escolha de perfil</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <!-- Aqui poderia ter um <img> do logo depois -->
+        <span>Whiskerworld</span>
+      </div>
+      <a href="#" class="header-link">Sobre</a>
+    </header>
+
+    <main class="main-content">
+      <div>
+        <h1 style="text-align:center; margin-bottom: 32px; color:#55503b;">
+          Quem está acessando?
+        </h1>
+
+        <div class="choice-container">
+          <!-- Card Administrador -->
+          <div class="choice-card" onclick="window.location.href='login.html?tipo=ADMIN'">
+            <div class="choice-img-circle">
+              <img src="/frontend/img/admin.jpeg" alt="Administrador" />
+            </div>
+            <div class="choice-label">Administrador</div>
+          </div>
+
+          <!-- Card Adotante -->
+          <div class="choice-card" onclick="window.location.href='login.html?tipo=ADOTANTE'">
+            <div class="choice-img-circle">
+              <img src="/frontend/img/adotante.jpeg" alt="Adotante" />
+            </div>
+            <div class="choice-label">Adotante</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

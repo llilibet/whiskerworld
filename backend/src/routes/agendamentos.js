@@ -28,6 +28,7 @@ router.get(
   agendamentosController.listarTodosAgendamentos
 );
 
+
 // Atualizar status (apenas ADMIN)
 router.put(
   "/:id/status",
