@@ -44,4 +44,10 @@ router.delete(
   agendamentosController.deletarAgendamento
 );
 
+// iniciar fluxo para agendamento (público)
+router.get(
+  "/iniciar/:animalId",
+  agendamentosController.iniciarFluxoAgendamento
+);
+
 module.exports = router;
