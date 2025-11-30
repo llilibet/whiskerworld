@@ -126,6 +126,41 @@ async function favoritarAnimal(animalId, iconEl) {
   }
 }
 
-function adotarAnimal(id) {
-  alert("Aqui depois vamos abrir o fluxo de agendamento para o animal ID " + id);
+async function adotarAnimal(id) {
+  try {
+    const token = typeof getToken === "function" ? getToken() : null;
+    const url = `${API_BASE_URL}/agendamentos/iniciar/${id}`;
+    const headers = { "Accept": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    const resp = await fetch(url, { method: "GET", headers });
+
+    if (!resp.ok) {
+      let body;
+      try { body = await resp.json(); } catch(e) { body = null; }
+      const msg = body && body.mensagem ? body.mensagem : `Erro: ${resp.status}`;
+      alert(msg);
+      return;
+    }
+
+    const data = await resp.json();
+
+    if (data.disponivel === false) {
+      const texto = data.mensagem || "Este animal não está disponível para adoção.";
+      alert(texto);
+      return;
+    }
+
+    if (data.possuiAgendamentoAtivo) {
+      alert("Você já possui um agendamento ativo para este animal. Verifique seus agendamentos.");
+      return;
+    }
+
+    window.location.href = `agendamento.html?id=${id}`;
+
+  } catch (erro) {
+    console.error("Erro ao iniciar fluxo de agendamento:", erro);
+    alert("Erro ao iniciar agendamento. Tente novamente mais tarde.");
+  }
 }
+
