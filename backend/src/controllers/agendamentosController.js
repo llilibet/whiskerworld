@@ -199,11 +199,85 @@ async function listarDoUsuario(req, res) {
   }
 }
 
+// iniciar fluxo de agendamento 
+async function iniciarFluxoAgendamento(req, res) {
+  const { animalId } = req.params;
+  const usuarioId = req.usuario && req.usuario.id; // pode ser undefined se não autenticado
+
+  try {
+    // verifica se o animal existe
+    const [animalRows] = await pool.query(
+      "SELECT id, nome, idade, sexo, vacinado, status, tipo, descricao, foto_url FROM animais WHERE id = ?",
+      [animalId]
+    );
+
+    if (animalRows.length === 0) {
+      return res.status(404).json({ mensagem: "Animal não encontrado." });
+    }
+
+    const animal = animalRows[0];
+
+    // verifica disponibilidade pública
+    const disponivel = (animal.status || "").toString().toUpperCase() === "DISPONIVEL";
+    if (!disponivel) {
+      return res.status(200).json({
+        animal: {
+          id: animal.id,
+          nome: animal.nome,
+          idade: animal.idade,
+          sexo: animal.sexo,
+          vacinado: Boolean(animal.vacinado),
+          status: animal.status,
+          tipo: animal.tipo,
+          descricao: animal.descricao,
+          foto_url: animal.foto_url
+        },
+        disponivel: false,
+        mensagem: "Animal não disponível para adoção."
+      });
+    }
+
+    // verificar se o usuário autenticado já tem agendamento pendente/confirmado para este animal
+    let possuiAgendamentoAtivo = false;
+    if (usuarioId) {
+      const [existe] = await pool.query(
+        `SELECT id FROM agendamentos
+         WHERE usuario_id = ? AND animal_id = ? AND status IN ('PENDENTE', 'CONFIRMADO')`,
+        [usuarioId, animalId]
+      );
+      possuiAgendamentoAtivo = (existe.length > 0);
+    }
+
+    // retorna JSON com dados essenciais
+    return res.status(200).json({
+      animal: {
+        id: animal.id,
+        nome: animal.nome,
+        idade: animal.idade,
+        sexo: animal.sexo,
+        vacinado: Boolean(animal.vacinado),
+        status: animal.status,
+        tipo: animal.tipo,
+        descricao: animal.descricao,
+        foto_url: animal.foto_url
+      },
+      disponivel: true,
+      possuiAgendamentoAtivo,
+      mensagem: "Dados para iniciar agendamento."
+    });
+  } catch (erro) {
+    console.error("Erro iniciarFluxoAgendamento:", erro);
+    return res.status(500).json({ mensagem: "Erro interno ao iniciar fluxo de agendamento." });
+  }
+}
+
+
 module.exports = {
   criarAgendamento,
   listarMeusAgendamentos,
   listarTodosAgendamentos,
   atualizarStatusAgendamento,
   deletarAgendamento,
-  listarDoUsuario
+  listarDoUsuario,
+  iniciarFluxoAgendamento
 };
