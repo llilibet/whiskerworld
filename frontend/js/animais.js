@@ -39,7 +39,7 @@ async function carregarAnimais(tipo) {
           <button class="animal-more-btn">mais informações</button>
         </div>
         <div class="animal-fav-icon" title="Favoritar">
-          ♡
+          
         </div>
       `;
 
@@ -106,25 +106,6 @@ function fecharDetalhes() {
   }
 }
 
-// Favoritar (usa /favoritos)
-async function favoritarAnimal(animalId, iconEl) {
-  const token = getToken();
-  if (!token) {
-    alert("Você precisa estar logado para favoritar.");
-    return;
-  }
-
-  try {
-    await apiRequestAuth("/favoritos", {
-      method: "POST",
-      body: JSON.stringify({ animal_id: animalId }),
-    });
-
-    iconEl.textContent = "❤";
-  } catch (erro) {
-    alert("Não foi possível favoritar: " + erro.message);
-  }
-}
 
 async function adotarAnimal(id) {
   try {

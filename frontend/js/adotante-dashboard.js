@@ -1,8 +1,44 @@
-// adotante-dashboard.js
+// --- coloque isto em escopo global, por exemplo logo após `let CURRENT_USER = null;`
+function formatAgendamentoDateTime(a) {
+  const horaSeparada = a.hora_visita || a.hora || a.time || null;
+  const dataSeparada = a.data_visita || a.data || a.date || null;
 
-// Dependências esperadas: apiRequestAuth(), getToken()
-// Este arquivo foi ajustado para só mostrar o botão "Confirmar" quando o usuário for admin
-// e para aguardar carregarInfoUsuario() antes de renderizar agendamentos/favoritos.
+  // se temos data (possivelmente ISO) e hora separada -> extrai YYYY-MM-DD da data e concatena
+  if (dataSeparada && horaSeparada) {
+    try {
+      // extrai apenas a parte YYYY-MM-DD, mesmo que dataSeparada seja ISO com T/Z
+      const dateOnly = String(dataSeparada).split("T")[0];
+      let horaNorm = String(horaSeparada).trim();
+      if (horaNorm.length === 5) horaNorm = horaNorm + ":00"; // "08:30" -> "08:30:00"
+
+      // monta ISO sem timezone (interpretação local)
+      const isoLocal = `${dateOnly}T${horaNorm}`;
+      const dt = new Date(isoLocal);
+      if (!isNaN(dt)) return dt.toLocaleString();
+
+      // fallback textual
+      return `${dateOnly} ${horaSeparada}`;
+    } catch (e) {
+      // segue para candidatos abaixo
+    }
+  }
+
+  // se existe um campo datetime/ISO já pronto no objeto
+  const datetimeCandidates = [a.data_hora, a.dataHora, a.datetime, a.data_visita, a.created_at];
+  for (const k of datetimeCandidates) {
+    if (!k) continue;
+    try {
+      const dt = new Date(k);
+      if (!isNaN(dt)) return dt.toLocaleString();
+    } catch (e) {}
+  }
+
+  // se só existe data sem hora, retorna a string da data
+  if (dataSeparada) return String(dataSeparada);
+
+  return "";
+}
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   if (!getToken()) {
@@ -19,11 +55,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // aguarda carregar info do usuário antes de continuar
   await carregarInfoUsuario();
 
-  // agora carregue os dados que dependem do usuário
-  carregarFavoritos();
+  // carregarFavoritos();
   carregarAgendamentos();
 
   // modal controls
@@ -84,7 +118,6 @@ function isCurrentUserAdmin() {
     if (payload.role && String(payload.role).toUpperCase() === "ADMIN") return true;
     if (payload.is_admin || payload.admin) return true;
   } catch (e) {
-    // ignore
   }
   return false;
 }
@@ -199,11 +232,8 @@ async function carregarAgendamentos() {
     ags.forEach((a) => {
       // aceita várias formas de campo do backend
       const nomeAnimal = a.nome_animal || a.animal_nome || (a.animal && (a.animal.nome || a.animal.name)) || ("Animal " + (a.animal_id || ""));
-      const dataStr = (() => {
-        try {
-          return a.data_visita ? new Date(a.data_visita).toLocaleString() : "";
-        } catch(e) { return a.data_visita || ""; }
-      })();
+      const dataStr = formatAgendamentoDateTime(a) || "";
+
 
       const item = document.createElement("div");
       item.className = "agend-item";

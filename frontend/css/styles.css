@@ -21,7 +21,7 @@ body {
 .header {
   background-color: #a6c88b; /* verde clarinho */
   color: #fffbe5;
-  padding: 16px 40px;
+  padding: 16px 40px 20px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -33,13 +33,18 @@ body {
   gap: 10px;
 }
 
+.logo {
+  height: 60px; 
+  margin-top: 10px;
+}
+
 .header-logo span {
   font-size: 24px;
   font-weight: 700;
 }
 
 .header-link {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
   text-decoration: none;
   color: #fffbe5;

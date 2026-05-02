@@ -27,10 +27,25 @@
   </style>
 </head>
 <body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <img src="img/logo-nome-W.png" alt="Whiskerworld" class="logo" />
+      </div>
+      <a href="#" class="header-link">Sobre</a>
+    </header>
+  </div>
   <div class="container">
     <div class="user-header">
+      <div class="section">
+        <h2>Explorar Animais</h2>
+        <div style="display:flex; gap:18px; margin-top:12px; align-items:center;">
+          <button class="btn" onclick="window.location.href='escolha-perfil.html'">Procurar</button>
+          <button class="btn" onclick="window.location.href='animais-gatos.html'">Ver Gatos</button>
+          <button class="btn" onclick="window.location.href='animais-caes.html'">Ver Cães</button>
+        </div>
+      </div>
       <div class="user-badge">
-        <img src="img/logo-simbolo.png" alt="logo" style="height:44px; margin-right:8px;">
         <div>
           <div class="small muted">Bem-vinda/o,</div>
           <div class="user-name" id="user-name">Usuário</div>
@@ -43,29 +58,12 @@
     </div>
 
     <div class="section">
-      <h2>Meus Favoritos</h2>
-      <div id="favorites" class="favorites-grid">
-        <!-- cards de favoritos -->
-      </div>
-    </div>
-
-    <div class="section">
       <h2>Meus Agendamentos</h2>
       <div id="agendamentos" class="agend-list">
         <!-- lista de agendamentos -->
       </div>
     </div>
   </div>
-
-  <div class="section">
-  <h2>Explorar Animais</h2>
-  <div style="display:flex; gap:18px; margin-top:12px; align-items:center;">
-    <button class="btn" onclick="window.location.href='escolha-perfil.html'">Procurar</button>
-    <button class="btn" onclick="window.location.href='animais-gatos.html'">Ver Gatos</button>
-    <button class="btn" onclick="window.location.href='animais-caes.html'">Ver Cães</button>
-  </div>
-</div>
-
 
   <!-- Modal de agendamento -->
   <div id="modal-agendar-bg" class="modal-bg">
@@ -91,6 +89,5 @@
 
   <script src="js/api.js"></script>
   <script src="js/adotante-dashboard.js"></script>
-
 </body>
 </html>

@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000"; 
+const API_BASE_URL = window.location.origin;
 window.API_BASE_URL = API_BASE_URL; 
 
 function setToken(token) {
@@ -47,12 +47,6 @@ async function apiRequest(path, opts = {}) {
   try { return JSON.parse(text); } catch (e) { return text; }
 }
 
-/* ---------- Função de requisição com Authorization ---------- */
-/*
-  Uso:
-    const data = await apiRequestAuth("/favoritos", { method: "POST", body: { animal_id: 1 } });
-    // Para upload com FormData: apiRequestAuth("/animais", { method: "POST", body: formData });
-*/
 async function apiRequestAuth(path, opts = {}) {
   const token = getToken();
   if (!token) throw new Error("Token não encontrado. Faça login.");
