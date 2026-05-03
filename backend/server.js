@@ -46,5 +46,5 @@ if (process.env.NODE_ENV !== "production") {
   });
 }
 
-// ✅ ESSENCIAL PRA VERCEL
+//ESSENCIAL PRA VERCEL
 module.exports = app;
