@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whiskerworld - Gatos</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <img src="img/logo-simbolo.png" alt="Whiskerworld" style="height:40px; margin-right:8px;" />
+        <img src="img/logo-whiskerworld.png" alt="Whiskerworld" style="height:34px;" />
+      </div>
+      <a href="escolha-perfil.html" class="header-link">Voltar</a>
+    </header>
+
+    <main class="main-content" style="align-items:flex-start;">
+      <div style="width:100%; max-width:960px; margin:0 auto;">
+        <h1 class="animals-page-title">Gatos</h1>
+        <div class="animals-grid">
+          <!-- cards vão ser inseridos via JS -->
+        </div>
+        <div id="animal-detalhe-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/animais.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      carregarAnimais("GATO");
+    });
+  </script>
+</body>
+</html>

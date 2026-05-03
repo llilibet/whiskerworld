@@ -1,0 +1,298 @@
+/* Reset simples */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background-color: #fdfdfd;
+}
+
+/* Container da página inteira */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  background-color: #a6c88b; /* verde clarinho */
+  color: #fffbe5;
+  padding: 16px 40px 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  height: 60px; 
+  margin-top: 10px;
+}
+
+.header-logo span {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header-link {
+  font-size: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #fffbe5;
+}
+
+/* Conteúdo centralizado */
+
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+}
+
+/* Card central (login, cadastro etc) */
+
+.card {
+  background-color: #c8e1b6; /* verdinho do card */
+  border-radius: 16px;
+  padding: 32px 40px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.card h1 {
+  font-size: 22px;
+  margin-bottom: 24px;
+  color: #45513a;
+}
+
+/* Formulário */
+
+.form-group {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #45513a;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Botão principal */
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #45513a;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+
+/* Texto auxiliar */
+
+.card small,
+.card p {
+  font-size: 13px;
+  color: #55644a;
+}
+
+.card a {
+  color: #45513a;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Cards grandes (ex: escolher Gatos/Cães, Admin/Adotante) */
+
+.choice-container {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.choice-card {
+  background-color: #c8e1b6;
+  border-radius: 18px;
+  padding: 24px 24px 18px;
+  width: 220px;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.choice-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 22px rgba(0, 0, 0, 0.22);
+}
+
+.choice-img-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 14px;
+}
+
+.choice-img-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.choice-label {
+  background-color: #fdf1b5;
+  border-radius: 999px;
+  padding: 8px 0;
+  margin-top: 6px;
+  font-weight: 600;
+  color: #55503b;
+}
+
+/* Responsivo básico */
+
+@media (max-width: 600px) {
+  .card {
+    padding: 24px 20px;
+  }
+
+  .header {
+    padding: 12px 16px;
+  }
+}
+
+/* ====== LISTA DE ANIMAIS ====== */
+
+.animals-page-title {
+  font-size: 26px;
+  margin-bottom: 24px;
+  color: #4b4b4b;
+}
+
+.animals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.animal-card {
+  background-color: #fdf1b5; /* amarelinho do card */
+  border-radius: 18px;
+  padding: 14px 12px 16px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  position: relative;
+}
+
+.animal-name {
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: lowercase;
+}
+
+.animal-photo-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 10px;
+}
+
+.animal-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.animal-actions {
+  margin-top: 8px;
+}
+
+.animal-more-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #55503b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.animal-fav-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* card expandido simples (detalhes) */
+.animal-card-detalhe {
+  grid-column: 1 / -1;
+  background-color: #fdf1b5;
+  border-radius: 18px;
+  padding: 18px 24px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.animal-card-detalhe-info {
+  text-align: left;
+  font-size: 14px;
+  color: #4b4b4b;
+}
+
+.animal-card-detalhe-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.btn-secondary {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #55503b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}

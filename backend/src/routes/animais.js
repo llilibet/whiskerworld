@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const animaisController = require("../controllers/animaisController");
-const {
-  autenticarToken,
-  apenasAdmin,
-} = require("../middlewares/authMiddleware");
+const { autenticarToken, apenasAdmin } = require("../middlewares/authMiddleware");
+const uploadFotoAnimal = require("../middlewares/uploadFotoAnimal");
 
 // Lista animais (público) – GET /animais?tipo=GATO ou CAO
 router.get("/", animaisController.listarAnimais);
@@ -17,6 +15,7 @@ router.post(
   "/",
   autenticarToken,
   apenasAdmin,
+  uploadFotoAnimal.single("foto"), // campo "foto" virá do formulário
   animaisController.criarAnimal
 );
 
@@ -25,6 +24,7 @@ router.put(
   "/:id",
   autenticarToken,
   apenasAdmin,
+  uploadFotoAnimal.single("foto"),
   animaisController.atualizarAnimal
 );
 

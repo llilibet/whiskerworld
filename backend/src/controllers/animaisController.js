@@ -51,102 +51,108 @@ async function obterAnimalPorId(req, res) {
 
 // cria um novo animal (apenas ADMIN)
 async function criarAnimal(req, res) {
-  const {
-    nome,
-    idade,
-    sexo,
-    vacinado,
-    status,
-    tipo,
-    descricao,
-    foto_url,
-  } = req.body;
-
   try {
+    const { nome, idade, sexo, vacinado, status, tipo, descricao } = req.body;
+
+    // se veio arquivo, monta caminho; senão, permite null
+    const foto_url = req.file
+      ? `/uploads/animais/${req.file.filename}`
+      : null;
+
     if (!nome || !sexo || !tipo) {
-      return res.status(400).json({
-        mensagem: "Nome, sexo e tipo (CAO/GATO) são obrigatórios.",
-      });
+      return res.status(400).json({ mensagem: "Nome, sexo e tipo são obrigatórios." });
     }
 
-    const sexoUpper = sexo.toUpperCase();
-    const tipoUpper = tipo.toUpperCase();
-
-    const vacinadoValor = vacinado ? 1 : 0;
-    const statusValor = status ? status.toUpperCase() : "DISPONIVEL";
+    const vacinadoBool = vacinado === "1" || vacinado === "true" || vacinado === true;
 
     const [resultado] = await pool.query(
-      `INSERT INTO animais 
-       (nome, idade, sexo, vacinado, status, tipo, descricao, foto_url)
+      `INSERT INTO animais (nome, idade, sexo, vacinado, status, tipo, descricao, foto_url)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         nome,
         idade || null,
-        sexoUpper,
-        vacinadoValor,
-        statusValor,
-        tipoUpper,
+        sexo,
+        vacinadoBool ? 1 : 0,
+        status || "DISPONIVEL",
+        tipo,
         descricao || null,
-        foto_url || null,
+        foto_url,
       ]
     );
+
+    const novoAnimalId = resultado.insertId;
 
     return res.status(201).json({
       mensagem: "Animal cadastrado com sucesso.",
       animal: {
-        id: resultado.insertId,
+        id: novoAnimalId,
         nome,
         idade,
-        sexo: sexoUpper,
-        vacinado: !!vacinadoValor,
-        status: statusValor,
-        tipo: tipoUpper,
+        sexo,
+        vacinado: vacinadoBool,
+        status: status || "DISPONIVEL",
+        tipo,
         descricao,
         foto_url,
       },
     });
   } catch (erro) {
-    console.error("Erro ao criar animal:", erro);
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno ao cadastrar animal." });
+    console.error("Erro ao cadastrar animal:", erro);
+    return res.status(500).json({
+      mensagem: "Erro interno ao cadastrar animal.",
+    });
   }
 }
+ 
 
+// atualiza dados de um animal (apenas ADMIN)
 // atualiza dados de um animal (apenas ADMIN)
 async function atualizarAnimal(req, res) {
   const { id } = req.params;
-  const {
-    nome,
-    idade,
-    sexo,
-    vacinado,
-    status,
-    tipo,
-    descricao,
-    foto_url,
-  } = req.body;
 
   try {
-    // verifica se existe
-    const [existe] = await pool.query("SELECT * FROM animais WHERE id = ?", [
-      id,
-    ]);
+    // busca o animal atual primeiro
+    const [existe] = await pool.query("SELECT * FROM animais WHERE id = ?", [id]);
     if (existe.length === 0) {
       return res.status(404).json({ mensagem: "Animal não encontrado." });
     }
 
     const animalAtual = existe[0];
 
+    // pega os campos do body de forma segura (pode ser undefined se for multipart sem middleware)
+    const body = req.body || {};
+
+    // se houver arquivo enviado (multer), monta foto_url com filename
+    const novoArquivo = req.file ? `/uploads/animais/${req.file.filename}` : null;
+
+    // extrai valores do body (se não vier, usa null -> manteremos valores anteriores)
+    const {
+      nome,
+      idade,
+      sexo,
+      vacinado,
+      status,
+      tipo,
+      descricao,
+      foto_url: foto_url_body
+    } = body;
+
+    // define valores finais (mantém os atuais quando o campo não foi enviado)
     const nomeFinal = nome || animalAtual.nome;
     const idadeFinal = idade || animalAtual.idade;
-    const sexoFinal = (sexo || animalAtual.sexo).toUpperCase();
-    const tipoFinal = (tipo || animalAtual.tipo).toUpperCase();
-    const vacinadoFinal =
-      vacinado !== undefined ? (vacinado ? 1 : 0) : animalAtual.vacinado;
-    const statusFinal = (status || animalAtual.status).toUpperCase();
-    const descricaoFinal = descricao || animalAtual.descricao;
-    const fotoFinal = foto_url || animalAtual.foto_url;
+    const sexoFinal = (sexo || animalAtual.sexo || "").toString().toUpperCase();
+    const tipoFinal = (tipo || animalAtual.tipo || "").toString().toUpperCase();
+
+    // vacinado pode vir como "1"/"0" ou boolean
+    const vacinadoFinal = (vacinado !== undefined && vacinado !== null)
+      ? (vacinado == "1" || vacinado === 1 || vacinado === true)
+      : Boolean(animalAtual.vacinado);
+
+    const statusFinal = (status || animalAtual.status || "DISPONIVEL").toString().toUpperCase();
+    const descricaoFinal = (descricao !== undefined && descricao !== null) ? descricao : animalAtual.descricao;
+
+    // prioriza o novo arquivo, depois um foto_url vinda no body (pouco provável em multipart)
+    const fotoFinal = novoArquivo || foto_url_body || animalAtual.foto_url;
 
     await pool.query(
       `UPDATE animais
@@ -156,7 +162,7 @@ async function atualizarAnimal(req, res) {
         nomeFinal,
         idadeFinal,
         sexoFinal,
-        vacinadoFinal,
+        vacinadoFinal ? 1 : 0,
         statusFinal,
         tipoFinal,
         descricaoFinal,
@@ -173,6 +179,7 @@ async function atualizarAnimal(req, res) {
       .json({ mensagem: "Erro interno ao atualizar animal." });
   }
 }
+
 
 // remove um animal (apenas ADMIN)
 async function deletarAnimal(req, res) {

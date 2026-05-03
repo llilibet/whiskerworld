@@ -22,6 +22,19 @@ async function criarAgendamento(req, res) {
       return res.status(404).json({ mensagem: "Animal não encontrado." });
     }
 
+    // NOVO: verifica duplicidade de agendamento
+    const [existe] = await pool.query(
+      `SELECT id FROM agendamentos
+       WHERE usuario_id = ? AND animal_id = ? AND status IN ('PENDENTE', 'CONFIRMADO')`,
+      [usuarioId, animal_id]
+    );
+
+    if (existe.length > 0) {
+      return res.status(400).json({
+        mensagem: "Você já possui um agendamento ativo para este animal."
+      });
+    }
+
     // insere agendamento
     const [resultado] = await pool.query(
       `INSERT INTO agendamentos 
@@ -50,7 +63,7 @@ async function criarAgendamento(req, res) {
   }
 }
 
- // lista os agendamentos do usuário logado
+// lista os agendamentos do usuário logado
 async function listarMeusAgendamentos(req, res) {
   const usuarioId = req.usuario.id;
 
@@ -74,17 +87,17 @@ async function listarMeusAgendamentos(req, res) {
   }
 }
 
- // lista todos os agendamentos (apenas ADMIN)
+// lista todos os agendamentos (apenas ADMIN)
 async function listarTodosAgendamentos(req, res) {
   try {
     const [rows] = await pool.query(
       `SELECT a.id, a.data_visita, a.hora_visita, a.status, a.observacoes,
-              u.nome AS nome_usuario, u.email AS email_usuario,
-              an.nome AS nome_animal, an.tipo AS tipo_animal
-       FROM agendamentos a
-       JOIN usuarios u ON u.id = a.usuario_id
-       JOIN animais an ON an.id = a.animal_id
-       ORDER BY a.data_visita, a.hora_visita`
+       u.nome AS nome_usuario, u.email AS email_usuario,
+       an.id AS animal_id, an.nome AS nome_animal, an.tipo AS tipo_animal
+        FROM agendamentos a
+        JOIN usuarios u ON u.id = a.usuario_id
+        JOIN animais an ON an.id = a.animal_id
+        ORDER BY a.data_visita, a.hora_visita`
     );
 
     return res.json(rows);
@@ -95,7 +108,7 @@ async function listarTodosAgendamentos(req, res) {
       .json({ mensagem: "Erro interno ao listar agendamentos." });
   }
 }
-// atualiza o status (PENDENTE / CONFIRMADO / CANCELADO) – apenas ADMIN
+
 async function atualizarStatusAgendamento(req, res) {
   const { id } = req.params;
   const { status } = req.body;
@@ -127,18 +140,12 @@ async function atualizarStatusAgendamento(req, res) {
   }
 }
 
-/**
- * DELETE /agendamentos/:id
- * Usuário pode cancelar o próprio agendamento.
- * Admin pode cancelar qualquer um.
- */
 async function deletarAgendamento(req, res) {
   const { id } = req.params;
   const usuarioId = req.usuario.id;
   const tipoUsuario = req.usuario.tipo;
 
   try {
-    // busca agendamento
     const [rows] = await pool.query(
       "SELECT usuario_id FROM agendamentos WHERE id = ?",
       [id]
@@ -149,7 +156,6 @@ async function deletarAgendamento(req, res) {
 
     const agendamento = rows[0];
 
-    // se não for admin e não for dono do agendamento, bloqueia
     if (tipoUsuario !== "ADMIN" && agendamento.usuario_id !== usuarioId) {
       return res.status(403).json({
         mensagem: "Você não tem permissão para cancelar este agendamento.",
@@ -167,10 +173,111 @@ async function deletarAgendamento(req, res) {
   }
 }
 
+// listar agendamentos do usuário (rota /agendamentos/me no seu front)
+async function listarDoUsuario(req, res) {
+  try {
+    const usuarioId = req.usuario.id;
+
+    const [rows] = await pool.query(`
+      SELECT 
+        a.id,
+        a.data_visita,
+        a.hora_visita,
+        a.status,
+        an.nome AS animal_nome
+      FROM agendamentos a
+      LEFT JOIN animais an ON an.id = a.animal_id
+      WHERE a.usuario_id = ?
+      ORDER BY a.data_visita DESC, a.hora_visita DESC
+    `, [usuarioId]);
+
+    return res.json(rows);
+
+  } catch (erro) {
+    console.error("Erro listarDoUsuario:", erro);
+    return res.status(500).json({ mensagem: "Erro ao buscar seus agendamentos." });
+  }
+}
+
+// iniciar fluxo de agendamento 
+async function iniciarFluxoAgendamento(req, res) {
+  const { animalId } = req.params;
+  const usuarioId = req.usuario && req.usuario.id; // pode ser undefined se não autenticado
+
+  try {
+    // verifica se o animal existe
+    const [animalRows] = await pool.query(
+      "SELECT id, nome, idade, sexo, vacinado, status, tipo, descricao, foto_url FROM animais WHERE id = ?",
+      [animalId]
+    );
+
+    if (animalRows.length === 0) {
+      return res.status(404).json({ mensagem: "Animal não encontrado." });
+    }
+
+    const animal = animalRows[0];
+
+    // verifica disponibilidade pública
+    const disponivel = (animal.status || "").toString().toUpperCase() === "DISPONIVEL";
+    if (!disponivel) {
+      return res.status(200).json({
+        animal: {
+          id: animal.id,
+          nome: animal.nome,
+          idade: animal.idade,
+          sexo: animal.sexo,
+          vacinado: Boolean(animal.vacinado),
+          status: animal.status,
+          tipo: animal.tipo,
+          descricao: animal.descricao,
+          foto_url: animal.foto_url
+        },
+        disponivel: false,
+        mensagem: "Animal não disponível para adoção."
+      });
+    }
+
+    // verificar se o usuário autenticado já tem agendamento pendente/confirmado para este animal
+    let possuiAgendamentoAtivo = false;
+    if (usuarioId) {
+      const [existe] = await pool.query(
+        `SELECT id FROM agendamentos
+         WHERE usuario_id = ? AND animal_id = ? AND status IN ('PENDENTE', 'CONFIRMADO')`,
+        [usuarioId, animalId]
+      );
+      possuiAgendamentoAtivo = (existe.length > 0);
+    }
+
+    // retorna JSON com dados essenciais
+    return res.status(200).json({
+      animal: {
+        id: animal.id,
+        nome: animal.nome,
+        idade: animal.idade,
+        sexo: animal.sexo,
+        vacinado: Boolean(animal.vacinado),
+        status: animal.status,
+        tipo: animal.tipo,
+        descricao: animal.descricao,
+        foto_url: animal.foto_url
+      },
+      disponivel: true,
+      possuiAgendamentoAtivo,
+      mensagem: "Dados para iniciar agendamento."
+    });
+  } catch (erro) {
+    console.error("Erro iniciarFluxoAgendamento:", erro);
+    return res.status(500).json({ mensagem: "Erro interno ao iniciar fluxo de agendamento." });
+  }
+}
+
+
 module.exports = {
   criarAgendamento,
   listarMeusAgendamentos,
   listarTodosAgendamentos,
   atualizarStatusAgendamento,
   deletarAgendamento,
+  listarDoUsuario,
+  iniciarFluxoAgendamento
 };

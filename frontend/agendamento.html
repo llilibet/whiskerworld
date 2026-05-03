@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Agendar Visita - Whiskerworld</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; padding:24px; background:#fff; color:#222; }
+    .container { max-width:900px; margin:0 auto; }
+    .card { background:#fafafa; border-radius:12px; padding:18px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+    .top { display:flex; gap:18px; align-items:center; }
+    .animal-photo { width:120px; height:120px; border-radius:50%; object-fit:cover; border:4px solid #fff; box-shadow:0 4px 12px rgba(0,0,0,0.08); }
+    h1 { margin-top:0; }
+    label { display:block; margin:10px 0 6px; font-weight:600; }
+    input[type="date"], select, input[type="time"], textarea { width:100%; padding:8px 10px; border-radius:8px; border:1px solid #ddd; box-sizing:border-box; }
+    .row { display:flex; gap:12px; }
+    .col { flex:1; }
+    .actions { margin-top:16px; display:flex; gap:12px; align-items:center; }
+    button { padding:10px 16px; border-radius:12px; cursor:pointer; border:none; background:#2b8a7c; color:white; font-weight:600; }
+    button.secondary { background:#eee; color:#333; }
+    .notice { margin-top:12px; color:#666; font-size:0.95rem; }
+    .error { color:#b00020; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="top">
+        <img id="animal-photo" class="animal-photo" src="" alt="Foto do animal" />
+        <div>
+          <h1 id="animal-nome">Carregando...</h1>
+          <div id="animal-meta"></div>
+          <div id="animal-id" style="color:#666; font-size:0.9rem;"></div>
+        </div>
+      </div>
+
+      <hr style="margin:16px 0; border:none; border-top:1px solid #eee" />
+
+      <div id="msg" class="notice">Carregando informações do agendamento...</div>
+
+      <form id="form-agendamento" style="display:none; margin-top:12px;">
+        <label>Nome do adotante</label>
+        <input type="text" id="nome-adotante" placeholder="Seu nome" required />
+
+        <div style="display:flex; gap:12px; margin-top:12px;">
+          <div style="flex:1">
+            <label>Data da visita (Seg-Sáb)</label>
+            <input type="date" id="data_visita" required />
+          </div>
+          <div style="flex:1">
+            <label>Horário</label>
+            <select id="hora_visita" required></select>
+          </div>
+        </div>
+
+        <label style="margin-top:12px">Observações (opcional)</label>
+        <textarea id="observacoes" rows="3" placeholder="Ex: Prefiro manhã, tenho cão, ..."></textarea>
+
+        <div class="actions">
+          <button id="btn-enviar" type="submit">Confirmar agendamento</button>
+          <button id="btn-voltar" class="secondary" type="button">Voltar</button>
+          <div id="erro" class="error" style="margin-left:12px;"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const API_BASE_URL = window.API_BASE_URL || (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' ? 'http://localhost:3000' : (window.location.origin + ':3000'));
+      function readToken() {
+        try {
+          if (typeof getToken === 'function') return getToken();
+          return localStorage.getItem('token');
+        } catch (e) { return null; }
+      }
+
+      function getQueryParam(name) {
+        return new URLSearchParams(window.location.search).get(name);
+      }
+
+      function gerarOpcoesHorario() {
+        const slots = [];
+        function addRange(startH, endH) {
+          for (let h = startH; h < endH; ++h) {
+            slots.push(`${String(h).padStart(2,'0')}:00`);
+            slots.push(`${String(h).padStart(2,'0')}:20`);
+          }
+        }
+        // manhã 08:00-11:00 
+        addRange(8, 11);
+        // tarde 13:00-17:00
+        addRange(13, 17);
+        return slots;
+      }
+
+      // checa se data é domingo (0 Sunday)
+      function isSunday(dateStr) {
+        const d = new Date(dateStr + 'T00:00:00');
+        return d.getDay() === 0;
+      }
+
+      async function fetchAnimalAndInit() {
+        const id = getQueryParam('id');
+        if (!id) {
+          document.getElementById('msg').innerText = 'ID do animal não fornecido na URL.';
+          return;
+        }
+
+        // requisitar dados do backend
+        try {
+          const token = readToken();
+          const headers = { Accept: 'application/json' };
+          if (token) headers.Authorization = 'Bearer ' + token;
+
+          const resp = await fetch(`${API_BASE_URL}/agendamentos/iniciar/${id}`, { method: 'GET', headers });
+          if (!resp.ok) {
+            const jb = await resp.json().catch(()=>({mensagem: `Erro: ${resp.status}`}));
+            document.getElementById('msg').innerText = jb.mensagem || 'Erro ao carregar animal.';
+            return;
+          }
+          const data = await resp.json();
+
+          // popular UI
+          const animal = data.animal;
+          document.getElementById('animal-nome').innerText = animal.nome || 'Nome desconhecido';
+          document.getElementById('animal-meta').innerText = `${animal.tipo || ''} • ${animal.idade || ''} • ${animal.sexo || ''}`;
+          document.getElementById('animal-id').innerText = `ID: ${animal.id}`;
+
+          // foto: se tiver path relativo do backend, prefixa com API_BASE_URL
+          const imgEl = document.getElementById('animal-photo');
+          if (animal.foto_url) {
+            // se foto_url já começar com http, usa direto; senão prefixa
+            const maybe = animal.foto_url.startsWith('http') ? animal.foto_url : (API_BASE_URL + animal.foto_url);
+            imgEl.src = maybe;
+          } else {
+            imgEl.src = 'https://via.placeholder.com/300?text=Sem+foto';
+          }
+
+          if (!data.disponivel) {
+            document.getElementById('msg').innerText = data.mensagem || 'Animal não disponível.';
+            return;
+          }
+
+          // se tudo ok, mostra o form
+          document.getElementById('msg').innerText = 'Preencha os dados para solicitar a visita.';
+          const form = document.getElementById('form-agendamento');
+          form.style.display = 'block';
+
+          // preenche nome do adotante se logado (token -> /usuarios/me)
+          if (token) {
+            try {
+              const r = await fetch(`${API_BASE_URL}/usuarios/me`, { headers: { Accept: 'application/json', Authorization: 'Bearer ' + token }});
+              if (r.ok) {
+                const user = await r.json();
+                document.getElementById('nome-adotante').value = user.nome || '';
+              }
+            } catch(e){/* ignore */}
+          }
+
+          // popula horários permitidos
+          const selectHora = document.getElementById('hora_visita');
+          selectHora.innerHTML = '';
+          const opcoes = gerarOpcoesHorario();
+          for (const s of opcoes) {
+            const opt = document.createElement('option');
+            opt.value = s;
+            opt.textContent = s;
+            selectHora.appendChild(opt);
+          }
+
+          // set minimo da data para hoje
+          const inputData = document.getElementById('data_visita');
+          const hoje = new Date();
+          const yyyy = hoje.getFullYear();
+          const mm = String(hoje.getMonth()+1).padStart(2,'0');
+          const dd = String(hoje.getDate()).padStart(2,'0');
+          inputData.min = `${yyyy}-${mm}-${dd}`;
+        } catch (erro) {
+          console.error('Erro fetchAnimalAndInit', erro);
+          document.getElementById('msg').innerText = 'Erro ao carregar favoritos/animal. Verifique conexão.';
+        }
+      }
+
+      // valida o formulário antes de enviar
+      function validarFormulario() {
+        const data = document.getElementById('data_visita').value;
+        const hora = document.getElementById('hora_visita').value;
+        if (!data || !hora) {
+          return 'Data e horário são obrigatórios.';
+        }
+        if (isSunday(data)) {
+          return 'Escolha uma data entre Segunda e Sábado (Domingo não permitido).';
+        }
+        if (!/^\d{2}:\d{2}$/.test(hora)) return 'Horário inválido.';
+        return null;
+      }
+
+      async function handleSubmit(ev) {
+        ev.preventDefault();
+        const errEl = document.getElementById('erro');
+        errEl.innerText = '';
+        const valida = validarFormulario();
+        if (valida) {
+          errEl.innerText = valida;
+          return;
+        }
+
+        const id = getQueryParam('id');
+        const body = {
+          animal_id: Number(id),
+          data_visita: document.getElementById('data_visita').value,
+          hora_visita: document.getElementById('hora_visita').value,
+          observacoes: document.getElementById('observacoes').value || null
+        };
+        
+        const token = readToken();
+        if (!token) {
+          alert('É necessário estar logado para criar agendamento. Faça login primeiro.');
+          window.location.href = '/frontend/login.html';
+          return;
+        }
+
+        try {
+          const resp = await fetch(`${API_BASE_URL}/agendamentos`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(body)
+          });
+
+          const jb = await resp.json().catch(()=>({ mensagem: 'Resposta inválida' }));
+          if (!resp.ok) {
+            alert(jb.mensagem || 'Erro ao criar agendamento.');
+            return;
+          }
+
+          // sucesso
+          alert('Agendamento criado com sucesso! Status: PENDENTE');
+          // redirecionar para meus agendamentos (ajuste se a sua rota for diferente)
+          window.location.href = '/frontend/adotante-dashboard.html';
+        } catch (erro) {
+          console.error('Erro ao enviar agendamento', erro);
+          alert('Erro ao criar agendamento. Tente novamente mais tarde.');
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        await fetchAnimalAndInit();
+
+        document.getElementById('form-agendamento').addEventListener('submit', handleSubmit);
+        document.getElementById('btn-voltar').addEventListener('click', () => window.history.back());
+      });
+
+    })();
+  </script>
+</body>
+</html>

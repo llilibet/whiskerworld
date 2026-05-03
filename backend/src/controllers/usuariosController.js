@@ -101,8 +101,27 @@ async function loginUsuario(req, res) {
   }
 }
 
+async function retornaUsuarioLogado(req, res) {
+  try {
+    const usuario = {
+      id: req.usuario.id,
+      nome: req.usuario.nome,
+      email: req.usuario.email,
+      tipo: req.usuario.tipo
+    };
+
+    return res.json(usuario);
+  } catch (erro) {
+    console.error("Erro ao retornar usuário logado:", erro);
+    return res.status(500).json({ mensagem: "Erro interno." });
+  }
+}
+
+
 // exporta as funções que a rota vai usar
 module.exports = {
   registrarUsuario,
   loginUsuario,
+  retornaUsuarioLogado
 };
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whiskerworld - Login</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <img src="img/logo-nome-W.png" alt="Whiskerworld" class="logo" />
+      </div>
+      <a href="#" class="header-link">Sobre</a>
+    </header>
+
+    <main class="main-content">
+      <div class="card">
+        <h1>Login</h1>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" required />
+          </div>
+
+          <button type="submit" class="btn">Entrar</button>
+        </form>
+
+        <p style="margin-top:16px;">
+          Ainda não é cadastrado?
+          <a id="link-cadastro" href="cadastro.html">Clique aqui</a>
+        </p>
+      </div>
+    </main>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

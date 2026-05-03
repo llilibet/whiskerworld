@@ -3,11 +3,11 @@ const router = express.Router();
 const favoritosController = require("../controllers/favoritosController");
 const { autenticarToken } = require("../middlewares/authMiddleware");
 
-// Adicionar favorito – POST /favoritos
-router.post("/", autenticarToken, favoritosController.adicionarFavorito);
+// Retorna favoritos do usuário autenticado
+router.get("/", autenticarToken, favoritosController.listarFavoritos);
 
-// Listar meus favoritos – GET /favoritos/me
-router.get("/me", autenticarToken, favoritosController.listarMeusFavoritos);
+// Criar favorito (opcional se já tiver)
+router.post("/", autenticarToken, favoritosController.criarFavorito);
 
 // Remover favorito – DELETE /favoritos/:animal_id
 router.delete(

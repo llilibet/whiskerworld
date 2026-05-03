@@ -28,6 +28,7 @@ router.get(
   agendamentosController.listarTodosAgendamentos
 );
 
+
 // Atualizar status (apenas ADMIN)
 router.put(
   "/:id/status",
@@ -41,6 +42,12 @@ router.delete(
   "/:id",
   autenticarToken,
   agendamentosController.deletarAgendamento
+);
+
+// iniciar fluxo para agendamento (público)
+router.get(
+  "/iniciar/:animalId",
+  agendamentosController.iniciarFluxoAgendamento
 );
 
 module.exports = router;

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Whiskerworld - O que você procura?</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header-logo">
+        <img src="img/logo-simbolo.png" alt="Whiskerworld" style="height:40px; margin-right:8px;" />
+        <img src="img/logo-whiskerworld.png" alt="Whiskerworld" style="height:34px;" />
+      </div>
+      <a href="#" class="header-link">Sobre</a>
+      <a href="adotante-dashboard.html" class="header-link">Home</a>
+    </header>
+
+    <main class="main-content">
+      <div>
+        <h1 style="text-align:center; margin-bottom: 32px; color:#55503b;">
+          O que você procura?
+        </h1>
+
+        <div class="choice-container">
+          <!-- Card Gatos -->
+          <div class="choice-card" onclick="window.location.href='animais-gatos.html'">
+            <div class="choice-img-circle">
+              <img src="/frontend/img/cat.jpg" alt="Gatos" />
+            </div>
+            <div class="choice-label">Gatos</div>
+          </div>
+
+          <!-- Card Cães -->
+          <div class="choice-card" onclick="window.location.href='animais-caes.html'">
+            <div class="choice-img-circle">
+              <img src="/frontend/img/dog.jpg" alt="Cães" />
+            </div>
+            <div class="choice-label">Cães</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
