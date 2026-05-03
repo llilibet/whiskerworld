@@ -14,10 +14,10 @@ app.use(express.json());
 const frontendPath = path.join(__dirname, "..", "frontend");
 
 // rotas
-const usuariosRoutes = require("../backend/src/routes/usuarios");
-const animaisRoutes = require("../backend/src/routes/animais");
-const agendamentosRoutes = require("../backend/src/routes/agendamentos");
-const favoritosRoutes = require("../backend/src/routes/favoritos");
+const usuariosRoutes = require("./src/routes/usuarios");
+const animaisRoutes = require("./src/routes/animais");
+const agendamentosRoutes = require("./src/routes/agendamentos");
+const favoritosRoutes = require("./src/routes/favoritos");
 
 app.use("/usuarios", usuariosRoutes);
 app.use("/animais", animaisRoutes);
