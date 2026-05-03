@@ -1,78 +1,74 @@
 const pool = require("../database/connection");
 
-// lista animais, opcionalmente filtrando por tipo (?tipo=GATO ou ?tipo=CAO)
+// listar animais
 async function listarAnimais(req, res) {
   const { tipo } = req.query;
 
   try {
-    let query = "SELECT * FROM animais WHERE 1=1";
+    let query = "SELECT * FROM animais WHERE status = 'DISPONIVEL'";
     const params = [];
 
     if (tipo) {
-      query += " AND tipo = ?";
       params.push(tipo.toUpperCase());
+      query += ` AND tipo = $${params.length}`;
     }
 
-    // só animais disponíveis para o público
-    query += " AND status = 'DISPONIVEL'";
-
-    const [rows] = await pool.query(query, params);
+    const { rows } = await pool.query(query, params);
     return res.json(rows);
+
   } catch (erro) {
     console.error("Erro ao listar animais:", erro);
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno ao listar animais." });
+    return res.status(500).json({ mensagem: "Erro interno ao listar animais." });
   }
 }
 
-// detalhes de um animal específico
-
+// obter animal por id
 async function obterAnimalPorId(req, res) {
   const { id } = req.params;
 
   try {
-    const [rows] = await pool.query("SELECT * FROM animais WHERE id = ?", [
-      id,
-    ]);
+    const { rows } = await pool.query(
+      "SELECT * FROM animais WHERE id = $1",
+      [id]
+    );
 
     if (rows.length === 0) {
       return res.status(404).json({ mensagem: "Animal não encontrado." });
     }
 
     return res.json(rows[0]);
+
   } catch (erro) {
     console.error("Erro ao obter animal:", erro);
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno ao buscar animal." });
+    return res.status(500).json({ mensagem: "Erro interno ao buscar animal." });
   }
 }
 
-// cria um novo animal (apenas ADMIN)
+// criar animal
 async function criarAnimal(req, res) {
   try {
     const { nome, idade, sexo, vacinado, status, tipo, descricao } = req.body;
-
-    // se veio arquivo, monta caminho; senão, permite null
-    const foto_url = req.file
-      ? `/uploads/animais/${req.file.filename}`
-      : null;
 
     if (!nome || !sexo || !tipo) {
       return res.status(400).json({ mensagem: "Nome, sexo e tipo são obrigatórios." });
     }
 
-    const vacinadoBool = vacinado === "1" || vacinado === "true" || vacinado === true;
+    const foto_url = req.file
+      ? `/uploads/animais/${req.file.filename}`
+      : null;
 
-    const [resultado] = await pool.query(
+    const vacinadoBool =
+      vacinado === "1" || vacinado === "true" || vacinado === true;
+
+    const { rows } = await pool.query(
       `INSERT INTO animais (nome, idade, sexo, vacinado, status, tipo, descricao, foto_url)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       RETURNING *`,
       [
         nome,
         idade || null,
         sexo,
-        vacinadoBool ? 1 : 0,
+        vacinadoBool,
         status || "DISPONIVEL",
         tipo,
         descricao || null,
@@ -80,22 +76,11 @@ async function criarAnimal(req, res) {
       ]
     );
 
-    const novoAnimalId = resultado.insertId;
-
     return res.status(201).json({
       mensagem: "Animal cadastrado com sucesso.",
-      animal: {
-        id: novoAnimalId,
-        nome,
-        idade,
-        sexo,
-        vacinado: vacinadoBool,
-        status: status || "DISPONIVEL",
-        tipo,
-        descricao,
-        foto_url,
-      },
+      animal: rows[0],
     });
+
   } catch (erro) {
     console.error("Erro ao cadastrar animal:", erro);
     return res.status(500).json({
@@ -103,66 +88,61 @@ async function criarAnimal(req, res) {
     });
   }
 }
- 
 
-// atualiza dados de um animal (apenas ADMIN)
-// atualiza dados de um animal (apenas ADMIN)
+// atualizar animal
 async function atualizarAnimal(req, res) {
   const { id } = req.params;
 
   try {
-    // busca o animal atual primeiro
-    const [existe] = await pool.query("SELECT * FROM animais WHERE id = ?", [id]);
-    if (existe.length === 0) {
+    const { rows: existente } = await pool.query(
+      "SELECT * FROM animais WHERE id = $1",
+      [id]
+    );
+
+    if (existente.length === 0) {
       return res.status(404).json({ mensagem: "Animal não encontrado." });
     }
 
-    const animalAtual = existe[0];
-
-    // pega os campos do body de forma segura (pode ser undefined se for multipart sem middleware)
+    const atual = existente[0];
     const body = req.body || {};
 
-    // se houver arquivo enviado (multer), monta foto_url com filename
-    const novoArquivo = req.file ? `/uploads/animais/${req.file.filename}` : null;
+    const novoArquivo = req.file
+      ? `/uploads/animais/${req.file.filename}`
+      : null;
 
-    // extrai valores do body (se não vier, usa null -> manteremos valores anteriores)
-    const {
-      nome,
-      idade,
-      sexo,
-      vacinado,
-      status,
-      tipo,
-      descricao,
-      foto_url: foto_url_body
-    } = body;
+    const nomeFinal = body.nome || atual.nome;
+    const idadeFinal = body.idade || atual.idade;
+    const sexoFinal = (body.sexo || atual.sexo).toUpperCase();
+    const tipoFinal = (body.tipo || atual.tipo).toUpperCase();
 
-    // define valores finais (mantém os atuais quando o campo não foi enviado)
-    const nomeFinal = nome || animalAtual.nome;
-    const idadeFinal = idade || animalAtual.idade;
-    const sexoFinal = (sexo || animalAtual.sexo || "").toString().toUpperCase();
-    const tipoFinal = (tipo || animalAtual.tipo || "").toString().toUpperCase();
+    const vacinadoFinal =
+      body.vacinado !== undefined
+        ? body.vacinado == "1" || body.vacinado === true
+        : atual.vacinado;
 
-    // vacinado pode vir como "1"/"0" ou boolean
-    const vacinadoFinal = (vacinado !== undefined && vacinado !== null)
-      ? (vacinado == "1" || vacinado === 1 || vacinado === true)
-      : Boolean(animalAtual.vacinado);
+    const statusFinal = (body.status || atual.status).toUpperCase();
+    const descricaoFinal =
+      body.descricao !== undefined ? body.descricao : atual.descricao;
 
-    const statusFinal = (status || animalAtual.status || "DISPONIVEL").toString().toUpperCase();
-    const descricaoFinal = (descricao !== undefined && descricao !== null) ? descricao : animalAtual.descricao;
-
-    // prioriza o novo arquivo, depois um foto_url vinda no body (pouco provável em multipart)
-    const fotoFinal = novoArquivo || foto_url_body || animalAtual.foto_url;
+    const fotoFinal =
+      novoArquivo || body.foto_url || atual.foto_url;
 
     await pool.query(
       `UPDATE animais
-       SET nome = ?, idade = ?, sexo = ?, vacinado = ?, status = ?, tipo = ?, descricao = ?, foto_url = ?
-       WHERE id = ?`,
+       SET nome = $1,
+           idade = $2,
+           sexo = $3,
+           vacinado = $4,
+           status = $5,
+           tipo = $6,
+           descricao = $7,
+           foto_url = $8
+       WHERE id = $9`,
       [
         nomeFinal,
         idadeFinal,
         sexoFinal,
-        vacinadoFinal ? 1 : 0,
+        vacinadoFinal,
         statusFinal,
         tipoFinal,
         descricaoFinal,
@@ -172,35 +152,36 @@ async function atualizarAnimal(req, res) {
     );
 
     return res.json({ mensagem: "Animal atualizado com sucesso." });
+
   } catch (erro) {
     console.error("Erro ao atualizar animal:", erro);
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno ao atualizar animal." });
+    return res.status(500).json({
+      mensagem: "Erro interno ao atualizar animal.",
+    });
   }
 }
 
-
-// remove um animal (apenas ADMIN)
+// deletar animal
 async function deletarAnimal(req, res) {
   const { id } = req.params;
 
   try {
-    const [resultado] = await pool.query(
-      "DELETE FROM animais WHERE id = ?",
+    const { rowCount } = await pool.query(
+      "DELETE FROM animais WHERE id = $1",
       [id]
     );
 
-    if (resultado.affectedRows === 0) {
+    if (rowCount === 0) {
       return res.status(404).json({ mensagem: "Animal não encontrado." });
     }
 
     return res.json({ mensagem: "Animal removido com sucesso." });
+
   } catch (erro) {
     console.error("Erro ao deletar animal:", erro);
-    return res
-      .status(500)
-      .json({ mensagem: "Erro interno ao remover animal." });
+    return res.status(500).json({
+      mensagem: "Erro interno ao remover animal.",
+    });
   }
 }
 
