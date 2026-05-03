@@ -33,17 +33,17 @@ app.get("/", (_req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-//IMPORTANTE: só roda localmente
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 3000;
+// //IMPORTANTE: só roda localmente
+// if (process.env.NODE_ENV !== "production") {
+//   const PORT = process.env.PORT || 3000;
 
-  app.listen(PORT, () => {
-    console.log("=====================================");
-    console.log("  Whiskerworld API ativa!");
-    console.log("  Porta:", PORT);
-    console.log(`  URL: http://localhost:${PORT}`);
-    console.log("=====================================");
-  });
-}
+//   app.listen(PORT, () => {
+//     console.log("=====================================");
+//     console.log("  Whiskerworld API ativa!");
+//     console.log("  Porta:", PORT);
+//     console.log(`  URL: http://localhost:${PORT}`);
+//     console.log("=====================================");
+//   });
+// }
 
 module.exports = app;
