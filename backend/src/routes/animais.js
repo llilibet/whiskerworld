@@ -4,6 +4,9 @@ const animaisController = require("../controllers/animaisController");
 const { autenticarToken, apenasAdmin } = require("../middlewares/authMiddleware");
 const uploadFotoAnimal = require("../middlewares/uploadFotoAnimal");
 
+// Lista todos animais (admin) – GET /animais/admin
+router.get("/admin", autenticarToken, apenasAdmin, animaisController.listarAnimaisAdmin);
+
 // Lista animais (público) – GET /animais?tipo=GATO ou CAO
 router.get("/", animaisController.listarAnimais);
 

@@ -6,18 +6,35 @@
       "use": "@vercel/node"
     },
     {
-      "src": "frontend/**/*",
-      "use": "@vercel/static"
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "frontend-react" }
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/animais(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/usuarios(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/agendamentos(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/favoritos(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/uploads(.*)",
       "dest": "/backend/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "dest": "/client/$1"
     }
   ]
 }
