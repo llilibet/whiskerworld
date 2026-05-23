@@ -54,11 +54,21 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const setupSwagger = require("./src/swagger");
 
 const app = express();
 
 // middlewares
-app.use(cors());
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim());
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error("Origem bloqueada pelo CORS."));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 
 // caminhos
@@ -75,6 +85,7 @@ app.use("/api/usuarios", usuariosRoutes);
 app.use("/api/animais", animaisRoutes);
 app.use("/api/agendamentos", agendamentosRoutes);
 app.use("/api/favoritos", favoritosRoutes);
+setupSwagger(app);
 
 // arquivos estáticos
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

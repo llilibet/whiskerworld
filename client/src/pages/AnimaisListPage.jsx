@@ -142,6 +142,9 @@ function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
           {animal.idade && <span className="aa-badge">📅 {animal.idade}</span>}
           {animal.sexo  && <span className="aa-badge">🔹 {animal.sexo}</span>}
         </div>
+        {animal.porte && <p className="muted">{animal.porte}</p>}
+        {animal.raca && <p className="muted">{animal.raca}</p>}
+        {animal.historico && <p className="muted">{animal.historico}</p>}
         <div className="aa-card__btns">
           <button className="btn btn--xs btn--xs-outline" onClick={onToggleFav}>
             {isFav ? '❤️ Favoritado' : '🤍 Favoritar'}

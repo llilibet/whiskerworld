@@ -14,6 +14,7 @@ export default function AnimalCard({ animal, onEditar, onDeletar, showActions = 
       <span className="animal-card__tipo-badge">
         {TIPO_EMOJI[animal.tipo] || '🐾'} {animal.tipo}
       </span>
+      {animal.porte && <span className="animal-card__tipo-badge">{animal.porte}</span>}
       {showActions && (
         <div className="animal-card__actions">
           {onEditar && (

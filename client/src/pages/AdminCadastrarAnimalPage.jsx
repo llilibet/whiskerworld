@@ -11,7 +11,16 @@ export default function AdminCadastrarAnimalPage() {
   const isEdicao = Boolean(id);
 
   const [form, setForm] = useState({
-    nome: '', idade: '', sexo: '', tipo: '', vacinado: '0', status: 'DISPONIVEL', descricao: '',
+    nome: '',
+    idade: '',
+    sexo: '',
+    tipo: '',
+    raca: '',
+    porte: '',
+    vacinado: '0',
+    status: 'DISPONIVEL',
+    descricao: '',
+    historico: '',
   });
   const [fotoFile, setFotoFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -27,9 +36,12 @@ export default function AdminCadastrarAnimalPage() {
           idade: animal.idade || '',
           sexo: animal.sexo || '',
           tipo: animal.tipo || '',
+          raca: animal.raca || '',
+          porte: animal.porte || '',
           vacinado: animal.vacinado ? '1' : '0',
           status: animal.status || 'DISPONIVEL',
           descricao: animal.descricao || '',
+          historico: animal.historico || '',
         });
         if (animal.foto_url) setPreviewUrl(`${BASE}${animal.foto_url}`);
       }).catch((e) => setErro(e.message));
@@ -131,6 +143,28 @@ export default function AdminCadastrarAnimalPage() {
                   </select>
                 </div>
                 <div className="form-group">
+                  <label className="form-label">Porte</label>
+                  <select className="form-select" name="porte" value={form.porte} onChange={handleChange}>
+                    <option value="">Selecione o porte</option>
+                    <option value="PEQUENO">Pequeno</option>
+                    <option value="MEDIO">Medio</option>
+                    <option value="GRANDE">Grande</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Raca</label>
+                  <input
+                    className="form-input"
+                    name="raca"
+                    placeholder="Ex: SRD, Poodle, Siames"
+                    value={form.raca}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="form-group">
                   <label className="form-label">💉 Vacinado?</label>
                   <select className="form-select" name="vacinado" value={form.vacinado} onChange={handleChange}>
                     <option value="0">❌ Não</option>
@@ -159,6 +193,18 @@ export default function AdminCadastrarAnimalPage() {
                   onChange={handleChange}
                 />
               </div>
+
+              <div className="form-group">
+                <label className="form-label">Historico do Pet</label>
+                <textarea
+                  className="form-textarea"
+                  name="historico"
+                  rows={3}
+                  placeholder="Registre resgate, saude, vacinas, tratamentos ou eventos importantes."
+                  value={form.historico}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
             {/* ── Foto ── */}
@@ -175,7 +221,7 @@ export default function AdminCadastrarAnimalPage() {
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept="image/*"
+                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
                     className="foto-upload-zone__input"
                     onChange={handleFoto}
                   />
