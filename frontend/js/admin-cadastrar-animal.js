@@ -1,5 +1,5 @@
 // admin-cadastrar-animal.js
-// Depende de: apiRequestAuth, apiRequest, getToken, API_BASE_URL
+// Depende de: apiRequestAuth, apiRequest, getToken, API_BASE_URL, ASSET_BASE_URL
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form-animal");
@@ -110,7 +110,7 @@ async function carregarAnimalParaEdicao(id) {
     document.getElementById("vacinado").value = data.vacinado ? "1" : "0";
     document.getElementById("descricao").value = data.descricao || "";
     if (data.foto_url) {
-      document.getElementById("preview-foto").src = `${API_BASE_URL}${data.foto_url}`;
+      document.getElementById("preview-foto").src = `${ASSET_BASE_URL}${data.foto_url}`;
     }
   } catch (err) {
     console.error("Erro ao carregar animal:", err);

@@ -3,8 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animaisService } from '../services/animaisService';
 import { agendamentosService } from '../services/agendamentosService';
 import { getUsuarioLogado } from '../services/api';
-
-const BASE = import.meta.env.VITE_API_URL || '';
+import { assetUrl } from '../services/assets';
 
 const HORARIOS = [
   '08:00', '09:00', '10:00', '11:00',
@@ -114,7 +113,7 @@ export default function AgendarVisitaPage() {
         {!loadingAnimal && animal && (
           <div className="animal-info-card">
             {animal.foto_url
-              ? <img className="animal-info-card__photo" src={`${BASE}${animal.foto_url}`} alt={animal.nome} />
+              ? <img className="animal-info-card__photo" src={assetUrl(animal.foto_url)} alt={animal.nome} />
               : <div className="animal-info-card__photo animal-info-card__photo--placeholder">
                   {animal.tipo === 'GATO' ? '🐱' : '🐶'}
                 </div>
