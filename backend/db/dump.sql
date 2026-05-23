@@ -4,6 +4,7 @@ CREATE DATABASE IF NOT EXISTS whiskerworld
 
 USE whiskerworld;
 
+SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS favoritos;
 DROP TABLE IF EXISTS agendamentos;
@@ -78,8 +79,8 @@ CREATE TABLE favoritos (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO usuarios (id, nome, email, senha_hash, tipo, created_at) VALUES
-(1, 'Lilica', 'lili@whiskerworld.com', '$2b$10$Zak6rq/D7wWkTYlApo3b8.4YifVbF6n28Z96Z2B/AZsfJoCwP1iPq', 'ADOTANTE', '2026-03-30 10:00:00'),
-(2, 'Admin Whiskerworld', 'admin@whiskerworld.com', '$2b$10$X9fl5uoRRrax/8mWlM7It.RiFVptnJ0apUwN5EHeg.s.ongujBv3u', 'ADMIN', '2026-03-30 10:05:00');
+(1, 'Lilica', 'lili@whiskerworld.com', '$2b$10$38wRUHIy2l9hh9emzEBtT.zGBZV71hk.L93CKZTW7YVRBhnypDpzm', 'ADOTANTE', '2026-03-30 10:00:00'),
+(2, 'Admin Whiskerworld', 'admin@whiskerworld.com', '$2b$10$93BMbWG5qoxjh/wcUk0Lg.d.iBmNnlVLwY8KHhD/qmApkvNkP4ERm', 'ADMIN', '2026-03-30 10:05:00');
 
 INSERT INTO animais
   (id, nome, idade, sexo, vacinado, status, tipo, raca, porte, descricao, historico, foto_url, created_at)

@@ -1,10 +1,10 @@
-const BASE = import.meta.env.VITE_API_URL || '';
+import { assetUrl } from '../services/assets';
 
 const TIPO_EMOJI = { GATO: '🐱', CAO: '🐶' };
 
 export default function AnimalCard({ animal, onEditar, onDeletar, showActions = true }) {
   const fotoSrc = animal.foto_url
-    ? `${BASE}${animal.foto_url}`
+    ? assetUrl(animal.foto_url)
     : 'https://placehold.co/160x110?text=Pet';
 
   return (

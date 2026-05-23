@@ -27,7 +27,7 @@ async function carregarAnimais(tipo) {
       card.className = "animal-card";
 
         const urlFoto = animal.foto_url
-    ? `${API_BASE_URL}${animal.foto_url}` 
+    ? `${ASSET_BASE_URL}${animal.foto_url}` 
     : "https://placekitten.com/300/300";
 
       card.innerHTML = `
@@ -74,7 +74,7 @@ function mostrarDetalhesAnimal(animal) {
   }
 
   const urlFoto = animal.foto_url
-    ? `${API_BASE_URL}${animal.foto_url}`
+    ? `${ASSET_BASE_URL}${animal.foto_url}`
     : "https://placekitten.com/300/300";
 
   detalheEl.innerHTML = `
@@ -145,3 +145,31 @@ async function adotarAnimal(id) {
   }
 }
 
+async function favoritarAnimal(id, favIcon) {
+  try {
+    if (!getToken()) {
+      alert("Faca login como adotante para favoritar animais.");
+      window.location.href = "login.html?tipo=ADOTANTE";
+      return;
+    }
+
+    await apiRequestAuth("/favoritos", {
+      method: "POST",
+      body: { animal_id: id },
+    });
+
+    if (favIcon) {
+      favIcon.classList.add("favoritado");
+      favIcon.title = "Favoritado";
+    }
+    alert("Animal adicionado aos favoritos.");
+  } catch (erro) {
+    const msg = erro?.message || String(erro);
+    if (msg.includes("Duplicate") || msg.includes("duplic")) {
+      alert("Este animal ja esta nos seus favoritos.");
+      return;
+    }
+    console.error("Erro ao favoritar animal:", erro);
+    alert("Erro ao favoritar animal: " + msg);
+  }
+}

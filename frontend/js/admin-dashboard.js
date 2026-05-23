@@ -18,7 +18,7 @@ async function iniciarDashboard() {
 }
 
 function urlFotoCompleta(animal) {
-  return animal.foto_url ? `${API_BASE_URL}${animal.foto_url}` : "https://placekitten.com/300/300";
+  return animal.foto_url ? `${ASSET_BASE_URL}${animal.foto_url}` : "https://placekitten.com/300/300";
 }
 
 function formatAgendamentoDateTime(a) {
@@ -79,7 +79,7 @@ async function carregarAnimaisAdmin() {
 
   try {
     // listar todos (sem restrição de status)
-    const animais = await apiRequestAuth("/animais", { method: "GET" });
+    const animais = await apiRequestAuth("/animais/admin", { method: "GET" });
 
     listEl.innerHTML = "";
     if (!animais || animais.length === 0) {
@@ -305,7 +305,7 @@ async function atualizarStatusAgendamento(id, novoStatus, itemEl) {
 
 async function carregarResumo() {
   try {
-    const animais = await apiRequestAuth("/animais", { method: "GET" });
+    const animais = await apiRequestAuth("/animais/admin", { method: "GET" });
     const ags = await apiRequestAuth("/agendamentos", { method: "GET" });
     document.getElementById("total-animais").textContent = animais ? animais.length : "—";
     document.getElementById("total-agendamentos").textContent = ags ? ags.length : "—";

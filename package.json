@@ -10,7 +10,9 @@
     "dev:frontend": "cd client && npm run dev",
     "build:frontend": "cd client && npm run build",
     "install:all": "npm install && cd client && npm install",
-    "db:test": "node test-db.js"
+    "db:test": "node test-db.js",
+    "db:import": "node backend/db/run-sql.js backend/db/dump.sql",
+    "db:seed": "node backend/db/run-sql.js backend/db/seed.sql"
   },
   "keywords": [],
   "author": "",

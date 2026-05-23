@@ -36,13 +36,19 @@ Copy-Item .env.example .env
 3. Crie a base MySQL:
 
 ```bash
-mysql -u root -p < backend/db/dump.sql
+npm run db:import
 ```
 
-Se o seu usuario nao usa senha:
+Se preferir usar o cliente do Laragon diretamente e ele nao estiver no PATH:
+
+```powershell
+& "C:\laragon\bin\mysql\mysql-8.4.3-winx64\bin\mysql.exe" -h 127.0.0.1 -P 3306 -u root < backend\db\dump.sql
+```
+
+Para reaplicar somente os dados iniciais sem recriar as tabelas:
 
 ```bash
-mysql -u root < backend/db/dump.sql
+npm run db:seed
 ```
 
 4. Confira a conexao com o banco:
@@ -122,7 +128,7 @@ Authorization: Bearer <token>
 
 ## Banco de Dados
 
-O dump oficial esta em `backend/db/dump.sql` e cria:
+O dump oficial esta em `backend/db/dump.sql` e cria a base `whiskerworld` com:
 
 - `usuarios`
 - `animais`
@@ -136,6 +142,8 @@ Usuarios iniciais do dump:
 - Admin: `admin@whiskerworld.com` / `123456`
 - Adotante: `lili@whiskerworld.com` / `123456`
 
+A seed separada esta em `backend/db/seed.sql` e pode ser aplicada com `npm run db:seed`.
+
 ## Scripts
 
 - `npm start`: inicia apenas o backend.
@@ -144,6 +152,8 @@ Usuarios iniciais do dump:
 - `npm run dev:frontend`: inicia o Vite em `localhost:5173`.
 - `npm run build:frontend`: gera build do frontend.
 - `npm run db:test`: testa conexao MySQL.
+- `npm run db:import`: cria/recria a base local com tabelas e dados iniciais.
+- `npm run db:seed`: limpa e repovoa os dados iniciais da base existente.
 - `npm run install:all`: instala dependencias da raiz e do client.
 
 ## Observacoes Para Apresentacao

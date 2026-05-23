@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { animaisService } from '../services/animaisService';
-
-const BASE = import.meta.env.VITE_API_URL || '';
+import { assetUrl } from '../services/assets';
 
 export default function AdminCadastrarAnimalPage() {
   const navigate = useNavigate();
@@ -43,7 +42,7 @@ export default function AdminCadastrarAnimalPage() {
           descricao: animal.descricao || '',
           historico: animal.historico || '',
         });
-        if (animal.foto_url) setPreviewUrl(`${BASE}${animal.foto_url}`);
+        if (animal.foto_url) setPreviewUrl(assetUrl(animal.foto_url));
       }).catch((e) => setErro(e.message));
     }
   }, [id, isEdicao]);

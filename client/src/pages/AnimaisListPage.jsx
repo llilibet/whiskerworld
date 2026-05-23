@@ -3,8 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animaisService } from '../services/animaisService';
 import { favoritosService } from '../services/favoritosService';
 import { getUsuarioLogado } from '../services/api';
-
-const BASE = import.meta.env.VITE_API_URL || '';
+import { assetUrl } from '../services/assets';
 
 const TIPO_CONFIG = {
   GATO: {
@@ -115,7 +114,7 @@ export default function AnimaisListPage() {
 }
 
 function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
-  const fotoSrc = animal.foto_url ? `${BASE}${animal.foto_url}` : null;
+  const fotoSrc = animal.foto_url ? assetUrl(animal.foto_url) : null;
 
   return (
     <div className="aa-card">

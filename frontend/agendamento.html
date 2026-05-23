@@ -67,7 +67,8 @@
 
   <script>
     (function () {
-      const API_BASE_URL = window.API_BASE_URL || (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' ? 'http://localhost:3000' : (window.location.origin + ':3000'));
+      const API_BASE_URL = window.location.origin + '/api';
+      const ASSET_BASE_URL = window.location.origin;
       function readToken() {
         try {
           if (typeof getToken === 'function') return getToken();
@@ -131,7 +132,7 @@
           const imgEl = document.getElementById('animal-photo');
           if (animal.foto_url) {
             // se foto_url já começar com http, usa direto; senão prefixa
-            const maybe = animal.foto_url.startsWith('http') ? animal.foto_url : (API_BASE_URL + animal.foto_url);
+            const maybe = animal.foto_url.startsWith('http') ? animal.foto_url : (ASSET_BASE_URL + animal.foto_url);
             imgEl.src = maybe;
           } else {
             imgEl.src = 'https://via.placeholder.com/300?text=Sem+foto';
@@ -217,7 +218,7 @@
         const token = readToken();
         if (!token) {
           alert('É necessário estar logado para criar agendamento. Faça login primeiro.');
-          window.location.href = '/frontend/login.html';
+          window.location.href = 'login.html?tipo=ADOTANTE';
           return;
         }
 
@@ -240,7 +241,7 @@
           // sucesso
           alert('Agendamento criado com sucesso! Status: PENDENTE');
           // redirecionar para meus agendamentos (ajuste se a sua rota for diferente)
-          window.location.href = '/frontend/adotante-dashboard.html';
+          window.location.href = 'adotante-dashboard.html';
         } catch (erro) {
           console.error('Erro ao enviar agendamento', erro);
           alert('Erro ao criar agendamento. Tente novamente mais tarde.');
