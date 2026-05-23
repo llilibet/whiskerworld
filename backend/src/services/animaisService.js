@@ -27,7 +27,15 @@ async function criarAnimal(body, arquivo) {
   }
   const foto_url = arquivo ? `/uploads/animais/${arquivo.filename}` : null;
   const vacinado = body.vacinado === '1' || body.vacinado === 'true' || body.vacinado === true;
-  return animaisRepository.create({ ...body, vacinado, foto_url });
+  return animaisRepository.create({
+    ...body,
+    sexo: body.sexo.toUpperCase(),
+    tipo: body.tipo.toUpperCase(),
+    status: (body.status || 'DISPONIVEL').toUpperCase(),
+    porte: body.porte ? body.porte.toUpperCase() : null,
+    vacinado,
+    foto_url,
+  });
 }
 
 async function atualizarAnimal(id, body, arquivo) {
@@ -52,7 +60,10 @@ async function atualizarAnimal(id, body, arquivo) {
     vacinado,
     status: (body.status || atual.status).toUpperCase(),
     tipo: (body.tipo || atual.tipo).toUpperCase(),
+    raca: body.raca !== undefined ? body.raca : atual.raca,
+    porte: body.porte !== undefined ? body.porte.toUpperCase() : atual.porte,
     descricao: body.descricao !== undefined ? body.descricao : atual.descricao,
+    historico: body.historico !== undefined ? body.historico : atual.historico,
     foto_url,
   });
 }

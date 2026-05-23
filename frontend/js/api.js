@@ -1,5 +1,7 @@
-const API_BASE_URL = window.location.origin;
+const API_BASE_URL = window.location.origin + "/api";
+const ASSET_BASE_URL = window.location.origin;
 window.API_BASE_URL = API_BASE_URL; 
+window.ASSET_BASE_URL = ASSET_BASE_URL;
 
 function setToken(token) {
   if (window.localStorage) {

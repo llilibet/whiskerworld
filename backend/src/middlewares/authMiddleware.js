@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+require("dotenv").config({ quiet: true });
 
 /**
  * verifica se o token JWT foi enviado e é válido.

@@ -6,8 +6,7 @@ import { getUsuarioLogado } from '../services/api';
 import { favoritosService } from '../services/favoritosService';
 import { agendamentosService } from '../services/agendamentosService';
 import { usuariosService } from '../services/usuariosService';
-
-const BASE = import.meta.env.VITE_API_URL || '';
+import { assetUrl } from '../services/assets';
 
 const STATUS_MAP = {
   PENDENTE:   { label: 'Pendente',   cls: 'status-badge--pendente' },
@@ -125,7 +124,7 @@ export default function AdotanteDashboardPage() {
                     title="Remover favorito"
                   >✕</button>
                   {fav.animal_foto
-                    ? <img className="fav-card__img" src={`${BASE}${fav.animal_foto}`} alt={fav.animal_nome} />
+                    ? <img className="fav-card__img" src={assetUrl(fav.animal_foto)} alt={fav.animal_nome} />
                     : <div className="fav-card__img fav-card__img--empty">🐾</div>
                   }
                   <div className="fav-card__body">
@@ -133,7 +132,7 @@ export default function AdotanteDashboardPage() {
                     <div className="fav-card__btns">
                       <button
                         className="btn btn--xs btn--xs-outline"
-                        onClick={() => navigate(`/animais/animal/${fav.animal_id}`)}
+                        onClick={() => navigate(`/agendar/${fav.animal_id}`)}
                       >👁 Ver</button>
                       <button
                         className="btn btn--xs btn--green"
