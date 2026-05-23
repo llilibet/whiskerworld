@@ -4,8 +4,12 @@
   "description": "",
   "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/server.js"
+    "start": "node backend/server.js",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "node backend/server.js",
+    "dev:frontend": "cd client && npm run dev",
+    "build:frontend": "cd client && npm run build",
+    "install:all": "npm install && cd client && npm install"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +23,8 @@
     "multer": "^2.0.2",
     "mysql2": "^3.15.3",
     "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
