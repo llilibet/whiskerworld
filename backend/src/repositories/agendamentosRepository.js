@@ -1,12 +1,12 @@
 const pool = require('../database/connection');
 
 async function findByUsuario(usuarioId) {
-  const { rows } = await pool.query(
+  const [rows] = await pool.query(
     `SELECT a.id, a.data_visita, a.hora_visita, a.status, a.observacoes,
             an.nome AS nome_animal, an.tipo AS tipo_animal
      FROM agendamentos a
      JOIN animais an ON an.id = a.animal_id
-     WHERE a.usuario_id = $1
+     WHERE a.usuario_id = ?
      ORDER BY a.data_visita, a.hora_visita`,
     [usuarioId]
   );
@@ -14,7 +14,7 @@ async function findByUsuario(usuarioId) {
 }
 
 async function findAll() {
-  const { rows } = await pool.query(`
+  const [rows] = await pool.query(`
     SELECT a.id, a.data_visita, a.hora_visita, a.status, a.observacoes,
            u.nome AS nome_usuario, u.email AS email_usuario,
            an.id AS animal_id, an.nome AS nome_animal, an.tipo AS tipo_animal
@@ -27,34 +27,35 @@ async function findAll() {
 }
 
 async function findActiveByUsuarioAndAnimal(usuarioId, animalId) {
-  const { rows } = await pool.query(
+  const [rows] = await pool.query(
     `SELECT id FROM agendamentos
-     WHERE usuario_id = $1 AND animal_id = $2 AND status IN ('PENDENTE', 'CONFIRMADO')`,
+     WHERE usuario_id = ? AND animal_id = ? AND status IN ('PENDENTE', 'CONFIRMADO')`,
     [usuarioId, animalId]
   );
   return rows;
 }
 
 async function create({ usuarioId, animalId, dataVisita, horaVisita, observacoes }) {
-  const { rows } = await pool.query(
+  const [result] = await pool.query(
     `INSERT INTO agendamentos (usuario_id, animal_id, data_visita, hora_visita, status, observacoes)
-     VALUES ($1, $2, $3, $4, 'PENDENTE', $5) RETURNING *`,
+     VALUES (?, ?, ?, ?, 'PENDENTE', ?)`,
     [usuarioId, animalId, dataVisita, horaVisita, observacoes || null]
   );
+  const [rows] = await pool.query('SELECT * FROM agendamentos WHERE id = ?', [result.insertId]);
   return rows[0];
 }
 
 async function updateStatus(id, status) {
-  const { rowCount } = await pool.query(
-    'UPDATE agendamentos SET status = $1 WHERE id = $2',
+  const [result] = await pool.query(
+    'UPDATE agendamentos SET status = ? WHERE id = ?',
     [status.toUpperCase(), id]
   );
-  return rowCount;
+  return result.affectedRows;
 }
 
 async function remove(id) {
-  const { rowCount } = await pool.query('DELETE FROM agendamentos WHERE id = $1', [id]);
-  return rowCount;
+  const [result] = await pool.query('DELETE FROM agendamentos WHERE id = ?', [id]);
+  return result.affectedRows;
 }
 
 module.exports = { findByUsuario, findAll, findActiveByUsuarioAndAnimal, create, updateStatus, remove };

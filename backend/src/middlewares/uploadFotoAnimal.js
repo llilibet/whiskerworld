@@ -24,8 +24,9 @@ const uploadFotoAnimal = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
   fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith("image/")) {
-      return cb(new Error("O arquivo precisa ser uma imagem."));
+    const formatosPermitidos = ["image/jpeg", "image/png"];
+    if (!formatosPermitidos.includes(file.mimetype)) {
+      return cb(new Error("A foto deve estar nos formatos JPG, JPEG ou PNG."));
     }
     cb(null, true);
   },

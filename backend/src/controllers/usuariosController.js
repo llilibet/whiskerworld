@@ -2,7 +2,7 @@ const usuariosService = require('../services/usuariosService');
 
 function handleError(res, err) {
   console.error(err);
-  const status = err.status || (err.code === '23505' ? 409 : 500);
+  const status = err.status || (err.code === 'ER_DUP_ENTRY' ? 409 : 500);
   return res.status(status).json({ mensagem: err.message || 'Erro interno.' });
 }
 

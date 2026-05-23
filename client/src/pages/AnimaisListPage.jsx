@@ -3,8 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animaisService } from '../services/animaisService';
 import { favoritosService } from '../services/favoritosService';
 import { getUsuarioLogado } from '../services/api';
-
-const BASE = import.meta.env.VITE_API_URL || '';
+import { assetUrl } from '../services/assets';
 
 const TIPO_CONFIG = {
   GATO: {
@@ -115,7 +114,7 @@ export default function AnimaisListPage() {
 }
 
 function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
-  const fotoSrc = animal.foto_url ? `${BASE}${animal.foto_url}` : null;
+  const fotoSrc = animal.foto_url ? assetUrl(animal.foto_url) : null;
 
   return (
     <div className="aa-card">
@@ -142,6 +141,9 @@ function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
           {animal.idade && <span className="aa-badge">📅 {animal.idade}</span>}
           {animal.sexo  && <span className="aa-badge">🔹 {animal.sexo}</span>}
         </div>
+        {animal.porte && <p className="muted">{animal.porte}</p>}
+        {animal.raca && <p className="muted">{animal.raca}</p>}
+        {animal.historico && <p className="muted">{animal.historico}</p>}
         <div className="aa-card__btns">
           <button className="btn btn--xs btn--xs-outline" onClick={onToggleFav}>
             {isFav ? '❤️ Favoritado' : '🤍 Favoritar'}

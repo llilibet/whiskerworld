@@ -132,7 +132,7 @@ function buildUrlFoto(animalOrFotoPath) {
 
   if (/^https?:\/\//i.test(fotoPath)) return fotoPath;
 
-  const base = window.API_BASE_URL || "";
+  const base = window.ASSET_BASE_URL || window.location.origin;
   if (fotoPath.startsWith("/")) return base + fotoPath;
   return base + "/" + fotoPath;
 }

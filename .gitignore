@@ -1,4 +1,6 @@
 node_modules/
 .env
 npm-debug.log
+*.log
+whiskerworld-localhost.png
 .DS_Store

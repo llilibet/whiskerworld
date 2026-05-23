@@ -1,7 +1,7 @@
 // ── Service Layer: base API client ──────────────────────────────────────────
 // Centralises all HTTP communication with the backend.
 
-const BASE = import.meta.env.VITE_API_URL || '';
+const BASE = import.meta.env.VITE_API_URL || '/api';
 
 function getToken() {
   return localStorage.getItem('token');
