@@ -6,6 +6,12 @@ const {
   apenasAdmin,
 } = require("../middlewares/authMiddleware");
 
+// Listar horários ocupados para uma data (público)
+router.get(
+  "/horarios-ocupados",
+  agendamentosController.listarHorariosOcupados
+);
+
 // Criar agendamento (usuário logado – adotante ou admin)
 router.post(
   "/",
