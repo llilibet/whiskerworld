@@ -17,6 +17,7 @@ export default function AdminCadastrarAnimalPage() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState(null);
+  const [fotoErro, setFotoErro] = useState(null);
   const fileInputRef = useRef();
 
   useEffect(() => {
@@ -45,6 +46,12 @@ export default function AdminCadastrarAnimalPage() {
   const handleFoto = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setFotoErro('A foto deve ter no máximo 2 MB.');
+      e.target.value = '';
+      return;
+    }
+    setFotoErro(null);
     setFotoFile(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
@@ -230,11 +237,12 @@ export default function AdminCadastrarAnimalPage() {
             {/* ── Foto ── */}
             <div className="form-section">
               <h2 className="form-section__title">📷 Foto do Animal</h2>
+              {fotoErro && <div className="alert alert--error">{fotoErro}</div>}
               <div className="foto-upload-row">
                 <div className="foto-upload-zone" onClick={() => fileInputRef.current?.click()}>
                   <span className="foto-upload-zone__icon">📁</span>
                   <span className="foto-upload-zone__text">Clique para escolher arquivo</span>
-                  <span className="foto-upload-zone__hint">JPG, PNG ou WEBP (máx. 5MB)</span>
+                  <span className="foto-upload-zone__hint">JPG, PNG ou WEBP (máx. 2MB)</span>
                   {isEdicao && (
                     <span className="foto-upload-zone__hint">ℹ️ Ao editar, deixe em branco para manter a foto atual.</span>
                   )}

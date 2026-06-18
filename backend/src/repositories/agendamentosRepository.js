@@ -32,6 +32,26 @@ async function findAll() {
     );
 }
 
+async function findByAdmin(adminId) {
+  const animaisSnap = await db.collection('animais').where('cadastradoPor', '==', adminId).get();
+  const animalIds = new Set(animaisSnap.docs.map(d => d.id));
+  if (animalIds.size === 0) return [];
+  const snap = await col.get();
+  return snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    .filter(ag => animalIds.has(ag.animal_id))
+    .sort((a, b) =>
+      (a.data_visita || '').localeCompare(b.data_visita || '') ||
+      (a.hora_visita || '').localeCompare(b.hora_visita || '')
+    );
+}
+
+async function findById(id) {
+  const doc = await col.doc(id).get();
+  if (!doc.exists) return null;
+  return { id: doc.id, ...doc.data() };
+}
+
 async function findActiveByUsuarioAndAnimal(usuarioId, animalId) {
   const snap = await col
     .where('usuario_id', '==', usuarioId)
@@ -101,5 +121,5 @@ async function findOcupadosByData(data) {
   return snap.docs.map(d => d.data().hora_visita);
 }
 
-module.exports = { findByUsuario, findAll, findActiveByUsuarioAndAnimal, create, updateStatus, remove, findOcupadosByData };
+module.exports = { findByUsuario, findAll, findByAdmin, findById, findActiveByUsuarioAndAnimal, create, updateStatus, remove, findOcupadosByData };
 

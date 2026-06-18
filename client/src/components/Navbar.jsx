@@ -17,9 +17,6 @@ export default function Navbar({ variant = 'light' }) {
         <div className="navbar__logo">
           <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
-        <div className="navbar__links">
-          <Link to="/dashboard" className="navbar__link" style={{ color: 'rgba(255,255,255,.85)' }}>Início</Link>
-        </div>
       </nav>
     );
   }
@@ -33,7 +30,6 @@ export default function Navbar({ variant = 'light' }) {
           </Link>
         </div>
         <div className="navbar__links">
-          <Link to="/dashboard" className="navbar__link">Início</Link>
           <Link to="/dashboard" className="navbar__link">Minha Área</Link>
         </div>
       </nav>
@@ -45,11 +41,6 @@ export default function Navbar({ variant = 'light' }) {
       <nav className="navbar navbar--admin">
         <div className="navbar__logo">
           <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
-        </div>
-        <div className="navbar__actions">
-          <button className="btn btn--outline-white" onClick={() => navigate('/')}>
-            🏠 Início
-          </button>
         </div>
       </nav>
     );

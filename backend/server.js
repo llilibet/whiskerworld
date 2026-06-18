@@ -62,16 +62,19 @@ app.use(cors());
 app.use(express.json());
 
 // rotas
-const usuariosRoutes = require("./src/routes/usuarios");
-const animaisRoutes = require("./src/routes/animais");
+const usuariosRoutes    = require("./src/routes/usuarios");
+const animaisRoutes     = require("./src/routes/animais");
 const agendamentosRoutes = require("./src/routes/agendamentos");
-const favoritosRoutes = require("./src/routes/favoritos");
+const favoritosRoutes   = require("./src/routes/favoritos");
+const apiDashboardRoute = require("./src/routes/apiDashboard");
 
-// CORREÇÃO: Adicione o prefixo /api em todas as rotas
 app.use("/usuarios", usuariosRoutes);
 app.use("/animais", animaisRoutes);
 app.use("/agendamentos", agendamentosRoutes);
 app.use("/favoritos", favoritosRoutes);
+
+// Dashboard da API
+app.use("/docs", apiDashboardRoute);
 
 // Rota de saúde para verificar se a API está funcionando
 app.get("/api/health", (_req, res) => {
@@ -86,7 +89,7 @@ if (process.env.NODE_ENV !== "production") {
     console.log("=====================================");
     console.log("  Whiskerworld API ativa!");
     console.log("  Porta:", PORT);
-    console.log(`  URL: http://localhost:${PORT}`);
+    console.log(`  Docs: http://localhost:${PORT}/docs`);
     console.log("=====================================");
   });
 }

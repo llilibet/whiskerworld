@@ -27,14 +27,14 @@ async function listarMeusAgendamentos(req, res) {
 
 async function listarTodosAgendamentos(req, res) {
   try {
-    const list = await agendamentosService.listarTodosAgendamentos();
+    const list = await agendamentosService.listarTodosAgendamentos(req.usuario.id);
     return res.json(list);
   } catch (err) { return handleError(res, err); }
 }
 
 async function atualizarStatusAgendamento(req, res) {
   try {
-    await agendamentosService.atualizarStatus(req.params.id, req.body.status);
+    await agendamentosService.atualizarStatus(req.params.id, req.body.status, req.usuario.id);
     return res.json({ mensagem: 'Status atualizado com sucesso.' });
   } catch (err) { return handleError(res, err); }
 }

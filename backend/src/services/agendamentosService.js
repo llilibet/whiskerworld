@@ -70,14 +70,26 @@ async function listarMeusAgendamentos(usuarioId) {
   return agendamentosRepository.findByUsuario(usuarioId);
 }
 
-async function listarTodosAgendamentos() {
-  return agendamentosRepository.findAll();
+async function listarTodosAgendamentos(adminId) {
+  return agendamentosRepository.findByAdmin(adminId);
 }
 
-async function atualizarStatus(id, status) {
+async function atualizarStatus(id, status, adminId) {
   if (!status) {
     const err = new Error('Status é obrigatório.');
     err.status = 400;
+    throw err;
+  }
+  const agendamento = await agendamentosRepository.findById(id);
+  if (!agendamento) {
+    const err = new Error('Agendamento não encontrado.');
+    err.status = 404;
+    throw err;
+  }
+  const animal = await animaisRepository.findById(agendamento.animal_id);
+  if (!animal || animal.cadastradoPor !== adminId) {
+    const err = new Error('Acesso negado. Este agendamento não pertence a um animal que você cadastrou.');
+    err.status = 403;
     throw err;
   }
   const count = await agendamentosRepository.updateStatus(id, status);
