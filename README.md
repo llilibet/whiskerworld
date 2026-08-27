@@ -4,7 +4,7 @@ Whiskerworld é um sistema web para aproximar adotantes, ONGs e administradores 
 
 ## Requisitos Atendidos
 
-- Compatibilidade com a documentacao: arquitetura em camadas com separacao entre frontend, controllers, services, repositories e banco MySQL.
+- Compatibilidade com a documentacao: arquitetura em camadas com separacao entre frontend, controllers, services, repositories e banco firebase.
 - API REST: endpoints `GET`, `POST`, `PUT` e `DELETE` para usuarios, animais, favoritos e agendamentos.
 - Seguranca: senhas com `bcrypt`, autenticacao JWT e CORS configuravel por ambiente.
 - Responsividade: frontend React/Vite com estilos responsivos para apresentacao em desktop e mobile.
