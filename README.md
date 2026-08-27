@@ -1,6 +1,14 @@
-# 🐾 Whiskerworld
+# Whiskerworld
 
-Sistema de adoção de pets com painel administrativo, agendamento de visitas e favoritos.
+Whiskerworld e um sistema web para aproximar adotantes, ONGs e administradores no processo de adocao de caes e gatos. A aplicacao permite visualizar pets disponiveis, cadastrar usuarios, autenticar adotantes e administradores, favoritar animais, solicitar/agendar visitas e gerenciar pets e agendamentos pela area administrativa.
+
+## Requisitos Atendidos
+
+- Compatibilidade com a documentacao: arquitetura em camadas com separacao entre frontend, controllers, services, repositories e banco MySQL.
+- API REST: endpoints `GET`, `POST`, `PUT` e `DELETE` para usuarios, animais, favoritos e agendamentos.
+- Seguranca: senhas com `bcrypt`, autenticacao JWT e CORS configuravel por ambiente.
+- Responsividade: frontend React/Vite com estilos responsivos para apresentacao em desktop e mobile.
+- Separacao de responsabilidades: frontend em `client/`, backend Express em `backend/`.
 
 ---
 
@@ -13,13 +21,6 @@ Sistema de adoção de pets com painel administrativo, agendamento de visitas e 
 | Banco de dados | Firebase Firestore |
 | Armazenamento de fotos | Firebase Storage |
 | Autenticação | Firebase Auth (e-mail/senha + Google) |
-
----
-
-## Pré-requisitos
-
-- [Node.js](https://nodejs.org/) v18 ou superior
-- Conta no [Firebase](https://firebase.google.com/) com um projeto criado
 
 ---
 
