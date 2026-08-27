@@ -156,9 +156,8 @@ A seed separada esta em `backend/db/seed.sql` e pode ser aplicada com `npm run d
 - `npm run db:seed`: limpa e repovoa os dados iniciais da base existente.
 - `npm run install:all`: instala dependencias da raiz e do client.
 
-## Observacoes Para Apresentacao
+## Observacoes
 
-- Garanta que o MySQL esteja rodando antes de iniciar o backend.
-- Use `http://localhost:5173` para demonstrar a interface.
-- Use `http://localhost:3000/api/docs` para demonstrar a API REST no Swagger.
+- `http://localhost:5173` para demonstrar a interface.
+- `http://localhost:3000/api/docs` para demonstrar a API REST no Swagger.
 - O backend aceita imagens JPG, JPEG e PNG de ate 5 MB no cadastro de animais.
