@@ -4,5 +4,5 @@ Whiskerworld é um sistema web para aproximar adotantes, ONGs e administradores 
 
 # Diagrama de Classes
   
-O diagrama representa a estrutura estática do sistema Whiskerworld, evidenciando as principais entidades, seus atributos, métodos e os relacionamentos existentes entre elas. 
-No diagrama, destacam-se classes como Usuário, Administrador, Pet, Solicitação e Histórico do Pet. A classe Administrador herda características da classe Usuário, indicando uma relação de especialização. Além disso, observa-se que um usuário pode realizar múltiplas solicitações de adoção, enquanto cada pet pode estar associado a várias solicitações e possuir um histórico de registros.
+![O diagrama representa a estrutura estática do sistema Whiskerworld, evidenciando as principais entidades, seus atributos, métodos e os relacionamentos existentes entre elas. 
+No diagrama, destacam-se classes como Usuário, Administrador, Pet, Solicitação e Histórico do Pet. A classe Administrador herda características da classe Usuário, indicando uma relação de especialização. Além disso, observa-se que um usuário pode realizar múltiplas solicitações de adoção, enquanto cada pet pode estar associado a várias solicitações e possuir um histórico de registros.] (client/public/diagrama de classes.png)
