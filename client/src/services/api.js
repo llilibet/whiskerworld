@@ -1,7 +1,7 @@
 // ── Service Layer: base API client ──────────────────────────────────────────
 // Centralises all HTTP communication with the backend.
 
-const BASE = import.meta.env.VITE_API_URL || '/api';
+const BASE = import.meta.env.VITE_API_URL || '';
 
 function getToken() {
   return localStorage.getItem('token');
@@ -19,7 +19,11 @@ export function getUsuarioLogado() {
   const token = getToken();
   if (!token) return null;
   try {
-    return JSON.parse(atob(token.split('.')[1]));
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    // base64url → base64 para compatibilidade com atob
+    const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(payload));
   } catch {
     return null;
   }

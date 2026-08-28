@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
-  const { login, loading, erro } = useAuth();
+  const { login, loginGoogle, loading, erro } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,9 +97,21 @@ export default function LoginPage() {
             </button>
           </form>
 
+          <div style={{ textAlign: 'center', color: '#aaa', margin: '12px 0', fontSize: '13px' }}>ou</div>
+          <button
+            type="button"
+            className="btn btn--full"
+            style={{ background: '#fff', border: '1px solid #ddd', color: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            onClick={() => loginGoogle(tipo)}
+            disabled={loading}
+          >
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style={{ width: '18px', height: '18px' }} alt="Google" />
+            Entrar com Google
+          </button>
+
           <p className="login-cadastro-link">
             Ainda não tem uma conta?{' '}
-            <Link to="/cadastro" className="link">Cadastre-se</Link>
+            <Link to={`/cadastro/${tipo}`} className="link">Cadastre-se</Link>
           </p>
         </div>
       </div>

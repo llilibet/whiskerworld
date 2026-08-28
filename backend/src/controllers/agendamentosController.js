@@ -8,7 +8,12 @@ function handleError(res, err) {
 
 async function criarAgendamento(req, res) {
   try {
-    const ag = await agendamentosService.criarAgendamento({ usuarioId: req.usuario?.id, ...req.body });
+    const ag = await agendamentosService.criarAgendamento({
+      usuarioId: req.usuario?.id,
+      nomeUsuario: req.usuario?.nome,
+      emailUsuario: req.usuario?.email,
+      ...req.body,
+    });
     return res.status(201).json({ mensagem: 'Agendamento criado com sucesso.', agendamento: ag });
   } catch (err) { return handleError(res, err); }
 }
@@ -22,14 +27,14 @@ async function listarMeusAgendamentos(req, res) {
 
 async function listarTodosAgendamentos(req, res) {
   try {
-    const list = await agendamentosService.listarTodosAgendamentos();
+    const list = await agendamentosService.listarTodosAgendamentos(req.usuario.id);
     return res.json(list);
   } catch (err) { return handleError(res, err); }
 }
 
 async function atualizarStatusAgendamento(req, res) {
   try {
-    await agendamentosService.atualizarStatus(req.params.id, req.body.status);
+    await agendamentosService.atualizarStatus(req.params.id, req.body.status, req.usuario.id);
     return res.json({ mensagem: 'Status atualizado com sucesso.' });
   } catch (err) { return handleError(res, err); }
 }
@@ -38,6 +43,15 @@ async function deletarAgendamento(req, res) {
   try {
     await agendamentosService.deletarAgendamento(req.params.id);
     return res.json({ mensagem: 'Agendamento removido com sucesso.' });
+  } catch (err) { return handleError(res, err); }
+}
+
+async function listarHorariosOcupados(req, res) {
+  try {
+    const { data } = req.query;
+    if (!data) return res.status(400).json({ mensagem: 'data é obrigatória.' });
+    const horarios = await agendamentosService.listarHorariosOcupados(data);
+    return res.json(horarios);
   } catch (err) { return handleError(res, err); }
 }
 
@@ -63,4 +77,5 @@ module.exports = {
   atualizarStatusAgendamento,
   deletarAgendamento,
   iniciarFluxoAgendamento,
+  listarHorariosOcupados,
 };

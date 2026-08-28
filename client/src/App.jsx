@@ -8,13 +8,17 @@ import AdotanteDashboardPage from './pages/AdotanteDashboardPage';
 import EscolhaAnimalPage from './pages/EscolhaAnimalPage';
 import AnimaisListPage from './pages/AnimaisListPage';
 import AgendarVisitaPage from './pages/AgendarVisitaPage';
+import AnimalDetailPage from './pages/AnimalDetailPage';
 
 function PrivateRoute({ children, role }) {
   const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" replace />;
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    if (role && payload.tipo !== role) return <Navigate to="/" replace />;
+    const parts = token.split('.');
+    if (parts.length !== 3) return <Navigate to="/login" replace />;
+    const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = JSON.parse(atob(payload));
+    if (role && decoded.tipo !== role) return <Navigate to="/" replace />;
   } catch {
     return <Navigate to="/login" replace />;
   }
@@ -27,7 +31,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/cadastro" element={<CadastroPage />} />
+        <Route path="/cadastro/:tipo" element={<CadastroPage />} />
         <Route
           path="/admin"
           element={
@@ -73,6 +77,14 @@ export default function App() {
           element={
             <PrivateRoute role="ADOTANTE">
               <AnimaisListPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/animal/:id"
+          element={
+            <PrivateRoute role="ADOTANTE">
+              <AnimalDetailPage />
             </PrivateRoute>
           }
         />

@@ -50,7 +50,7 @@ export default function HomePage() {
             {/* Adotante */}
             <div className="profile-card">
               <div className="profile-card__avatar">
-                <img src="https://i.pravatar.cc/100?img=47" alt="Adotante" />
+                <img src="/gato.png" alt="Adotante" />
               </div>
               <div className="profile-card__icon profile-card__icon--green">💚</div>
               <h3 className="profile-card__title">Sou Adotante</h3>
@@ -66,7 +66,7 @@ export default function HomePage() {
             {/* Administrador */}
             <div className="profile-card">
               <div className="profile-card__avatar">
-                <img src="https://i.pravatar.cc/100?img=12" alt="Administrador" />
+                <img src="/cao.png" alt="Administrador" />
               </div>
               <div className="profile-card__icon profile-card__icon--blue">🛡️</div>
               <h3 className="profile-card__title">Sou Administrador</h3>

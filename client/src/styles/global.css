@@ -34,6 +34,7 @@ button { cursor: pointer; font-family: inherit; }
 .navbar--light  { background: #ffffff; box-shadow: 0 1px 12px rgba(0,0,0,.08); }
 .navbar--admin  { background: #3a5f30; box-shadow: 0 2px 12px rgba(0,0,0,.18); }
 .navbar__logo   { display: flex; align-items: center; gap: 8px; }
+.navbar__logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
 .navbar__paw    { font-size: 22px; }
 .navbar__brand  { font-size: 20px; font-weight: 700; color: #3a5f30; }
 .navbar--admin .navbar__brand { color: #fff; }
@@ -98,8 +99,8 @@ button { cursor: pointer; font-family: inherit; }
 .hero__title--green { color: #5a8f47; }
 .hero__subtitle { font-size: 16px; color: #5a6b52; line-height: 1.7; margin-bottom: 32px; }
 .hero__divider { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-.hero__divider-line { flex: 1; height: 1px; background: #ccc; }
-.hero__divider-text { font-size: 13px; color: #888; white-space: nowrap; }
+.hero__divider-line { flex: 1; height: 2px; background: #5a8f47; }
+.hero__divider-text { font-size: 13px; color: #5a8f47; font-weight: 600; white-space: nowrap; }
 .hero__cards   { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
 
 /* ── Profile Card ────────────────────────────────────────────────────────── */
@@ -312,17 +313,7 @@ button { cursor: pointer; font-family: inherit; }
 .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; padding-top: 20px; border-top: 1px solid #eee; }
 .muted { font-size: 14px; color: #aaa; font-style: italic; }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .navbar       { padding: 12px 20px; }
-  .hero         { padding: 40px 16px 60px; }
-  .features     { padding: 48px 20px; }
-  .login-left   { display: none; }
-  .admin-main   { padding: 20px 16px; }
-  .stat-card    { min-width: 140px; }
-  .form-card    { padding: 28px 20px; }
-  .form-row     { grid-template-columns: 1fr; }
-}
+
 
 /* ── 1. Design Tokens ─────────────────────────────────────────── */
 :root {
@@ -431,19 +422,19 @@ input, select, textarea { font-family: inherit; }
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 40px;
 }
-.navbar--light { background: var(--white); border-bottom: 1px solid #EEF4E8; box-shadow: var(--shadow-sm); }
+.navbar--light { background: #5a8f47; border-bottom: none; box-shadow: var(--shadow-sm); }
 .navbar--admin  { background: var(--green-dark); }
 
 .navbar__logo { display: flex; align-items: center; gap: 8px; }
 .navbar__paw  { font-size: 22px; }
 .navbar__brand { font-size: 20px; font-weight: 700; }
-.navbar--light .navbar__brand { color: var(--text-dark); }
+.navbar--light .navbar__brand { color: #fff; }
 .navbar--admin .navbar__brand  { color: var(--white); }
 .navbar__brand-link { display: flex; align-items: center; gap: 8px; }
 
 .navbar__links { display: flex; align-items: center; gap: 24px; }
-.navbar__link { font-size: 15px; font-weight: 500; color: var(--text-mid); }
-.navbar__link:hover { color: var(--green-dark); }
+.navbar__link { font-size: 15px; font-weight: 500; color: rgba(255,255,255,.88); }
+.navbar__link:hover { color: #fff; }
 
 .navbar__actions { display: flex; gap: 12px; }
 
@@ -491,8 +482,8 @@ input, select, textarea { font-family: inherit; }
 .hero__subtitle { font-size: 16px; color: var(--text-mid); line-height: 1.7; max-width: 480px; margin: 0 auto 30px; }
 
 .hero__divider { display: flex; align-items: center; gap: 12px; margin: 28px 0; }
-.hero__divider-line { flex: 1; height: 1px; background: rgba(0,0,0,.15); }
-.hero__divider-text { font-size: 14px; color: var(--text-muted); white-space: nowrap; }
+.hero__divider-line { flex: 1; height: 2px; background: #5a8f47; }
+.hero__divider-text { font-size: 14px; color: #5a8f47; font-weight: 600; white-space: nowrap; }
 
 .hero__cards { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
 
@@ -708,21 +699,7 @@ input, select, textarea { font-family: inherit; }
 
 .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px; }
 
-/* ── 19. Responsive ───────────────────────────────────────────── */
-@media (max-width: 768px) {
-  .navbar { padding: 12px 20px; }
-  .features__grid { grid-template-columns: 1fr 1fr; }
-  .hero__cards { flex-direction: column; align-items: center; }
-  .login-left { display: none; }
-  .login-right { padding: 36px 16px; }
-  .form-row { grid-template-columns: 1fr; }
-  .foto-upload-row { flex-direction: column; }
-  .admin-header { flex-direction: column; gap: 12px; }
-}
-@media (max-width: 480px) {
-  .features__grid { grid-template-columns: 1fr; }
-  .form-card { padding: 24px 20px; }
-}
+
 
 /* ════════════════════════════════════════════════════════════════
    20. ADOTANTE SCREENS
@@ -975,13 +952,150 @@ input, select, textarea { font-family: inherit; }
 .agendar-date-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
 
-/* ── Responsive adotante ─── */
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVIDADE — Desktop · Tablet · Mobile
+   Breakpoints:
+     Large desktop  : > 1024px  (default styles)
+     Tablet         : 641px – 1024px  (@media max-width: 1024px)
+     Mobile large   : 481px – 640px   (@media max-width: 640px)
+     Mobile small   : ≤ 480px         (@media max-width: 480px)
+══════════════════════════════════════════════════════════════════ */
+
+/* ── Tablet (≤ 1024px) ─────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Navbar */
+  .navbar { padding: 12px 24px; }
+  .navbar__links { gap: 16px; }
+  .navbar__link  { font-size: 14px; }
+
+  /* Admin */
+  .admin-main { padding: 24px 20px; }
+  .stats-row  { gap: 12px; }
+  .stat-card  { min-width: 140px; }
+
+  /* Animais list */
+  .animais-main { padding: 36px 20px 48px; }
+  .aa-card { width: 200px; }
+
+  /* Features */
+  .features__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  /* Form */
+  .form-card { padding: 32px 28px; }
+
+  /* Pet type cards */
+  .pet-type-card { width: 210px; }
+
+  /* Adotante dashboard */
+  .adotante-main { padding: 24px 20px 48px; }
+}
+
+/* ── Mobile large (≤ 640px) ────────────────────────────────────── */
 @media (max-width: 640px) {
-  .welcome-card       { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .explore-banner     { flex-direction: column; }
+  /* Navbar */
+  .navbar { padding: 12px 16px; }
+  .navbar__links { gap: 10px; }
+  .navbar__link  { font-size: 13px; }
+  .navbar__brand { font-size: 17px; }
+
+  /* Hero */
+  .hero { padding: 40px 16px 56px; }
+  .hero__subtitle { font-size: 14px; }
+  .hero__cards { flex-direction: column; align-items: center; }
+  .profile-card { width: 100%; max-width: 300px; }
+
+  /* Features */
+  .features { padding: 48px 16px; }
+  .features__grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .feature-card { padding: 20px 16px; }
+
+  /* Login */
+  .login-left  { display: none; }
+  .login-right { padding: 32px 16px; }
+
+  /* Admin */
+  .admin-main   { padding: 16px 14px 40px; }
+  .admin-header { flex-direction: column; gap: 10px; }
+  .stats-row    { flex-direction: row; flex-wrap: wrap; }
+  .stat-card    { flex: 1 1 calc(50% - 8px); min-width: unset; }
+  .panel        { padding: 16px; }
+  .animals-grid { gap: 10px; }
+  .animal-card  { width: 140px; }
+  .animal-card__foto { height: 90px; }
+  .agendamento-item { flex-direction: column; align-items: flex-start; }
+  .agendamento-item__right { width: 100%; justify-content: space-between; }
+
+  /* Form */
+  .form-main  { padding: 24px 14px 40px; }
+  .form-card  { padding: 24px 18px; }
+  .form-row   { grid-template-columns: 1fr; }
+  .foto-upload-row { flex-direction: column; }
+
+  /* Auth card */
+  .auth-card  { padding: 28px 20px; }
+
+  /* Escolha animal */
+  .pet-type-cards { flex-direction: column; align-items: center; gap: 16px; }
+  .pet-type-card  { width: 100%; max-width: 300px; }
+
+  /* Animais list */
+  .animais-main  { padding: 28px 14px 40px; }
+  .animais-header__title { font-size: 26px; }
+  .animais-grid-adotante { gap: 12px; justify-content: center; }
+  .aa-card { width: calc(50% - 6px); min-width: 150px; }
+  .aa-card__photo { height: 130px; }
+
+  /* Agendar visita */
+  .agendar-main     { padding: 24px 14px 40px; }
+  .agendar-date-row { grid-template-columns: 1fr; }
+  .animal-info-card { flex-direction: column; text-align: center; align-items: center; }
+
+  /* Adotante dashboard */
+  .adotante-main    { padding: 16px 14px 40px; }
+  .welcome-card     { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .explore-banner   { flex-direction: column; padding: 20px; }
   .explore-banner__emojis { display: none; }
-  .agendar-date-row   { grid-template-columns: 1fr; }
-  .pet-type-cards     { flex-direction: column; align-items: center; }
-  .animais-grid-adotante { gap: 14px; }
-  .aa-card            { width: 170px; }
+  .fav-cards        { gap: 10px; }
+  .fav-card         { width: calc(50% - 5px); }
+  .agend-item       { flex-direction: column; gap: 8px; }
+  .agend-item__right { width: 100%; justify-content: space-between; }
+}
+
+/* ── Mobile small (≤ 480px) ────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Navbar — esconde links, mantém logo e ação */
+  .navbar__links { display: none; }
+  .navbar { padding: 12px 14px; }
+
+  /* Hero */
+  .hero { padding: 32px 14px 48px; }
+  .hero__title { font-size: 28px; }
+  .profile-card { width: 100%; max-width: 280px; padding: 20px 16px; }
+
+  /* Features — 1 coluna */
+  .features__grid { grid-template-columns: 1fr; }
+
+  /* Admin stats — 1 por linha */
+  .stat-card { flex: 1 1 100%; }
+  .panel__header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .animal-card { width: 130px; }
+
+  /* Form */
+  .form-card { padding: 20px 14px; }
+  .auth-card { padding: 24px 16px; }
+
+  /* Animais list — 1 coluna */
+  .aa-card { width: 100%; max-width: 340px; }
+  .aa-card__photo { height: 180px; }
+
+  /* Fav cards — 1 coluna */
+  .fav-card { width: 100%; }
+  .fav-cards { flex-direction: column; }
+
+  /* Escolha */
+  .escolha-title { font-size: 22px; }
+  .pet-type-card { max-width: 260px; }
+
+  /* Agendar */
+  .agendar-header__title { font-size: 22px; }
 }

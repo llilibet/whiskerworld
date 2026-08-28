@@ -52,14 +52,14 @@ export default function AdminDashboardPage() {
     } catch (e) { alert('Erro: ' + e.message); }
   };
 
-  const handleLogout = () => { usuariosService.logout(); navigate('/'); };
+  const handleLogout = async () => { await usuariosService.logout(); navigate('/'); };
 
   const disponiveis = porStatus('DISPONIVEL');
   const emProcesso = porStatus('EM_PROCESSO');
   const adotados = porStatus('ADOTADO');
 
   return (
-    <div className="page">
+    <div className="page" style={{ background: '#edf7ed', minHeight: '100vh' }}>
       <Navbar variant="admin" />
 
       <main className="admin-main">

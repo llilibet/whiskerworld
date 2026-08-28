@@ -4,6 +4,18 @@ const animaisController = require("../controllers/animaisController");
 const { autenticarToken, apenasAdmin } = require("../middlewares/authMiddleware");
 const uploadFotoAnimal = require("../middlewares/uploadFotoAnimal");
 
+function uploadComTratamento(req, res, next) {
+  uploadFotoAnimal.single("foto")(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ mensagem: 'A foto deve ter no máximo 2 MB.' });
+      }
+      return res.status(400).json({ mensagem: err.message });
+    }
+    next();
+  });
+}
+
 // Lista todos animais (admin) – GET /animais/admin
 router.get("/admin", autenticarToken, apenasAdmin, animaisController.listarAnimaisAdmin);
 
@@ -18,7 +30,7 @@ router.post(
   "/",
   autenticarToken,
   apenasAdmin,
-  uploadFotoAnimal.single("foto"), // campo "foto" virá do formulário
+  uploadComTratamento,
   animaisController.criarAnimal
 );
 
@@ -27,7 +39,7 @@ router.put(
   "/:id",
   autenticarToken,
   apenasAdmin,
-  uploadFotoAnimal.single("foto"),
+  uploadComTratamento,
   animaisController.atualizarAnimal
 );
 

@@ -6,7 +6,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': { target: 'http://localhost:3000', changeOrigin: true },
+      '/animais': { target: 'http://localhost:3000', changeOrigin: true },
+      '/usuarios': { target: 'http://localhost:3000', changeOrigin: true },
+      '/agendamentos': { target: 'http://localhost:3000', changeOrigin: true },
+      '/favoritos': { target: 'http://localhost:3000', changeOrigin: true },
       '/uploads': { target: 'http://localhost:3000', changeOrigin: true },
     },
   },

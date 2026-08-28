@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animaisService } from '../services/animaisService';
 import { favoritosService } from '../services/favoritosService';
 import { getUsuarioLogado } from '../services/api';
-import { assetUrl } from '../services/assets';
+
+const BASE = import.meta.env.VITE_API_URL || '';
 
 const TIPO_CONFIG = {
   GATO: {
@@ -32,13 +33,17 @@ export default function AnimaisListPage() {
   const [animais, setAnimais] = useState([]);
   const [favSet, setFavSet] = useState(new Set());
   const [loading, setLoading] = useState(true);
+  const [filtroSexo, setFiltroSexo] = useState('');
+  const [filtroPorte, setFiltroPorte] = useState('');
+  const [filtroIdade, setFiltroIdade] = useState('');
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      const logado = getUsuarioLogado();
       const [lista, favs] = await Promise.all([
         animaisService.listar(tipoNorm),
-        usuario ? favoritosService.listar() : Promise.resolve([]),
+        logado ? favoritosService.listar() : Promise.resolve([]),
       ]);
       setAnimais(lista || []);
       setFavSet(new Set((favs || []).map(f => f.animal_id)));
@@ -47,7 +52,7 @@ export default function AnimaisListPage() {
     } finally {
       setLoading(false);
     }
-  }, [tipoNorm, usuario]);
+  }, [tipoNorm]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -71,8 +76,7 @@ export default function AnimaisListPage() {
       {/* ── Navbar ── */}
       <nav className="navbar navbar--adotante">
         <div className="navbar__logo">
-          <span className="navbar__paw">🐾</span>
-          <span className="navbar__brand" style={{ color: '#fff' }}>Whiskerworld</span>
+          <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
         <button className="btn btn--outline-white" onClick={() => navigate(-1)}>← Voltar</button>
       </nav>
@@ -87,6 +91,62 @@ export default function AnimaisListPage() {
           </span>
         </div>
 
+        {/* ── Filtros ── */}
+        <div style={{ maxWidth: 680, margin: '0 auto 28px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+            {/* Sexo */}
+            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Sexo:</span>
+            {[['', 'Todos'], ['MACHO', '♂ Macho'], ['FEMEA', '♀ Fêmea']].map(([val, label]) => (
+              <button
+                key={val}
+                onClick={() => setFiltroSexo(val)}
+                className={`btn btn--xs ${filtroSexo === val ? 'btn--green' : 'btn--xs-outline'}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+            {/* Porte */}
+            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Porte:</span>
+            {[['', 'Todos'], ['PEQUENO', 'Pequeno'], ['MEDIO', 'Médio'], ['GRANDE', 'Grande']].map(([val, label]) => (
+              <button
+                key={val}
+                onClick={() => setFiltroPorte(val)}
+                className={`btn btn--xs ${filtroPorte === val ? 'btn--green' : 'btn--xs-outline'}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+            {/* Idade */}
+            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Idade:</span>
+            {[['', 'Todos'], ['meses', 'Filhote (meses)'], ['anos', 'Adulto (anos)']].map(([val, label]) => (
+              <button
+                key={val}
+                onClick={() => setFiltroIdade(val)}
+                className={`btn btn--xs ${filtroIdade === val ? 'btn--green' : 'btn--xs-outline'}`}
+              >
+                {label}
+              </button>
+            ))}
+
+            {/* Limpar filtros */}
+            {(filtroSexo || filtroPorte || filtroIdade) && (
+              <button
+                onClick={() => { setFiltroSexo(''); setFiltroPorte(''); setFiltroIdade(''); }}
+                className="btn btn--xs"
+                style={{ marginLeft: 'auto', color: '#e53935', border: '1px solid #e53935', background: 'transparent' }}
+              >
+                ✕ Limpar filtros
+              </button>
+            )}
+          </div>
+        </div>
+
         {loading ? (
           <p className="muted" style={{ textAlign: 'center', marginTop: 40 }}>Carregando...</p>
         ) : animais.length === 0 ? (
@@ -97,15 +157,30 @@ export default function AnimaisListPage() {
           </div>
         ) : (
           <div className="animais-grid-adotante">
-            {animais.map(animal => (
-              <AnimalCardAdotante
-                key={animal.id}
-                animal={animal}
-                isFav={favSet.has(animal.id)}
-                onToggleFav={() => toggleFav(animal.id)}
-                onAgendar={() => navigate(`/agendar/${animal.id}`)}
-              />
-            ))}
+            {(() => {
+              const filtrados = animais.filter(a => {
+                if (filtroSexo && (a.sexo || '').toUpperCase() !== filtroSexo) return false;
+                if (filtroPorte && (a.porte || '').toUpperCase() !== filtroPorte) return false;
+                if (filtroIdade && !(a.idade || '').toLowerCase().includes(filtroIdade)) return false;
+                return true;
+              });
+
+              if (filtrados.length === 0) return (
+                <p className="muted" style={{ textAlign: 'center', gridColumn: '1/-1', marginTop: 20 }}>
+                  Nenhum animal encontrado com os filtros selecionados.
+                </p>
+              );
+
+              return filtrados.map(animal => (
+                <AnimalCardAdotante
+                  key={animal.id}
+                  animal={animal}
+                  isFav={favSet.has(animal.id)}
+                  onToggleFav={() => toggleFav(animal.id)}
+                  onAgendar={() => navigate(`/agendar/${animal.id}`)}
+                />
+              ));
+            })()}
           </div>
         )}
       </main>
@@ -114,7 +189,8 @@ export default function AnimaisListPage() {
 }
 
 function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
-  const fotoSrc = animal.foto_url ? assetUrl(animal.foto_url) : null;
+  const navigate = useNavigate();
+  const fotoSrc = animal.foto_url ? `${BASE}${animal.foto_url}` : null;
 
   return (
     <div className="aa-card">
@@ -139,14 +215,11 @@ function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
         </p>
         <div className="aa-card__badges">
           {animal.idade && <span className="aa-badge">📅 {animal.idade}</span>}
-          {animal.sexo  && <span className="aa-badge">🔹 {animal.sexo}</span>}
+          {animal.sexo  && <span className="aa-badge">{animal.sexo === 'MACHO' ? '♂' : '♀'} {animal.sexo === 'MACHO' ? 'Macho' : 'Fêmea'}</span>}
         </div>
-        {animal.porte && <p className="muted">{animal.porte}</p>}
-        {animal.raca && <p className="muted">{animal.raca}</p>}
-        {animal.historico && <p className="muted">{animal.historico}</p>}
         <div className="aa-card__btns">
-          <button className="btn btn--xs btn--xs-outline" onClick={onToggleFav}>
-            {isFav ? '❤️ Favoritado' : '🤍 Favoritar'}
+          <button className="btn btn--xs btn--xs-outline" onClick={() => navigate(`/animal/${animal.id}`)}>
+            ℹ️ Ver mais
           </button>
           <button className="btn btn--xs btn--green" onClick={onAgendar}>
             💚 Quero adotar

@@ -1,10 +1,14 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { usuariosService } from '../services/usuariosService';
 
 export default function CadastroPage() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ nome: '', email: '', senha: '', tipo: 'ADOTANTE' });
+  const { tipo: tipoParam } = useParams();
+  const tipo = (tipoParam || 'ADOTANTE').toUpperCase();
+  const isAdmin = tipo === 'ADMIN';
+
+  const [form, setForm] = useState({ nome: '', email: '', senha: '' });
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState(null);
 
@@ -15,8 +19,8 @@ export default function CadastroPage() {
     setLoading(true);
     setErro(null);
     try {
-      await usuariosService.registrar(form);
-      navigate('/login');
+      await usuariosService.registrar({ ...form, tipo });
+      navigate(isAdmin ? '/admin' : '/dashboard');
     } catch (e) {
       setErro(e.message);
     } finally {
@@ -27,9 +31,11 @@ export default function CadastroPage() {
   return (
     <div className="page page--centered">
       <div className="auth-card">
-        <div className="auth-card__icon">🐾</div>
+        <div className="auth-card__icon">{isAdmin ? '🛡️' : '🐾'}</div>
         <h1 className="auth-card__title">Criar conta</h1>
-        <p className="auth-card__subtitle">Junte-se ao Whiskerworld</p>
+        <p className="auth-card__subtitle">
+          {isAdmin ? 'Cadastro de Administrador' : 'Junte-se ao Whiskerworld'}
+        </p>
 
         {erro && <div className="alert alert--error">{erro}</div>}
 
@@ -46,21 +52,14 @@ export default function CadastroPage() {
             <label className="form-label">Senha</label>
             <input className="form-input" type="password" name="senha" value={form.senha} onChange={handleChange} required />
           </div>
-          <div className="form-group">
-            <label className="form-label">Perfil</label>
-            <select className="form-select" name="tipo" value={form.tipo} onChange={handleChange}>
-              <option value="ADOTANTE">Adotante</option>
-              <option value="ADMIN">Administrador</option>
-            </select>
-          </div>
 
-          <button type="submit" className="btn btn--green btn--full" disabled={loading}>
+          <button type="submit" className={`btn btn--full ${isAdmin ? 'btn--orange' : 'btn--green'}`} disabled={loading}>
             {loading ? 'Cadastrando…' : 'Cadastrar'}
           </button>
         </form>
 
         <p className="auth-card__footer">
-          Já tem uma conta? <Link to="/login" className="link">Entrar</Link>
+          Já tem uma conta? <Link to={`/login?tipo=${tipo}`} className="link">Entrar</Link>
         </p>
       </div>
     </div>

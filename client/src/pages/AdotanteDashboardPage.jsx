@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { getUsuarioLogado } from '../services/api';
 import { favoritosService } from '../services/favoritosService';
 import { agendamentosService } from '../services/agendamentosService';
 import { usuariosService } from '../services/usuariosService';
-import { assetUrl } from '../services/assets';
+
+const BASE = import.meta.env.VITE_API_URL || '';
 
 const STATUS_MAP = {
   PENDENTE:   { label: 'Pendente',   cls: 'status-badge--pendente' },
@@ -66,8 +66,8 @@ export default function AdotanteDashboardPage() {
     }
   };
 
-  const handleLogout = () => {
-    usuariosService.logout();
+  const handleLogout = async () => {
+    await usuariosService.logout();
     navigate('/');
   };
 
@@ -124,7 +124,7 @@ export default function AdotanteDashboardPage() {
                     title="Remover favorito"
                   >✕</button>
                   {fav.animal_foto
-                    ? <img className="fav-card__img" src={assetUrl(fav.animal_foto)} alt={fav.animal_nome} />
+                    ? <img className="fav-card__img" src={`${BASE}${fav.animal_foto}`} alt={fav.animal_nome} />
                     : <div className="fav-card__img fav-card__img--empty">🐾</div>
                   }
                   <div className="fav-card__body">
@@ -132,7 +132,7 @@ export default function AdotanteDashboardPage() {
                     <div className="fav-card__btns">
                       <button
                         className="btn btn--xs btn--xs-outline"
-                        onClick={() => navigate(`/agendar/${fav.animal_id}`)}
+                        onClick={() => navigate(`/animal/${fav.animal_id}`)}
                       >👁 Ver</button>
                       <button
                         className="btn btn--xs btn--green"
@@ -192,7 +192,6 @@ export default function AdotanteDashboardPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 }

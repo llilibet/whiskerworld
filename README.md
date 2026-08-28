@@ -1,163 +1,170 @@
 # Whiskerworld
 
-Whiskerworld e um sistema web para aproximar adotantes, ONGs e administradores no processo de adocao de caes e gatos. A aplicacao permite visualizar pets disponiveis, cadastrar usuarios, autenticar adotantes e administradores, favoritar animais, solicitar/agendar visitas e gerenciar pets e agendamentos pela area administrativa.
+Whiskerworld é um sistema web para aproximar adotantes, ONGs e administradores no processo de adocao de caes e gatos. A aplicacao permite visualizar pets disponiveis, cadastrar usuarios, autenticar adotantes e administradores, favoritar animais, solicitar/agendar visitas e gerenciar pets e agendamentos pela area administrativa.
 
 ## Requisitos Atendidos
 
-- Compatibilidade com a documentacao: arquitetura em camadas com separacao entre frontend, controllers, services, repositories e banco MySQL.
+- Compatibilidade com a documentacao: arquitetura em camadas com separacao entre frontend, controllers, services, repositories e banco firebase.
 - API REST: endpoints `GET`, `POST`, `PUT` e `DELETE` para usuarios, animais, favoritos e agendamentos.
 - Seguranca: senhas com `bcrypt`, autenticacao JWT e CORS configuravel por ambiente.
 - Responsividade: frontend React/Vite com estilos responsivos para apresentacao em desktop e mobile.
-- Separacao de responsabilidades: frontend em `client/`, backend Express em `backend/` e dumps SQL em `backend/db/`.
+- Separacao de responsabilidades: frontend em `client/`, backend Express em `backend/`.
+
+---
 
 ## Tecnologias
 
-- Node.js + Express
-- MySQL com `mysql2/promise`
-- React + Vite
-- JWT para autenticacao
-- Bcrypt para criptografia de senhas
-- Swagger UI para documentacao da API
+| Camada | Tecnologia |
+|---|---|
+| Frontend | React 18 + Vite 5 |
+| Backend | Node.js + Express 5 |
+| Banco de dados | Firebase Firestore |
+| Armazenamento de fotos | Firebase Storage |
+| Autenticação | Firebase Auth (e-mail/senha + Google) |
 
-## Configuracao Local
+---
 
-1. Instale as dependencias:
+## 1. Conectar ao Firebase
+
+### 1.1 Service Account (backend)
+
+1. Acesse [console.firebase.google.com](https://console.firebase.google.com/) → seu projeto
+2. **Configurações do projeto (⚙️) → Contas de serviço → Gerar nova chave privada**
+3. Salve o `.json` gerado (ex: `Downloads/whiskerworld-service-account.json`)
+4. **Nunca suba esse arquivo para o repositório**
+
+### 1.2 Credenciais do cliente (frontend)
+
+1. **Configurações do projeto (⚙️) → Geral → Seus apps → Web (`</>`)**
+2. Copie o objeto `firebaseConfig` e cole em `client/src/firebase.js` substituindo os valores existentes
+
+---
+
+## 2. Variáveis de ambiente
+
+Crie um arquivo `.env` na **raiz do projeto** (ao lado de `package.json`):
+
+```env
+FIREBASE_SERVICE_ACCOUNT_PATH=C:/caminho/para/seu-arquivo-service-account.json
+FIREBASE_STORAGE_BUCKET=seu-projeto.firebasestorage.app
+```
+
+> **Atenção:** use barras `/` no caminho, mesmo no Windows.
+
+---
+
+## 3. Instalar dependências
+
+```bash
+# Na raiz — instala dependências do backend
+npm install
+
+# Na pasta client — instala dependências do frontend
+cd client
+npm install
+cd ..
+```
+
+Ou use o atalho:
 
 ```bash
 npm run install:all
 ```
 
-2. Crie o arquivo `.env` a partir de `.env.example`:
+---
 
-```powershell
-Copy-Item .env.example .env
-```
+## 4. Inicializar o sistema
 
-3. Crie a base MySQL:
+Abra **dois terminais** na raiz do projeto:
 
+**Terminal 1 — Backend:**
 ```bash
-npm run db:import
+npm start
 ```
+O servidor inicia em `http://localhost:3000`
 
-Se preferir usar o cliente do Laragon diretamente e ele nao estiver no PATH:
-
-```powershell
-& "C:\laragon\bin\mysql\mysql-8.4.3-winx64\bin\mysql.exe" -h 127.0.0.1 -P 3306 -u root < backend\db\dump.sql
-```
-
-Para reaplicar somente os dados iniciais sem recriar as tabelas:
-
+**Terminal 2 — Frontend (Vite):**
 ```bash
-npm run db:seed
+cd client
+npm run dev
 ```
+O frontend inicia em `http://localhost:5173`
 
-4. Confira a conexao com o banco:
-
-```bash
-npm run db:test
-```
-
-5. Suba backend e frontend para apresentacao em localhost:
-
+Ou use o comando combinado (requer o terminal suportar `concurrently`):
 ```bash
 npm run dev
 ```
 
-URLs principais:
+### Acessar o sistema
 
-- Frontend: `http://localhost:5173`
-- Backend/API: `http://localhost:3000/api`
-- Healthcheck: `http://localhost:3000/api/health`
-- Swagger: `http://localhost:3000/api/docs`
-- OpenAPI JSON: `http://localhost:3000/api/docs.json`
+| URL | Descrição |
+|---|---|
+| `http://localhost:5173` | Aplicação React (use este) |
+| `http://localhost:3000/api/health` | Verificar se a API está no ar |
 
-## Variaveis de Ambiente
+---
 
-```env
-PORT=3000
-NODE_ENV=development
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=
-DB_DATABASE=whiskerworld
-DB_CONNECTION_LIMIT=10
-JWT_SECRET=troque_este_segredo_em_producao
-CORS_ORIGIN=http://localhost:5173,http://localhost:3000
+## 5. Estrutura do projeto
+
+```
+whiskerworld/
+├── api/
+│   └── index.js              # Entrada Vercel (deploy)
+├── backend/
+│   ├── server.js             # Servidor Express
+│   └── src/
+│       ├── controllers/      # Lógica das rotas
+│       ├── database/
+│       │   └── connection.js # Inicialização Firebase Admin
+│       ├── middlewares/
+│       │   ├── authMiddleware.js    # Verificação de token Firebase
+│       │   └── uploadFotoAnimal.js  # Upload com Multer
+│       ├── repositories/     # Acesso ao Firestore
+│       ├── routes/           # Definição das rotas Express
+│       └── services/         # Regras de negócio
+├── client/                   # Frontend React + Vite
+│   ├── src/
+│   │   ├── components/       # Navbar, Footer, AnimalCard
+│   │   ├── hooks/            # useAuth, useAnimais
+│   │   ├── pages/            # Páginas da aplicação
+│   │   ├── services/         # Camada de comunicação com a API
+│   │   ├── firebase.js       # Configuração Firebase cliente
+│   │   └── App.jsx           # Rotas React Router
+│   └── vite.config.js        # Proxy Vite → backend :3000
+├── .env                      # Variáveis de ambiente (não versionar)
+├── package.json              # Scripts e dependências do backend
+└── vercel.json               # Configuração de deploy Vercel
 ```
 
-## API REST
+---
 
-Todas as rotas da API usam o prefixo `/api`.
+## 6. Rotas da API
 
-Usuarios:
+| Método | Rota | Auth | Descrição |
+|---|---|---|---|
+| POST | `/usuarios/registro` | ✗ | Cadastrar usuário |
+| POST | `/usuarios/google-sync` | ✓ | Sincronizar login Google |
+| GET | `/usuarios/me` | ✓ | Dados do usuário logado |
+| GET | `/animais` | ✗ | Listar animais disponíveis |
+| GET | `/animais/admin` | ADMIN | Listar todos os animais |
+| POST | `/animais` | ADMIN | Cadastrar animal |
+| PUT | `/animais/:id` | ADMIN | Editar animal |
+| DELETE | `/animais/:id` | ADMIN | Remover animal |
+| GET | `/favoritos` | ✓ | Meus favoritos |
+| POST | `/favoritos` | ✓ | Adicionar favorito |
+| DELETE | `/favoritos/:animal_id` | ✓ | Remover favorito |
+| GET | `/agendamentos/me` | ✓ | Meus agendamentos |
+| POST | `/agendamentos` | ✓ | Criar agendamento |
+| GET | `/agendamentos` | ADMIN | Todos os agendamentos |
+| PUT | `/agendamentos/:id/status` | ADMIN | Atualizar status |
 
-- `POST /api/usuarios/registro`
-- `POST /api/usuarios/login`
-- `GET /api/usuarios/me`
+---
 
-Animais:
+## 7. Perfis de usuário
 
-- `GET /api/animais`
-- `GET /api/animais?tipo=GATO`
-- `GET /api/animais/:id`
-- `GET /api/animais/admin`
-- `POST /api/animais`
-- `PUT /api/animais/:id`
-- `DELETE /api/animais/:id`
+| Tipo | Acesso |
+|---|---|
+| `ADOTANTE` | Dashboard, lista de animais, favoritos, agendamentos |
+| `ADMIN` | Painel admin, cadastro/edição de animais, gestão de agendamentos |
 
-Favoritos:
-
-- `GET /api/favoritos`
-- `POST /api/favoritos`
-- `DELETE /api/favoritos/:animal_id`
-
-Agendamentos:
-
-- `POST /api/agendamentos`
-- `GET /api/agendamentos/me`
-- `GET /api/agendamentos`
-- `PUT /api/agendamentos/:id/status`
-- `DELETE /api/agendamentos/:id`
-
-Rotas protegidas exigem header:
-
-```http
-Authorization: Bearer <token>
-```
-
-## Banco de Dados
-
-O dump oficial esta em `backend/db/dump.sql` e cria a base `whiskerworld` com:
-
-- `usuarios`
-- `animais`
-- `agendamentos`
-- `favoritos`
-
-O modelo contempla os campos principais documentados para pets: nome, especie/tipo, idade, sexo, porte, raca, descricao, historico, foto, vacinacao e status.
-
-Usuarios iniciais do dump:
-
-- Admin: `admin@whiskerworld.com` / `123456`
-- Adotante: `lili@whiskerworld.com` / `123456`
-
-A seed separada esta em `backend/db/seed.sql` e pode ser aplicada com `npm run db:seed`.
-
-## Scripts
-
-- `npm start`: inicia apenas o backend.
-- `npm run dev`: inicia backend e frontend juntos.
-- `npm run dev:backend`: inicia o Express em `localhost:3000`.
-- `npm run dev:frontend`: inicia o Vite em `localhost:5173`.
-- `npm run build:frontend`: gera build do frontend.
-- `npm run db:test`: testa conexao MySQL.
-- `npm run db:import`: cria/recria a base local com tabelas e dados iniciais.
-- `npm run db:seed`: limpa e repovoa os dados iniciais da base existente.
-- `npm run install:all`: instala dependencias da raiz e do client.
-
-## Observacoes
-
-- `http://localhost:5173` para demonstrar a interface.
-- `http://localhost:3000/api/docs` para demonstrar a API REST no Swagger.
-- O backend aceita imagens JPG, JPEG e PNG de ate 5 MB no cadastro de animais.
+O tipo é definido no cadastro e armazenado como **custom claim** no Firebase Auth.

@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { animaisService } from '../services/animaisService';
-import { assetUrl } from '../services/assets';
+
+const BASE = import.meta.env.VITE_API_URL || '';
 
 export default function AdminCadastrarAnimalPage() {
   const navigate = useNavigate();
@@ -10,21 +11,13 @@ export default function AdminCadastrarAnimalPage() {
   const isEdicao = Boolean(id);
 
   const [form, setForm] = useState({
-    nome: '',
-    idade: '',
-    sexo: '',
-    tipo: '',
-    raca: '',
-    porte: '',
-    vacinado: '0',
-    status: 'DISPONIVEL',
-    descricao: '',
-    historico: '',
+    nome: '', idadeNum: '', idadeUnidade: 'meses', sexo: '', tipo: '', raca: '', porte: '', vacinado: '0', status: 'DISPONIVEL', descricao: '', historico: '',
   });
   const [fotoFile, setFotoFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState(null);
+  const [fotoErro, setFotoErro] = useState(null);
   const fileInputRef = useRef();
 
   useEffect(() => {
@@ -32,7 +25,8 @@ export default function AdminCadastrarAnimalPage() {
       animaisService.obterPorId(id).then((animal) => {
         setForm({
           nome: animal.nome || '',
-          idade: animal.idade || '',
+          idadeNum: animal.idade ? animal.idade.split(' ')[0] : '',
+          idadeUnidade: animal.idade && animal.idade.includes('ano') ? 'anos' : 'meses',
           sexo: animal.sexo || '',
           tipo: animal.tipo || '',
           raca: animal.raca || '',
@@ -42,7 +36,7 @@ export default function AdminCadastrarAnimalPage() {
           descricao: animal.descricao || '',
           historico: animal.historico || '',
         });
-        if (animal.foto_url) setPreviewUrl(assetUrl(animal.foto_url));
+        if (animal.foto_url) setPreviewUrl(`${BASE}${animal.foto_url}`);
       }).catch((e) => setErro(e.message));
     }
   }, [id, isEdicao]);
@@ -52,6 +46,12 @@ export default function AdminCadastrarAnimalPage() {
   const handleFoto = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setFotoErro('A foto deve ter no máximo 2 MB.');
+      e.target.value = '';
+      return;
+    }
+    setFotoErro(null);
     setFotoFile(file);
     setPreviewUrl(URL.createObjectURL(file));
   };
@@ -60,9 +60,19 @@ export default function AdminCadastrarAnimalPage() {
     e.preventDefault();
     setLoading(true);
     setErro(null);
+
+    // Validação client-side dos campos obrigatórios
+    if (!form.idadeNum) { setErro('Idade aproximada é obrigatória.'); setLoading(false); return; }
+    if (!form.porte)    { setErro('Porte é obrigatório.'); setLoading(false); return; }
+    if (!form.descricao.trim()) { setErro('Descrição é obrigatória.'); setLoading(false); return; }
+    if (!form.historico.trim()) { setErro('Histórico do pet é obrigatório.'); setLoading(false); return; }
+    if (!isEdicao && !fotoFile) { setErro('Foto é obrigatória para publicar o pet.'); setLoading(false); return; }
+
     try {
       const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+      const { idadeNum, idadeUnidade, ...rest } = form;
+      Object.entries(rest).forEach(([k, v]) => fd.append(k, v));
+      if (idadeNum) fd.append('idade', `${idadeNum} ${idadeUnidade}`);
       if (fotoFile) fd.append('foto', fotoFile);
 
       if (isEdicao) {
@@ -114,13 +124,29 @@ export default function AdminCadastrarAnimalPage() {
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">📅 Idade</label>
-                  <input
-                    className="form-input"
-                    name="idade"
-                    placeholder="Ex: 2 anos, 6 meses"
-                    value={form.idade}
-                    onChange={handleChange}
-                  />
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <input
+                      className="form-input"
+                      name="idadeNum"
+                      type="number"
+                      min="0"
+                      placeholder="Ex: 3"
+                      value={form.idadeNum}
+                      onChange={handleChange}
+                      style={{ flex: 1 }}
+                      required
+                    />
+                    <select
+                      className="form-select"
+                      name="idadeUnidade"
+                      value={form.idadeUnidade}
+                      onChange={handleChange}
+                      style={{ flex: 1 }}
+                    >
+                      <option value="meses">Meses</option>
+                      <option value="anos">Anos</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="form-group">
                   <label className="form-label">⚧ Sexo</label>
@@ -142,11 +168,11 @@ export default function AdminCadastrarAnimalPage() {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Porte</label>
-                  <select className="form-select" name="porte" value={form.porte} onChange={handleChange}>
+                  <label className="form-label">� Porte</label>
+                  <select className="form-select" name="porte" value={form.porte} onChange={handleChange} required>
                     <option value="">Selecione o porte</option>
                     <option value="PEQUENO">Pequeno</option>
-                    <option value="MEDIO">Medio</option>
+                    <option value="MEDIO">Médio</option>
                     <option value="GRANDE">Grande</option>
                   </select>
                 </div>
@@ -154,11 +180,11 @@ export default function AdminCadastrarAnimalPage() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Raca</label>
+                  <label className="form-label">🧬 Raça</label>
                   <input
                     className="form-input"
                     name="raca"
-                    placeholder="Ex: SRD, Poodle, Siames"
+                    placeholder="Ex: Labrador, Siamês, SRD..."
                     value={form.raca}
                     onChange={handleChange}
                   />
@@ -190,18 +216,20 @@ export default function AdminCadastrarAnimalPage() {
                   placeholder="Conte um pouco sobre a personalidade do pet, comportamento, se dá bem com outros animais..."
                   value={form.descricao}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
               <div className="form-group">
-                <label className="form-label">Historico do Pet</label>
+                <label className="form-label">📂 Histórico do Pet</label>
                 <textarea
                   className="form-textarea"
                   name="historico"
-                  rows={3}
-                  placeholder="Registre resgate, saude, vacinas, tratamentos ou eventos importantes."
+                  rows={4}
+                  placeholder="Registre informações de saúde, resgates, tratamentos realizados..."
                   value={form.historico}
                   onChange={handleChange}
+                  required
                 />
               </div>
             </div>
@@ -209,18 +237,19 @@ export default function AdminCadastrarAnimalPage() {
             {/* ── Foto ── */}
             <div className="form-section">
               <h2 className="form-section__title">📷 Foto do Animal</h2>
+              {fotoErro && <div className="alert alert--error">{fotoErro}</div>}
               <div className="foto-upload-row">
                 <div className="foto-upload-zone" onClick={() => fileInputRef.current?.click()}>
                   <span className="foto-upload-zone__icon">📁</span>
                   <span className="foto-upload-zone__text">Clique para escolher arquivo</span>
-                  <span className="foto-upload-zone__hint">JPG, PNG ou WEBP (máx. 5MB)</span>
+                  <span className="foto-upload-zone__hint">JPG, PNG ou WEBP (máx. 2MB)</span>
                   {isEdicao && (
                     <span className="foto-upload-zone__hint">ℹ️ Ao editar, deixe em branco para manter a foto atual.</span>
                   )}
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    accept="image/*"
                     className="foto-upload-zone__input"
                     onChange={handleFoto}
                   />

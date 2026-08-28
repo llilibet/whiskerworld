@@ -15,7 +15,7 @@ export default function Footer() {
           <Link to="/" className="footer__link">Adotar</Link>
           <Link to="/" className="footer__link">Sobre</Link>
           <Link to="/login" className="footer__link">Entrar</Link>
-          <Link to="/cadastro" className="footer__link">Cadastrar</Link>
+          <Link to="/cadastro/ADOTANTE" className="footer__link">Cadastrar</Link>
         </div>
         <p className="footer__copy">© 2025 Whiskerworld. Feito 🐾 para os pets.</p>
       </div>

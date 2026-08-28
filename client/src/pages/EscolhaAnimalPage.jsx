@@ -28,7 +28,7 @@ export default function EscolhaAnimalPage() {
           <div className="pet-type-card" onClick={() => navigate('/animais/GATO')}>
             <div className="pet-type-card__avatar">
               <img
-                src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=200&h=200&fit=crop"
+                src="/gato.png"
                 alt="Gato"
               />
             </div>
@@ -44,7 +44,7 @@ export default function EscolhaAnimalPage() {
           <div className="pet-type-card" onClick={() => navigate('/animais/CAO')}>
             <div className="pet-type-card__avatar">
               <img
-                src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=200&h=200&fit=crop"
+                src="/cao.png"
                 alt="Cão"
               />
             </div>

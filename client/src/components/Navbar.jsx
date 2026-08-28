@@ -6,8 +6,8 @@ export default function Navbar({ variant = 'light' }) {
   const navigate = useNavigate();
   const usuario = getUsuarioLogado();
 
-  const handleLogout = () => {
-    usuariosService.logout();
+  const handleLogout = async () => {
+    await usuariosService.logout();
     navigate('/');
   };
 
@@ -15,11 +15,7 @@ export default function Navbar({ variant = 'light' }) {
     return (
       <nav className="navbar navbar--adotante">
         <div className="navbar__logo">
-          <span className="navbar__paw">🐾</span>
-          <span className="navbar__brand" style={{ color: '#fff' }}>Whiskerworld</span>
-        </div>
-        <div className="navbar__links">
-          <Link to="/dashboard" className="navbar__link" style={{ color: 'rgba(255,255,255,.85)' }}>Início</Link>
+          <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
       </nav>
     );
@@ -30,12 +26,10 @@ export default function Navbar({ variant = 'light' }) {
       <nav className="navbar navbar--light">
         <div className="navbar__logo">
           <Link to="/dashboard" className="navbar__brand-link">
-            <span className="navbar__paw">🐾</span>
-            <span className="navbar__brand">Whiskerworld</span>
+            <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
           </Link>
         </div>
         <div className="navbar__links">
-          <Link to="/dashboard" className="navbar__link">Início</Link>
           <Link to="/dashboard" className="navbar__link">Minha Área</Link>
         </div>
       </nav>
@@ -46,13 +40,7 @@ export default function Navbar({ variant = 'light' }) {
     return (
       <nav className="navbar navbar--admin">
         <div className="navbar__logo">
-          <span className="navbar__paw">🐾</span>
-          <span className="navbar__brand">Whiskerworld</span>
-        </div>
-        <div className="navbar__actions">
-          <button className="btn btn--outline-white" onClick={() => navigate('/')}>
-            🏠 Início
-          </button>
+          <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
       </nav>
     );
@@ -62,8 +50,7 @@ export default function Navbar({ variant = 'light' }) {
     <nav className="navbar navbar--light">
       <div className="navbar__logo">
         <Link to="/" className="navbar__brand-link">
-          <span className="navbar__paw">🐾</span>
-          <span className="navbar__brand">Whiskerworld</span>
+          <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </Link>
       </div>
       <div className="navbar__links">
