@@ -89,6 +89,8 @@ if (process.env.NODE_ENV !== "production") {
     console.log("=====================================");
     console.log("  Whiskerworld API ativa!");
     console.log("  Porta:", PORT);
+    console.log(`  Aplicação: http://localhost:5173`);
+    console.log(`  API: http://localhost:${PORT}`);
     console.log(`  Docs: http://localhost:${PORT}/docs`);
     console.log("=====================================");
   });
