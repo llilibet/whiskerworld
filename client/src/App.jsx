@@ -31,7 +31,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/cadastro/:tipo" element={<CadastroPage />} />
+        <Route path="/cadastro/ADOTANTE" element={<CadastroPage />} />
         <Route
           path="/admin"
           element={

@@ -109,10 +109,12 @@ export default function LoginPage() {
             Entrar com Google
           </button>
 
-          <p className="login-cadastro-link">
-            Ainda não tem uma conta?{' '}
-            <Link to={`/cadastro/${tipo}`} className="link">Cadastre-se</Link>
-          </p>
+          {!isAdmin && (
+            <p className="login-cadastro-link">
+              Ainda não tem uma conta?{' '}
+              <Link to={`/cadastro/${tipo}`} className="link">Cadastre-se</Link>
+            </p>
+          )}
         </div>
       </div>
     </div>
