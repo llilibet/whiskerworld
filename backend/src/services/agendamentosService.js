@@ -1,6 +1,23 @@
 const agendamentosRepository = require('../repositories/agendamentosRepository');
 const animaisRepository = require('../repositories/animaisRepository');
 
+function validarDataVisita(dataVisita) {
+  if (!dataVisita) return;
+
+  const data = new Date(`${dataVisita}T00:00:00`);
+  if (Number.isNaN(data.getTime())) {
+    const err = new Error('Data de visita inválida. Use o formato YYYY-MM-DD.');
+    err.status = 400;
+    throw err;
+  }
+
+  if (data.getDay() === 0) {
+    const err = new Error('Agendamentos só podem ser realizados de segunda a sábado. Domingos estão indisponíveis.');
+    err.status = 400;
+    throw err;
+  }
+}
+
 async function criarAgendamento({ usuarioId, animal_id, data_visita, hora_visita, observacoes, nomeUsuario, emailUsuario,
   telefone, cpf, idade_adotante,
   tipo_moradia, moradia_propria, tem_espaco_externo, tamanho_moradia,
@@ -17,6 +34,8 @@ async function criarAgendamento({ usuarioId, animal_id, data_visita, hora_visita
     err.status = 400;
     throw err;
   }
+
+  validarDataVisita(data_visita);
 
   const animal = await animaisRepository.findById(animal_id);
   if (!animal) {
