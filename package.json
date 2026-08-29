@@ -9,7 +9,9 @@
     "dev:backend": "node backend/server.js",
     "dev:frontend": "cd client && npm run dev",
     "build:frontend": "cd client && npm run build",
-    "install:all": "npm install && cd client && npm install"
+    "install:all": "npm install && cd client && npm install",
+    "test": "node --test backend/tests/**/*.test.js",
+    "test:controller:agendamento": "node backend/scripts/teste-controller-agendamento.js"
   },
   "keywords": [],
   "author": "",
