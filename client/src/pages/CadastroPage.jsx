@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { usuariosService } from '../services/usuariosService';
 
@@ -7,6 +7,12 @@ export default function CadastroPage() {
   const { tipo: tipoParam } = useParams();
   const tipo = (tipoParam || 'ADOTANTE').toUpperCase();
   const isAdmin = tipo === 'ADMIN';
+
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/login?tipo=ADMIN', { replace: true });
+    }
+  }, [isAdmin, navigate]);
 
   const [form, setForm] = useState({ nome: '', email: '', senha: '' });
   const [loading, setLoading] = useState(false);
