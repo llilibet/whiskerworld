@@ -21,7 +21,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "firebase-admin": "^13.10.0",
-    "multer": "^2.0.2"
+    "multer": "^2.2.0"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
