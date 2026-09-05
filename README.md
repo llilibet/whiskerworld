@@ -131,10 +131,15 @@ whiskerworld/
 │   │   ├── firebase.js       # Configuração Firebase cliente
 │   │   └── App.jsx           # Rotas React Router
 │   └── vite.config.js        # Proxy Vite → backend :3000
-├── Docs
-│   ├── apresentação-sistema.md  # descricao, arquitetura e como executar - Etapa 1
-│   ├── bugs-e-classificação.md  # lista dos bugs, tipo e severidade - Etapa 2
-│   ├── relatório-final.md       # sintese geral: links p/ issues, PRs e evidencias
+├── docs/
+│   ├── tp1-manutencao-corretiva/
+│   │   ├── img/
+│   │   ├── bugs-e-classificacao.md
+│   │   └── relatorio-final.md
+│   │
+│   ├── tp2-manutencao-preventiva/
+│   │   └── diagnostico-manutencao-preventiva.md
+│   ├── apresentacao-sistema.md 
 ├── .env                      # Variáveis de ambiente (não versionar)
 ├── package.json              # Scripts e dependências do backend
 └── vercel.json               # Configuração de deploy Vercel
