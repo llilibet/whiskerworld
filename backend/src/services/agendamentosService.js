@@ -1,20 +1,17 @@
 const agendamentosRepository = require('../repositories/agendamentosRepository');
 const animaisRepository = require('../repositories/animaisRepository');
+const AppError = require('../errors/AppError');
 
 function validarDataVisita(dataVisita) {
   if (!dataVisita) return;
 
   const data = new Date(`${dataVisita}T00:00:00`);
   if (Number.isNaN(data.getTime())) {
-    const err = new Error('Data de visita inválida. Use o formato YYYY-MM-DD.');
-    err.status = 400;
-    throw err;
+    throw new AppError('Data de visita inválida. Use o formato YYYY-MM-DD.', 400);
   }
 
   if (data.getDay() === 0) {
-    const err = new Error('Agendamentos só podem ser realizados de segunda a sábado. Domingos estão indisponíveis.');
-    err.status = 400;
-    throw err;
+    throw new AppError('Agendamentos só podem ser realizados de segunda a sábado. Domingos estão indisponíveis.', 400);
   }
 }
 
@@ -25,37 +22,27 @@ async function criarAgendamento({ usuarioId, animal_id, data_visita, hora_visita
   experiencia_pets, tem_acesso_veterinario, motivo_adocao
 }) {
   if (!usuarioId) {
-    const err = new Error('Usuário não autenticado.');
-    err.status = 401;
-    throw err;
+    throw new AppError('Usuário não autenticado.', 401);
   }
   if (!animal_id || !data_visita || !hora_visita) {
-    const err = new Error('animal_id, data_visita e hora_visita são obrigatórios.');
-    err.status = 400;
-    throw err;
+    throw new AppError('animal_id, data_visita e hora_visita são obrigatórios.', 400);
   }
 
   validarDataVisita(data_visita);
 
   const animal = await animaisRepository.findById(animal_id);
   if (!animal) {
-    const err = new Error('Animal não encontrado.');
-    err.status = 404;
-    throw err;
+    throw new AppError('Animal não encontrado.', 404);
   }
 
   const existente = await agendamentosRepository.findActiveByUsuarioAndAnimal(usuarioId, animal_id);
   if (existente.length > 0) {
-    const err = new Error('Você já possui um agendamento ativo para este animal.');
-    err.status = 400;
-    throw err;
+    throw new AppError('Você já possui um agendamento ativo para este animal.', 400);
   }
 
   const ocupados = await agendamentosRepository.findOcupadosByData(data_visita);
   if (ocupados.includes(hora_visita)) {
-    const err = new Error('Este horário já está ocupado para a data selecionada. Escolha outro horário.');
-    err.status = 409;
-    throw err;
+    throw new AppError('Este horário já está ocupado para a data selecionada. Escolha outro horário.', 409);
   }
 
   return agendamentosRepository.create({
@@ -95,36 +82,26 @@ async function listarTodosAgendamentos(adminId) {
 
 async function atualizarStatus(id, status, adminId) {
   if (!status) {
-    const err = new Error('Status é obrigatório.');
-    err.status = 400;
-    throw err;
+    throw new AppError('Status é obrigatório.', 400);
   }
   const agendamento = await agendamentosRepository.findById(id);
   if (!agendamento) {
-    const err = new Error('Agendamento não encontrado.');
-    err.status = 404;
-    throw err;
+    throw new AppError('Agendamento não encontrado.', 404);
   }
   const animal = await animaisRepository.findById(agendamento.animal_id);
   if (!animal || animal.cadastradoPor !== adminId) {
-    const err = new Error('Acesso negado. Este agendamento não pertence a um animal que você cadastrou.');
-    err.status = 403;
-    throw err;
+    throw new AppError('Acesso negado. Este agendamento não pertence a um animal que você cadastrou.', 403);
   }
   const count = await agendamentosRepository.updateStatus(id, status);
   if (!count) {
-    const err = new Error('Agendamento não encontrado.');
-    err.status = 404;
-    throw err;
+    throw new AppError('Agendamento não encontrado.', 404);
   }
 }
 
 async function deletarAgendamento(id) {
   const count = await agendamentosRepository.remove(id);
   if (!count) {
-    const err = new Error('Agendamento não encontrado.');
-    err.status = 404;
-    throw err;
+    throw new AppError('Agendamento não encontrado.', 404);
   }
 }
 
