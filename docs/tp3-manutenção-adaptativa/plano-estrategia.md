@@ -200,20 +200,9 @@ whiskerworld/
 | `src/`                | Código atualizado do sistema            |
 | `RELATORIO.md`        | Síntese final das adaptações            |
 
-## 8. Critérios de sucesso
 
-As adaptações serão consideradas concluídas quando:
 
-* a mudança planejada estiver implementada;
-* as funcionalidades principais continuarem funcionando;
-* possíveis incompatibilidades forem tratadas;
-* as novas funcionalidades ou integrações estiverem funcionando;
-* existirem evidências do estado anterior e posterior;
-* o código estiver organizado no GitHub;
-* as alterações estiverem documentadas;
-* o relatório final apresentar os resultados das três estratégias.
-
-## 9. Síntese das estratégias
+## 8. Síntese das estratégias
 
 | Estratégia         | Mudança                         | Adaptação esperada                    | Evidência             |
 | ------------------ | ------------------------------- | ------------------------------------- | --------------------- |
