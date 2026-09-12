@@ -210,7 +210,7 @@ whiskerworld/
 | **Regulamentação** | Novos requisitos de privacidade | Exclusão de conta + aceite dos termos | Interface + código    |
 | **API externa**    | Nova integração                 | Consumo de dados externos             | Postman + sistema     |
 
-## 10. Resultado esperado
+## 9. Resultado esperado
 
 Ao final da atividade, o Whiskerworld deverá apresentar as três adaptações implementadas e documentadas.
 
