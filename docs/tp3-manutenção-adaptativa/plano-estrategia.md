@@ -9,6 +9,7 @@ O **Whiskerworld** é um sistema web voltado à adoção de animais. A aplicaç�
 * React — frontend
 * Node.js + Express — backend
 * Firebase — persistência e autenticação
+* Vite — execução e compilação do frontend
 
 ## 2. Objetivo
 
@@ -26,50 +27,134 @@ Cada estratégia será desenvolvida separadamente, registrando o problema, a ada
 
 ### Problema adaptativo
 
-O backend utiliza o **Express** para criação do servidor HTTP, definição de rotas e utilização de middlewares.
+O frontend do Whiskerworld utiliza o **Vite** como ferramenta para executar o ambiente de desenvolvimento e realizar a compilação da aplicação React.
 
-Atualmente, o projeto utiliza:
+Antes da manutenção adaptativa, o projeto utilizava as seguintes versões:
 
-```json
-"express": "^5.1.0"
+```text
+vite@5.4.21
+@vitejs/plugin-react@4.7.0
 ```
 
-Será realizada uma atualização controlada dessa dependência, simulando uma mudança no ambiente tecnológico utilizado pelo sistema.
+Foi realizada uma atualização controlada do Vite para a versão `8.3.0`, simulando uma mudança no ambiente tecnológico utilizado pelo sistema.
 
-A alteração poderá exigir ajustes relacionados ao servidor, rotas, middlewares ou tratamento das requisições.
+O comando utilizado foi:
 
-### Adaptação planejada
+```bash
+npm install vite@8.3.0 --save-dev
+```
 
-A adaptação seguirá estas etapas:
+Após a atualização, foi identificada uma incompatibilidade com o `@vitejs/plugin-react@4.7.0`, que declarava suporte somente às versões 4, 5, 6 e 7 do Vite:
 
-1. Registrar a versão atual da dependência.
-2. Criar uma branch específica.
-3. Atualizar a versão do Express.
-4. Instalar novamente as dependências.
-5. Executar o backend.
-6. Verificar as principais funcionalidades.
-7. Identificar possíveis incompatibilidades.
-8. Realizar os ajustes necessários.
-9. Executar novamente a aplicação.
-10. Registrar as diferenças entre antes e depois.
+```text
+peer vite@"^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
+```
 
-A adaptação deverá preservar:
+A incompatibilidade foi confirmada com o comando:
 
-* inicialização do servidor;
-* funcionamento das rotas;
-* utilização de middlewares;
-* comunicação entre controllers e services;
-* funcionamento dos endpoints existentes.
+```bash
+npm ls vite @vitejs/plugin-react
+```
+
+O npm apresentou o Vite como uma dependência inválida:
+
+```text
+vite@8.3.0 invalid
+npm error code ELSPROBLEMS
+```
+
+Portanto, após a atualização do Vite, a árvore de dependências do frontend ficou inconsistente e precisou ser adaptada.
+
+### Adaptação implementada
+
+Para adaptar o frontend ao Vite 8, o `@vitejs/plugin-react` foi atualizado da versão `4.7.0` para a versão `6.1.1`.
+
+O comando utilizado foi:
+
+```bash
+npm install @vitejs/plugin-react@6.1.1 --save-dev
+```
+
+A manutenção foi realizada nas seguintes etapas:
+
+1. Registro das versões anteriores das dependências;
+2. Criação da branch `etapa-2-vite`;
+3. Execução do sistema antes da atualização;
+4. Atualização do Vite para a versão `8.3.0`;
+5. Identificação da incompatibilidade;
+6. Confirmação do erro com o comando `npm ls`;
+7. Atualização do `@vitejs/plugin-react` para a versão `6.1.1`;
+8. Nova verificação da árvore de dependências;
+9. Compilação do frontend com `npm run build`;
+10. Execução do sistema com `npm run dev`;
+11. Registro das evidências antes e depois.
+
+Após a adaptação, o frontend passou a utilizar:
+
+```text
+vite@8.3.0
+@vitejs/plugin-react@6.1.1
+```
+
+A adaptação preservou:
+
+* a inicialização do frontend;
+* a compilação da aplicação;
+* a integração entre o Vite e o React;
+* o funcionamento das páginas e dos componentes;
+* a comunicação entre o frontend e o backend;
+* o funcionamento das funcionalidades existentes.
+
+### Validação da adaptação
+
+Após a atualização do plugin React, a árvore de dependências foi verificada novamente:
+
+```bash
+npm ls vite @vitejs/plugin-react
+```
+
+O comando apresentou uma árvore válida:
+
+```text
+@vitejs/plugin-react@6.1.1
+└── vite@8.3.0 deduped
+vite@8.3.0
+```
+
+As mensagens `invalid` e `ELSPROBLEMS` deixaram de ser apresentadas.
+
+Também foi realizada a compilação do frontend:
+
+```bash
+npm run build
+```
+
+O processo foi concluído corretamente:
+
+```text
+vite v8.3.0 building client environment for production
+53 modules transformed
+built in 332ms
+```
+
+Por fim, o sistema completo foi iniciado pela raiz do projeto:
+
+```bash
+npm run dev
+```
+
+O backend e o frontend foram executados, e as páginas do Whiskerworld foram acessadas normalmente após a adaptação.
 
 ### Evidências
 
 Serão registradas:
 
-* versão anterior e posterior do Express;
 * funcionamento antes da atualização;
-* possíveis erros encontrados;
-* alterações realizadas;
+* incompatibilidade após a atualização do Vite;
+* atualização do `@vitejs/plugin-react`;
 * funcionamento após a adaptação;
+* árvore de dependências antes e depois;
+* compilação do frontend;
 * histórico das alterações no GitHub.
 
 ## 4. Estratégia 2 — Mudança de regulamentação/política
@@ -200,15 +285,13 @@ whiskerworld/
 | `src/`                | Código atualizado do sistema            |
 | `RELATORIO.md`        | Síntese final das adaptações            |
 
-
-
 ## 8. Síntese das estratégias
 
-| Estratégia         | Mudança                         | Adaptação esperada                    | Evidência             |
-| ------------------ | ------------------------------- | ------------------------------------- | --------------------- |
-| **Dependência**    | Atualização do Express          | Corrigir possíveis incompatibilidades | Antes/depois + código |
-| **Regulamentação** | Novos requisitos de privacidade | Exclusão de conta + aceite dos termos | Interface + código    |
-| **API externa**    | Nova integração                 | Consumo de dados externos             | Postman + sistema     |
+| Estratégia         | Mudança                         | Adaptação esperada                                                     | Evidência             |
+| ------------------ | ------------------------------- | ---------------------------------------------------------------------- | --------------------- |
+| **Dependência**    | Atualização do Vite             | Atualizar o `@vitejs/plugin-react` para restabelecer a compatibilidade | Antes/depois + código |
+| **Regulamentação** | Novos requisitos de privacidade | Exclusão de conta + aceite dos termos                                  | Interface + código    |
+| **API externa**    | Nova integração                 | Consumo de dados externos                                              | Postman + sistema     |
 
 ## 9. Resultado esperado
 
