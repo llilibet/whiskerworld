@@ -20,7 +20,7 @@ Os arquivos esperados são:
 Evidencias/
 └── estrategia-2/
 	├── README.md
-	├── documentação.md
+	├── evidencia1.md
 	├── 01-cadastro-antes.mp4
 	├── 02-cadastro-com-termos.mp4
 	├── 03-perfil-sem-exclusao-de-conta.mp4
