@@ -414,8 +414,8 @@ Resultado: não foram identificados erros de whitespace. As alterações ficaram
 
 - `01-cadastro-antes.mp4`: cadastro sem os documentos e sem os checkboxes.
 - `02-cadastro-com-termos.mp4`: abertura dos Termos de Uso e da Política de Privacidade.
-- `03-perfil-sem-exclusao-de-conta.mp4`: abertura do perfil sem o campo de exclusão de conta.
-- `04-resultado-exclusao-de-conta.mp4`: retorno à página inicial após a exclusão.
+- `03-perfil-sem-exclusão-de-conta.mp4`: abertura do perfil sem o campo de exclusão de conta.
+- `04-resultado-exclusão-de-conta.mp4`: retorno à página inicial após a exclusão.
 
 ## 6. Resumo das validações
 
