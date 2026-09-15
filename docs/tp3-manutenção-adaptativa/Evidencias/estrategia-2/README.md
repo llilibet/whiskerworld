@@ -10,11 +10,9 @@ Esta pasta `estrategia-2` reúne os vídeos e a documentação completa da **Est
 - `03-perfil-sem-exclusao-de-conta.mp4`: abertura do perfil sem o campo de exclusão de conta.
 - `04-resultado-exclusao-de-conta.mp4`: retorno à página inicial após a exclusão.
 
-## Organização recomendada
+## Organização
 
-Coloque nesta mesma pasta os vídeos gravados antes e depois das alterações. A documentação relaciona cada vídeo ao fluxo demonstrado e cita os arquivos de código responsáveis pela implementação.
-
-Os arquivos esperados são:
+Os arquivos são:
 
 ```text
 Evidencias/
