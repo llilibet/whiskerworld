@@ -20,5 +20,11 @@ export const usuariosService = {
     clearToken();
   },
   perfil: () => api.getAuth('/usuarios/me'),
+  excluir: async () => {
+    const result = await api.deleteAuth('/usuarios/me');
+    await auth.signOut();
+    clearToken();
+    return result;
+  },
 };
 

@@ -1,11 +1,16 @@
 const admin = require('firebase-admin');
 const { db } = require('../database/connection');
 const usuariosRepository = require('../repositories/usuariosRepository');
+const favoritosRepository = require('../repositories/favoritosRepository');
+const agendamentosRepository = require('../repositories/agendamentosRepository');
 const AppError = require('../errors/AppError');
 
-async function registrarUsuario({ nome, email, senha, tipo }) {
+async function registrarUsuario({ nome, email, senha, tipo, aceitouTermos, aceitouPrivacidade }) {
   if (!nome || !email || !senha) {
     throw new AppError('Nome, email e senha são obrigatórios.', 400);
+  }
+  if (aceitouTermos !== true || aceitouPrivacidade !== true) {
+    throw new AppError('É necessário aceitar os Termos de Uso e a Política de Privacidade.', 400);
   }
   nome = nome.trim();
   email = email.trim().toLowerCase();
@@ -48,7 +53,18 @@ async function registrarUsuario({ nome, email, senha, tipo }) {
     await admin.auth().setCustomUserClaims(userRecord.uid, { tipo, nome });
 
     // Documento no Firestore com UID como ID
-    await db.collection('usuarios').doc(userRecord.uid).set({ nome, email, tipo });
+    const consentimentoEm = new Date().toISOString();
+    await db.collection('usuarios').doc(userRecord.uid).set({
+      nome,
+      email,
+      tipo,
+      termosAceitos: true,
+      termosAceitosEm: consentimentoEm,
+      versaoTermos: '1.0',
+      privacidadeAceita: true,
+      privacidadeAceitaEm: consentimentoEm,
+      versaoPrivacidade: '1.0',
+    });
 
     // Custom token para o frontend fazer signInWithCustomToken
     const customToken = await admin.auth().createCustomToken(userRecord.uid);
@@ -71,6 +87,24 @@ async function registrarUsuario({ nome, email, senha, tipo }) {
   }
 }
 
+async function excluirUsuario(uid) {
+  if (!uid) {
+    throw new AppError('Usuário não autenticado.', 401);
+  }
+
+  await Promise.all([
+    favoritosRepository.removeByUsuario(uid),
+    agendamentosRepository.removeByUsuario(uid),
+    usuariosRepository.remove(uid),
+  ]);
+
+  try {
+    await admin.auth().deleteUser(uid);
+  } catch (err) {
+    if (err.code !== 'auth/user-not-found') throw err;
+  }
+}
+
 async function syncGoogleUsuario({ uid, email, nome, tipo }) {
   const docRef = db.collection('usuarios').doc(uid);
   const doc = await docRef.get();
@@ -90,5 +124,5 @@ async function syncGoogleUsuario({ uid, email, nome, tipo }) {
   return { tipo: tipoFinal, nome, isNew };
 }
 
-module.exports = { registrarUsuario, syncGoogleUsuario };
+module.exports = { registrarUsuario, syncGoogleUsuario, excluirUsuario };
 

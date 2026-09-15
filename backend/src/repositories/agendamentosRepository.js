@@ -113,6 +113,13 @@ async function remove(id) {
   return 1;
 }
 
+async function removeByUsuario(usuarioId) {
+  const snap = await col.where('usuario_id', '==', usuarioId).get();
+  if (snap.empty) return 0;
+  await Promise.all(snap.docs.map(d => d.ref.delete()));
+  return snap.size;
+}
+
 async function findOcupadosByData(data) {
   const snap = await col
     .where('data_visita', '==', data)
@@ -121,5 +128,5 @@ async function findOcupadosByData(data) {
   return snap.docs.map(d => d.data().hora_visita);
 }
 
-module.exports = { findByUsuario, findAll, findByAdmin, findById, findActiveByUsuarioAndAnimal, create, updateStatus, remove, findOcupadosByData };
+module.exports = { findByUsuario, findAll, findByAdmin, findById, findActiveByUsuarioAndAnimal, create, updateStatus, remove, removeByUsuario, findOcupadosByData };
 
