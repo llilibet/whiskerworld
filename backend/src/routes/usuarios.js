@@ -17,5 +17,8 @@ router.post("/google-sync", autenticarToken, usuariosController.syncGoogleUsuari
 // retorna informações do usuário autenticado
 router.get("/me", autenticarToken, usuariosController.retornaUsuarioLogado);
 
+// exclui a conta autenticada e os dados relacionados do usuário
+router.delete("/me", autenticarToken, usuariosController.excluirUsuario);
+
 module.exports = router;
 

@@ -28,6 +28,8 @@ export default function AdotanteDashboardPage() {
   const [favoritos, setFavoritos] = useState([]);
   const [agendamentos, setAgendamentos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [exclusaoAberta, setExclusaoAberta] = useState(false);
+  const [excluindoConta, setExcluindoConta] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -69,6 +71,17 @@ export default function AdotanteDashboardPage() {
   const handleLogout = async () => {
     await usuariosService.logout();
     navigate('/');
+  };
+
+  const handleExcluirConta = async () => {
+    setExcluindoConta(true);
+    try {
+      await usuariosService.excluir();
+      navigate('/');
+    } catch (e) {
+      alert(e.message);
+      setExcluindoConta(false);
+    }
   };
 
   return (
@@ -190,7 +203,58 @@ export default function AdotanteDashboardPage() {
             </div>
           )}
         </div>
+
+        <div className="fav-panel">
+          <div className="fav-panel__header">
+            <h2 className="fav-panel__title">Minha conta</h2>
+          </div>
+          <p className="muted">A exclusão remove sua conta e os dados relacionados.</p>
+          <button className="btn btn--outline-red" onClick={() => setExclusaoAberta(true)}>
+            Excluir minha conta
+          </button>
+        </div>
       </main>
+
+      {exclusaoAberta && (
+        <div className="account-modal__backdrop" onClick={() => !excluindoConta && setExclusaoAberta(false)}>
+          <section
+            className="account-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="account-modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="account-modal__icon" aria-hidden="true">!</div>
+            <p className="account-modal__eyebrow">Atenção</p>
+            <h2 id="account-modal-title" className="account-modal__title">Excluir sua conta?</h2>
+            <p className="account-modal__description">
+              Essa decisão é permanente. Ao confirmar, sua conta será encerrada e os dados associados serão removidos.
+            </p>
+            <div className="account-modal__impact">
+              <span aria-hidden="true">✓</span>
+              <p><strong>O que será removido:</strong> seus favoritos, agendamentos e dados de acesso.</p>
+            </div>
+            <div className="account-modal__actions">
+              <button
+                type="button"
+                className="btn btn--outline-gray"
+                onClick={() => setExclusaoAberta(false)}
+                disabled={excluindoConta}
+              >
+                Manter minha conta
+              </button>
+              <button
+                type="button"
+                className="btn btn--danger"
+                onClick={handleExcluirConta}
+                disabled={excluindoConta}
+              >
+                {excluindoConta ? 'Excluindo...' : 'Sim, excluir conta'}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
 
     </div>
   );

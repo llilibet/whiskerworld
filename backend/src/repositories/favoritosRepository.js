@@ -28,5 +28,12 @@ async function remove(usuarioId, animalId) {
   return snap.size;
 }
 
-module.exports = { findByUsuario, create, remove };
+async function removeByUsuario(usuarioId) {
+  const snap = await col.where('usuario_id', '==', usuarioId).get();
+  if (snap.empty) return 0;
+  await Promise.all(snap.docs.map(d => d.ref.delete()));
+  return snap.size;
+}
+
+module.exports = { findByUsuario, create, remove, removeByUsuario };
 
