@@ -20,5 +20,12 @@ async function create({ nome, email, senhaHash, tipo }) {
   return { id: ref.id, nome, email, tipo };
 }
 
-module.exports = { findByEmail, findById, create };
+async function remove(id) {
+  const doc = await col.doc(id).get();
+  if (!doc.exists) return 0;
+  await col.doc(id).delete();
+  return 1;
+}
+
+module.exports = { findByEmail, findById, create, remove };
 

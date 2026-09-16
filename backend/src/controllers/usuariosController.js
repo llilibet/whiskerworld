@@ -30,4 +30,11 @@ async function retornaUsuarioLogado(req, res) {
   } catch (err) { return handleError(res, err); }
 }
 
-module.exports = { registrarUsuario, syncGoogleUsuario, retornaUsuarioLogado };
+async function excluirUsuario(req, res) {
+  try {
+    await usuariosService.excluirUsuario(req.usuario?.id);
+    return res.json({ mensagem: 'Conta excluída com sucesso.' });
+  } catch (err) { return handleError(res, err); }
+}
+
+module.exports = { registrarUsuario, syncGoogleUsuario, retornaUsuarioLogado, excluirUsuario };
