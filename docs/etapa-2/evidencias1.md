@@ -12,13 +12,15 @@ Antes da manutenção, o comando `npm outdated` indicava que a versão instalada
 
 ### Evidência em vídeo
 
-[Assistir ao vídeo antes da atualização](./evidencias/vite-antes.mp4)
+[Assistir ao vídeo antes da atualização](./evidencias/antes-atualizacao-vite.mp4)
 
-### Evidência em imagem
+### Evidência em vídeo
 
-![Vite antes da atualização](./evidencias/vite-antes.png)
+[Assistir ao vídeo de incompatibilidade após a atualização](./evidencias/02-incompatibilidade-apos-atualizacao-vite.mp4)
 
-## Alteração realizada
+### Evidência em vídeo
+
+[Assistir ao vídeo de adaptação de puglin](./evidencias/03-adaptacao-plugin-react.mp4)
 
 A dependência Vite foi atualizada no frontend do sistema. Como consequência, os arquivos `package.json` e `package-lock.json` foram modificados para registrar a nova versão.
 
@@ -28,11 +30,7 @@ Após a atualização, foram executados comandos para verificar a versão instal
 
 ### Evidência em vídeo
 
-[Assistir ao vídeo depois da atualização](./evidencias/vite-depois.mp4)
-
-### Evidência em imagem
-
-![Vite depois da atualização](./evidencias/vite-depois.png)
+[Assistir ao vídeo depois da atualização](./evidencias/04-funcionamento-depois-adaptacao.mp4.mp4)
 
 ## Resultado
 
