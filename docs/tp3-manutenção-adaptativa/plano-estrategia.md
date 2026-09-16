@@ -204,44 +204,110 @@ Serão apresentadas:
 * fluxo de exclusão da conta;
 * código responsável pelas alterações.
 
-## 5. Estratégia 3 — Integração com API externa
+## 5. Estratégia 3 — Migração de API externa
 
 ### Problema adaptativo
 
-O Whiskerworld possui uma API própria utilizada pelo frontend, porém atualmente não possui uma integração externa que demonstre a adaptação do sistema a uma nova fonte de dados.
+O Whiskerworld possuía apenas integrações relacionadas à infraestrutura do próprio sistema e não apresentava uma API pública simples que permitisse demonstrar a migração entre dois provedores externos.
 
-Será simulada uma necessidade de integração com uma **API pública relacionada a uma funcionalidade do sistema**.
+Conforme permitido pelo enunciado da atividade, foi criado um cenário simulado de migração para incorporar curiosidades sobre gatos à página inicial do sistema.
 
-A API deverá possuir uma utilização coerente com o contexto do Whiskerworld.
+No cenário anterior, foi considerada a utilização da Cat Facts API:
 
-> **Possibilidade:** utilizar a **ViaCEP** para consulta de endereço a partir do CEP, caso essa integração seja adequada ao fluxo definido pelo grupo.
+```text
+GET https://catfact.ninja/fact
+```
 
-### Adaptação planejada
+A resposta dessa API apresenta o texto no atributo `fact`:
 
-Antes da implementação, a API será testada utilizando o **Postman**.
+```json
+{
+  "fact": "Exemplo de curiosidade",
+  "length": 24
+}
+```
 
-O processo será:
+A mudança de provedor exige adaptação porque a nova API utiliza outro endpoint e uma estrutura de resposta diferente.
 
-1. Selecionar a API.
-2. Identificar o endpoint.
-3. Realizar uma requisição no Postman.
-4. Analisar a resposta JSON.
-5. Registrar a requisição e a resposta.
-6. Implementar a integração.
-7. Adaptar o código para consumir os dados externos.
-8. Executar e testar a funcionalidade.
-9. Comparar o comportamento antes e depois.
+### Adaptação implementada
+
+A integração foi migrada para a MeowFacts API:
+
+```text
+GET https://meowfacts.herokuapp.com/?lang=por-br
+```
+
+A nova API retorna a curiosidade na primeira posição do vetor `data`:
+
+```json
+{
+  "data": [
+    "Exemplo de curiosidade"
+  ]
+}
+```
+
+Assim, o acesso ao conteúdo precisou ser adaptado de:
+
+```js
+data.fact
+```
+
+para:
+
+```js
+data.data[0]
+```
+
+Foi criado o serviço:
+
+```text
+client/src/services/catFactsService.js
+```
+
+Esse serviço é responsável por:
+
+- realizar a requisição ao novo endpoint;
+- verificar o status HTTP da resposta;
+- interpretar o novo formato JSON;
+- detectar respostas inesperadas;
+- retornar a curiosidade para a interface.
+
+A página inicial também foi adaptada para:
+
+- carregar uma curiosidade automaticamente;
+- exibir o conteúdo em português brasileiro;
+- apresentar um estado de carregamento;
+- tratar falhas da API;
+- permitir a solicitação de outra curiosidade;
+- atualizar o conteúdo sem recarregar a página;
+- informar mudanças do conteúdo por meio de `aria-live`.
+
+### Uso do Postman
+
+Os endpoints antigo e novo foram testados no Postman antes da integração.
+
+As duas requisições foram organizadas na coleção:
+
+```text
+TP3 - Migração de API Externa
+```
+
+A coleção foi exportada no formato JSON e adicionada à documentação da estratégia.
 
 ### Evidências
 
-Serão apresentadas:
+Foram registradas:
 
-* requisição realizada no Postman;
-* resposta JSON;
-* registro ou exportação da requisição;
-* código da integração;
-* funcionamento da funcionalidade no sistema;
-* comparação antes e depois.
+- requisição ao endpoint antigo no Postman;
+- resposta antiga utilizando o atributo `fact`;
+- requisição ao novo endpoint no Postman;
+- resposta nova utilizando o vetor `data`;
+- exportação da coleção do Postman;
+- código do serviço de integração;
+- interface integrada à página inicial;
+- funcionamento do botão para buscar outra curiosidade;
+- compilação e execução do frontend.
 
 ## 6. Organização das branches
 
