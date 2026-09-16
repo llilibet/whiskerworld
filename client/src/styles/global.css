@@ -1202,3 +1202,103 @@ input, select, textarea { font-family: inherit; }
   /* Agendar */
   .agendar-header__title { font-size: 22px; }
 }
+
+/* =========================================================
+   CURIOSIDADE FELINA — API EXTERNA
+   ========================================================= */
+
+.cat-fact {
+  padding: 64px 24px 80px;
+  background: #fff;
+}
+
+.cat-fact__card {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: min(100%, 900px);
+  min-height: 260px;
+  margin: 0 auto;
+  padding: 40px 48px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f7f1e9 0%, #eef5e9 100%);
+  border: 1px solid #dce7d5;
+  border-radius: 28px;
+  box-shadow: 0 18px 45px rgb(30 45 26 / 10%);
+}
+
+.cat-fact__icon {
+  display: grid;
+  flex: 0 0 150px;
+  width: 150px;
+  height: 150px;
+  place-items: center;
+  font-size: 76px;
+  background: rgb(255 255 255 / 75%);
+  border: 1px solid rgb(59 113 54 / 15%);
+  border-radius: 50%;
+}
+
+.cat-fact__content {
+  flex: 1;
+}
+
+.cat-fact__eyebrow {
+  margin: 0 0 8px;
+  color: #3b7136;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.cat-fact__title {
+  margin: 0 0 12px;
+  color: #1e2d1a;
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.1;
+}
+
+.cat-fact__text {
+  min-height: 72px;
+  margin-bottom: 22px;
+  color: #5f6f58;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.cat-fact__text p {
+  margin: 0;
+}
+
+.cat-fact__error {
+  color: #b42318;
+}
+
+.cat-fact .btn:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media (max-width: 700px) {
+  .cat-fact {
+  padding: 40px 16px 56px;
+}
+
+  .cat-fact__card {
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px 24px;
+    text-align: center;
+  }
+
+  .cat-fact__icon {
+    flex-basis: 110px;
+    width: 110px;
+    height: 110px;
+    font-size: 56px;
+  }
+
+  .cat-fact__text {
+    min-height: auto;
+  }
+}
