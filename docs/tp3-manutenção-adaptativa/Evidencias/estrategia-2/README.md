@@ -4,7 +4,7 @@ Esta pasta `estrategia-2` reúne os vídeos e a documentação completa da **Est
 
 ## Conteúdo
 
-- `evidencia1.md`: documentação das funcionalidades, trechos de código e textos legais simulados.
+- `evidencia2.md`: documentação das funcionalidades, trechos de código e textos legais simulados.
 - `01-cadastro-antes.mp4`: cadastro sem os documentos e sem os checkboxes.
 - `02-cadastro-com-termos.mp4`: abertura dos Termos de Uso e da Política de Privacidade.
 - `03-perfil-sem-exclusao-de-conta.mp4`: abertura do perfil sem o campo de exclusão de conta.
@@ -18,7 +18,7 @@ Os arquivos são:
 Evidencias/
 └── estrategia-2/
 	├── README.md
-	├── evidencia1.md
+	├── evidencia2.md
 	├── 01-cadastro-antes.mp4
 	├── 02-cadastro-com-termos.mp4
 	├── 03-perfil-sem-exclusao-de-conta.mp4
