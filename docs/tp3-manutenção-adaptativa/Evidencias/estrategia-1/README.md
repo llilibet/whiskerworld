@@ -103,7 +103,6 @@ dependências do frontend ficou inconsistente.
 ### Evidências
 
 - Vídeo: `02-incompatibilidade-apos-atualizacao-vite.mp4`
-- Imagem: `02-erro-compatibilidade-vite-plugin-react.png`
 
 ## 7. Adaptação implementada
 
@@ -145,10 +144,6 @@ Resultado obtido:
 └── vite@8.3.0 deduped
 vite@8.3.0
 ```
-
-### Evidência
-
-- Imagem: `03-compatibilidade-restabelecida.png`
 
 ## 9. Teste de compilação
 
