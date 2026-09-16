@@ -1,6 +1,4 @@
-# Evidência 2 — Estratégia 2
-
-## Mudança de regulamentação/política
+# Evidência 2 — Mudança de regulamentação/política
 
 ## 1. Exclusão de conta
 
