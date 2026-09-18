@@ -79,8 +79,8 @@ Após a adaptação, as dependências passaram a utilizar:
 
 A alteração foi realizada nos arquivos:
 
-* `client/package.json`
-* `client/package-lock.json`
+* [`client/package.json`](https://github.com/llilibet/whiskerworld/blob/main/client/package.json)
+* [`client/package-lock.json`](https://github.com/llilibet/whiskerworld/blob/main/client/package-lock.json)
 
 Com a atualização do plugin, a incompatibilidade entre as dependências foi solucionada.
 
@@ -99,7 +99,7 @@ A evidência em vídeo demonstra o funcionamento da aplicação antes da altera�
 
 **Vídeo:**
 
-`01-funcionamento-antes-atualizacao.mp4`
+[`01-antes-atualizacao-vite.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-1/01-antes-atualizacao-vite.mp4)
 
 ## 3.4 Evidência da incompatibilidade
 
@@ -115,7 +115,7 @@ O npm identificou o Vite como uma dependência inválida e apresentou o erro `EL
 
 Essa situação foi registrada na evidência:
 
-`02-incompatibilidade-apos-atualizacao-vite.mp4`
+[`02-incompatibilidade-apos-atualizacao-vite.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-1/02-incompatibilidade-apos-atualizacao-vite.mp4)
 
 A evidência demonstra o impacto causado pela mudança da dependência e justifica a necessidade da adaptação realizada posteriormente.
 
@@ -136,11 +136,11 @@ A verificação não apresentou mais as mensagens de dependência inválida ou `
 
 A adaptação foi registrada na evidência:
 
-`03-adaptacao-plugin-react.mp4`
+[`03-adaptacao-plugin-react.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-1/03-adaptacao-plugin-react.mp4)
 
 Também foi registrado o funcionamento do sistema após a correção:
 
-`04-funcionamento-depois-adaptacao.mp4`
+[`04-funcionamento-depois-adaptacao.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-1/04-funcionamento-depois-adaptacao.mp4)
 
 ## 3.6 Validação da adaptação
 
@@ -234,18 +234,18 @@ A implementação envolveu diferentes camadas da aplicação.
 
 **No frontend foram alterados:**
 
-* `client/src/pages/AdotanteDashboardPage.jsx`
-* `client/src/services/usuariosService.js`
-* `client/src/styles/global.css`
+* [`client/src/pages/AdotanteDashboardPage.jsx`](https://github.com/llilibet/whiskerworld/blob/main/client/src/pages/AdotanteDashboardPage.jsx)
+* [`client/src/services/usuariosService.js`](https://github.com/llilibet/whiskerworld/blob/main/client/src/services/usuariosService.js)
+* [`client/src/styles/global.css`](https://github.com/llilibet/whiskerworld/blob/main/client/src/styles/global.css)
 
 **No backend foram envolvidos:**
 
-* `backend/src/routes/usuarios.js`
-* `backend/src/controllers/usuariosController.js`
-* `backend/src/services/usuariosService.js`
-* `backend/src/repositories/usuariosRepository.js`
-* `backend/src/repositories/favoritosRepository.js`
-* `backend/src/repositories/agendamentosRepository.js`
+* [`backend/src/routes/usuarios.js`](https://github.com/llilibet/whiskerworld/blob/main/backend/src/routes/usuarios.js)
+* [`backend/src/controllers/usuariosController.js`](https://github.com/llilibet/whiskerworld/blob/main/backend/src/controllers/usuariosController.js)
+* [`backend/src/services/usuariosService.js`](https://github.com/llilibet/whiskerworld/blob/main/backend/src/services/usuariosService.js)
+* [`backend/src/repositories/usuariosRepository.js`](https://github.com/llilibet/whiskerworld/blob/main/backend/src/repositories/usuariosRepository.js)
+* [`backend/src/repositories/favoritosRepository.js`](https://github.com/llilibet/whiskerworld/blob/main/backend/src/repositories/favoritosRepository.js)
+* [`backend/src/repositories/agendamentosRepository.js`](https://github.com/llilibet/whiskerworld/blob/main/backend/src/repositories/agendamentosRepository.js)
 
 Foi implementada uma rota autenticada para a exclusão:
 
@@ -333,15 +333,15 @@ Na estratégia relacionada aos Termos de Uso e à Política de Privacidade, foi 
 
 As evidências estão organizadas em:
 
-`Evidencias/estrategia-2/`
+[`Evidencias/estrategia-2/`](https://github.com/llilibet/whiskerworld/tree/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2)
 
 **Os arquivos principais são:**
 
-* `evidencia2.md`
-* `01-cadastro-antes.mp4`
-* `02-cadastro-com-termos.mp4`
-* `03-perfil-sem-exclusao-de-conta.mp4`
-* `04-resultado-exclusao-de-conta.mp4`
+* [`evidencia2.md`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2/evidencia2.md)
+* [`01-cadastro-antes.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2/01-cadastro-antes.mp4)
+* [`02-cadastro-com-termos.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2/02-cadastro-com-termos.mp4)
+* [`03-perfil-sem-exclusao-de-conta.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2/03-perfil-sem-exclus%C3%A3o-de-conta.mp4)
+* [`04-resultado-exclusao-de-conta.mp4`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2/04-resultado-exclus%C3%A3o-de-conta.mp4)
 
 ## 4.5 Validação da adaptação
 
@@ -430,7 +430,7 @@ A requisição ao endpoint antigo foi realizada no Postman e apresentou resposta
 
 A evidência correspondente está registrada em:
 
-`01-endpoint-antigo-cat-facts.png`
+[`01-endpoint-antigo-cat-facts.png`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-3/01-endpoint-antigo-cat-facts.png)
 
 ## 5.3 Nova API
 
@@ -458,7 +458,7 @@ A requisição ao novo endpoint também foi realizada no Postman e apresentou re
 
 A evidência correspondente está registrada em:
 
-`02-endpoint-novo-meowfacts.png`
+[`02-endpoint-novo-meowfacts.png`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-3/02-endpoint-novo-meowfacts.png)
 
 ## 5.4 Adaptação realizada
 
@@ -478,7 +478,7 @@ data.data[0]
 
 Para centralizar a comunicação com a API externa, foi criado o arquivo:
 
-`client/src/services/catFactsService.js`
+[`client/src/services/catFactsService.js`](https://github.com/llilibet/whiskerworld/blob/main/client/src/services/catFactsService.js)
 
 O serviço é responsável por:
 
@@ -535,7 +535,7 @@ As respostas foram comparadas para identificar a diferença entre as estruturas 
 
 A coleção utilizada durante os testes foi exportada como:
 
-`colecao-postman-migracao-api.json`
+[`colecao-postman-migracao-api.json`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-3/colecao-postman-migracao-api.json)
 
 Essa coleção faz parte das evidências da estratégia de migração.
 
@@ -555,7 +555,7 @@ Essa coleção faz parte das evidências da estratégia de migração.
 
 Após a migração, a nova API foi integrada ao frontend por meio do serviço:
 
-`client/src/services/catFactsService.js`
+[`client/src/services/catFactsService.js`](https://github.com/llilibet/whiskerworld/blob/main/client/src/services/catFactsService.js)
 
 A página inicial passou a apresentar as curiosidades obtidas da MeowFacts API.
 
@@ -563,7 +563,7 @@ Também foi implementado o botão para realizar uma nova consulta, permitindo at
 
 A evidência visual da integração está registrada em:
 
-`03-api-integrada-whiskerworld.png`
+[`03-api-integrada-whiskerworld.png`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-3/03-api-integrada-whiskerworld.png]
 
 ## 5.9 Validação da adaptação
 
@@ -617,13 +617,13 @@ Apesar de envolverem componentes diferentes, as três adaptações tiveram o obj
 
 As evidências das estratégias de manutenção adaptativa estão organizadas no diretório:
 
-`docs/tp3-manutenção-adaptativa/Evidencias/`
+[`docs/tp3-manutenção-adaptativa/Evidencias/`](https://github.com/llilibet/whiskerworld/tree/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias)
 
 ## 8.1 Estratégia 1 — Mudança de Dependência
 
 **Documentação:**
 
-`Evidencias/estrategia-1/README.md`
+[`Evidencias/estrategia-1/README.md`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-1/README.md)
 
 **Principais evidências:**
 
@@ -638,7 +638,7 @@ As evidências das estratégias de manutenção adaptativa estão organizadas no
 
 **Documentação:**
 
-`Evidencias/estrategia-2/evidencia2.md`
+[`Evidencias/estrategia-2/evidencia2.md`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-2/evidencia2.md)
 
 **Principais evidências:**
 
@@ -654,7 +654,7 @@ As evidências das estratégias de manutenção adaptativa estão organizadas no
 
 **Documentação:**
 
-`Evidencias/estrategia-3/evidencia3.md`
+[`Evidencias/estrategia-3/evidencia3.md`](https://github.com/llilibet/whiskerworld/blob/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa/Evidencias/estrategia-3/evidencia3.md)
 
 **Principais evidências:**
 
@@ -669,18 +669,18 @@ As evidências das estratégias de manutenção adaptativa estão organizadas no
 
 As intervenções e suas evidências estão organizadas no diretório de documentação da manutenção adaptativa:
 
-`docs/tp3-manutenção-adaptativa/`
+[`docs/tp3-manutenção-adaptativa/`](https://github.com/llilibet/whiskerworld/tree/main/docs/tp3-manuten%C3%A7%C3%A3o-adaptativa)
 
 A documentação principal das estratégias está organizada da seguinte forma:
 
-| Artefato                  | Localização                                                 |
-| ------------------------- | ----------------------------------------------------------- |
-| Plano das estratégias     | `plano-estrategia.md`                                       |
-| Evidências — Estratégia 1 | `Evidencias/estrategia-1/README.md`                         |
-| Evidências — Estratégia 2 | `Evidencias/estrategia-2/evidencia2.md`                     |
-| Evidências — Estratégia 3 | `Evidencias/estrategia-3/evidencia3.md`                     |
-| Coleção Postman           | `Evidencias/estrategia-3/colecao-postman-migracao-api.json` |
-| Relatório final           | `RELATORIO.md`                                              |
+| Artefato | Localização |
+| :--- | :--- |
+| Plano das estratégias | [`plano-estrategia.md`](./plano-estrategia.md) |
+| Evidências — Estratégia 1 | [`Evidencias/estrategia-1/README.md`](./Evidencias/estrategia-1/README.md) |
+| Evidências — Estratégia 2 | [`Evidencias/estrategia-2/evidencia2.md`](./Evidencias/estrategia-2/evidencia2.md) |
+| Evidências — Estratégia 3 | [`Evidencias/estrategia-3/evidencia3.md`](./Evidencias/estrategia-3/evidencia3.md) |
+| Coleção Postman | [`colecao-postman-migracao-api.json`](./Evidencias/estrategia-3/colecao-postman-migracao-api.json) |
+| Relatório final | [`RELATORIO.md`](./RELATORIO.md) |
 
 As evidências individuais contêm os registros necessários para acompanhar as alterações realizadas em cada estratégia.
 
