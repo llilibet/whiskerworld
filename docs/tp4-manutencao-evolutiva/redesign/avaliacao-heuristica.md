@@ -324,12 +324,16 @@ Não foi identificado um problema específico suficientemente significativo rela
 
 # 7. Evidências Fotográficas
 
-As capturas utilizadas na avaliação estão organizadas no diretório:
+As capturas utilizadas na avaliação heurística estão organizadas no diretório de evidências do redesign, conforme a estrutura do repositório:
 
 ```text
 docs/
-└── avaliacao-heuristica/
-    └── evidencias/
+├── tp1-manutencao-corretiva/
+├── tp2-manutencao-preventiva/
+├── tp3-manutenção-adaptativa/
+└── tp4-manutenção-evolutiva/
+    └── redesign/
+        └── evidencias/
 ```
 
 ### `h01-home-botoes.png`
@@ -372,7 +376,6 @@ Utilizada para evidenciar o **P07**, relacionado à extensão do formulário de 
 
 Utilizada para evidenciar o **P09**, relacionado à baixa visibilidade do botão de favorito.
 
----
 
 # 8. Organização das Evidências no Repositório
 
