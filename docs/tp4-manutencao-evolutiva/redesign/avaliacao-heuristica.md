@@ -4,11 +4,11 @@
 
 Esta avaliação tem como objetivo analisar a interface atual do sistema **Whiskerworld** antes da etapa de redesign, identificando problemas de usabilidade com base nas **10 Heurísticas de Usabilidade de Nielsen**.
 
-A análise busca registrar os pontos observados na versão atual do sistema, incluindo problemas de usabilidade, seu impacto, nível de severidade, evidências visuais e o planejamento das possíveis correções.
+A análise busca registrar os pontos observados na versão atual do sistema, incluindo problemas de usabilidade, seu impacto, nível de severidade e evidências visuais.
 
-Os resultados desta avaliação servirão como base para a etapa posterior de redesign, permitindo relacionar as alterações realizadas às heurísticas de usabilidade correspondentes.
+Os resultados desta avaliação servirão como base para a etapa posterior de redesign, permitindo relacionar as alterações realizadas aos problemas de usabilidade identificados e às respectivas heurísticas de usabilidade.
 
-Esta etapa contempla a **avaliação heurística do sistema atual e o planejamento das correções identificadas**, não incluindo a implementação do redesign, novas funcionalidades ou melhorias de acessibilidade.
+Esta etapa contempla a **avaliação heurística do sistema atual**, não incluindo a implementação do redesign, novas funcionalidades ou melhorias de acessibilidade.
 
 ---
 
@@ -38,41 +38,19 @@ Quando um problema foi identificado, foram registrados:
 * impacto para o usuário;
 * heurística relacionada;
 * nível de severidade;
-* evidência visual;
-* planejamento da correção.
+* evidência visual.
 
 Quando não foi identificado um problema significativo, a heurística foi registrada como **"Nenhum problema significativo identificado"**.
 
 ---
 
-# 3. Critérios de severidade
-
-| Severidade      | Descrição                                                                                                                |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **1 — Baixa**   | Problema de pequena importância, com pouco impacto na utilização do sistema.                                             |
-| **2 — Média**   | Problema que pode causar confusão ou dificuldade durante a utilização, mas não impede a realização da tarefa.            |
-| **3 — Alta**    | Problema que pode dificultar significativamente uma tarefa importante ou levar o usuário a realizar uma ação indesejada. |
-| **4 — Crítica** | Problema que impede ou compromete gravemente a utilização de uma funcionalidade essencial.                               |
-
----
-
-# 4. Avaliação das 10 Heurísticas
+# 3. Heurísticas de Usabilidade
 
 ## H1 — Visibilidade do status do sistema
 
 > O sistema deve sempre manter o usuário informado sobre o que está acontecendo através de feedback adequado em um tempo razoável.
 
-### Resultado
-
-**Nenhum problema significativo identificado.**
-
-Durante a avaliação das telas e fluxos disponíveis, não foi identificado um problema significativo relacionado à ausência de feedback ou à falta de informação sobre o estado das ações realizadas pelo usuário.
-
-**Severidade:** Não se aplica.
-
-**Evidência:** Não se aplica.
-
-**Planejamento da correção:** Não se aplica. A heurística será mantida como referência durante o redesign para evitar a introdução de problemas relacionados à visibilidade do status do sistema.
+**Resultado:** Nenhum problema significativo identificado durante a avaliação.
 
 ---
 
@@ -80,516 +58,309 @@ Durante a avaliação das telas e fluxos disponíveis, não foi identificado um 
 
 > O sistema deve falar a linguagem do usuário, com palavras, frases e conceitos familiares ao mundo real, em vez de termos orientados à máquina.
 
-### Resultado
-
-**Nenhum problema significativo identificado.**
-
-Os principais termos utilizados pelo sistema, como **"Adotante"**, **"Gatos"**, **"Cães"** e **"Animais"**, apresentam relação direta com o contexto de adoção de animais.
-
-Durante a avaliação, não foi identificado um uso significativo de termos técnicos ou orientados à máquina que dificultasse a compreensão das funcionalidades principais.
-
-**Severidade:** Não se aplica.
-
-**Evidência:** Não se aplica.
-
-**Planejamento da correção:** Não se aplica. Os termos considerados compreensíveis devem ser mantidos durante o redesign.
+**Resultado:** Nenhum problema significativo identificado durante a avaliação.
 
 ---
 
-# H3 — Controle e liberdade do usuário
+## H3 — Controle e liberdade do usuário
 
 > Os usuários frequentemente escolhem funções por engano e precisam de uma "saída de emergência" clara para deixar o estado indesejado sem precisar passar por um processo longo.
 
-### Problema identificado
+**Tela/fluxo analisado:** Página inicial → Login
 
-**Dificuldade para trocar o tipo de acesso durante o login.**
+**URL:** `http://localhost:5173/login?tipo=ADOTANTE`
 
 ### Fluxo atual
 
-Na página inicial, o usuário pode escolher entre diferentes tipos de acesso, como **"Sou Adotante"** e **"Sou Administrador"**.
+1. O usuário acessa a página inicial.
+2. Na seção **"Como deseja acessar?"**, seleciona **"Sou Adotante"**.
+3. O sistema direciona para a tela de login.
+4. A tela apresenta o título **"Área do Adotante"**.
+5. Para retornar e escolher outro tipo de acesso, o usuário precisa utilizar a opção **"← Voltar ao início"**.
+6. Não há uma opção direta na própria tela de login para alternar entre os perfis de acesso.
 
-Ao selecionar **"Sou Adotante"**, o usuário é direcionado para:
+### Problema identificado
 
-```text
-/login?tipo=ADOTANTE
-```
+A escolha do tipo de acesso realizada na página inicial fica condicionada ao fluxo escolhido anteriormente. Caso o usuário tenha selecionado o perfil incorreto, precisa retornar à página inicial para realizar uma nova escolha.
 
-Na tela seguinte, o sistema apresenta **"Área do Adotante"**.
+Isso reduz o controle do usuário sobre a navegação, principalmente quando ele percebe o engano somente após chegar à tela de login.
 
-Caso o usuário perceba que escolheu o tipo de acesso incorreto ou queira acessar outra área, precisa utilizar **"Voltar ao início"** e retornar à página inicial para realizar uma nova escolha.
-
-### Problema para o usuário
-
-O usuário não possui uma forma direta de alterar o tipo de acesso dentro do próprio fluxo de login.
-
-Isso cria um caminho desnecessariamente longo para uma situação simples: **trocar o perfil de acesso**.
-
-**Heurística:** H3 — Controle e liberdade do usuário
-
-**Severidade:** 2 — Média
+**Severidade:** 2 — Problema menor.
 
 **Evidência:** `evidencias/h02-login-perfil.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se:
-
-* disponibilizar uma opção mais direta para **trocar o tipo de acesso**;
-* permitir que o usuário retorne à seleção de perfil sem precisar voltar completamente para a página inicial;
-* manter uma ação de retorno claramente identificada;
-* preservar os dados já preenchidos no formulário quando possível, evitando retrabalho.
-
-### Resultado esperado
-
-O usuário deverá conseguir corrigir uma escolha de perfil de maneira mais direta, sem precisar abandonar completamente o fluxo de login.
-
 ---
 
-# H4 — Consistência e padrões
+## H4 — Consistência e padrões
 
 > Os usuários não devem ter que adivinhar se diferentes palavras, situações ou ações significam a mesma coisa. Siga convenções de plataforma.
 
-### Ponto de atenção identificado
+**Tela/fluxo analisado:** Página inicial
 
-**Diferença visual entre as opções de acesso na página inicial.**
+**URL:** `http://localhost:5173/`
 
 ### Fluxo atual
 
-Na seção **"Como deseja acessar?"**, são apresentadas as opções:
+1. O usuário acessa a página inicial.
+2. Encontra a seção **"Como deseja acessar?"**.
+3. São apresentados dois caminhos:
 
-* **Sou Adotante**
-* **Sou Administrador**
+   * **"Sou Adotante"** → botão **"ENCONTRAR PETS"**;
+   * **"Sou Administrador"** → botão **"ACESSAR PAINEL"**.
+4. Cada opção utiliza uma cor diferente para o botão.
 
-Os dois caminhos pertencem à mesma categoria de decisão — escolha do tipo de acesso — porém utilizam estilos e cores diferentes em seus botões.
+### Problema identificado
 
-### Problema para o usuário
+Os dois caminhos de acesso apresentam padrões visuais diferentes, principalmente nas cores dos botões e na forma como as ações são destacadas.
 
-A diferença visual não impede o uso do sistema e **não foi considerada, isoladamente, uma falha funcional**.
+Embora os destinos sejam diferentes, a diferença visual pode fazer com que o usuário interprete os elementos como componentes pertencentes a padrões distintos dentro da mesma interface.
 
-Entretanto, a apresentação poderia estabelecer um padrão visual mais consistente para opções que pertencem ao mesmo grupo de escolha.
-
-Por esse motivo, este item é tratado como **ponto de atenção para o redesign**, e não como um problema crítico.
-
-**Heurística:** H4 — Consistência e padrões
-
-**Severidade:** 2 — Média
+**Severidade:** 2 — Problema menor.
 
 **Evidência:** `evidencias/h01-home-botoes.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se:
-
-* estabelecer um padrão visual comum para as opções de acesso;
-* manter a diferenciação entre os perfis sem depender exclusivamente de cores;
-* utilizar hierarquia visual consistente para títulos, textos e botões;
-* garantir que ações equivalentes possuam aparência e comportamento previsíveis.
-
-### Resultado esperado
-
-As opções de acesso deverão continuar sendo facilmente diferenciáveis, mas apresentar uma organização visual mais consistente.
-
 ---
 
-# H5 — Prevenção de erros
+## H5 — Prevenção de erros
 
-> Mais do que boas mensagens de erro, é preciso um design cuidadoso que previna a ocorrência de falhas antes mesmo que o usuário faça a ação.
+> Mais do que boas mensagens de erro, é preciso um design cuidadoso que previna a ocorrência de falhas antes mesmo que o usuário puxe a ação.
 
-## H5.1 — Exclusão da conta
+### H5.1 — Exclusão da conta
 
-### Problema identificado
+**Tela/fluxo analisado:** Dashboard do usuário
 
-**Ação de exclusão da conta apresentada junto às ações rotineiras.**
+**URL:** `http://localhost:5173/dashboard`
 
 ### Fluxo atual
 
-No dashboard do usuário, a opção **"Excluir minha conta"** aparece na mesma área geral das demais funcionalidades.
+1. O usuário acessa o dashboard.
+2. A tela apresenta diferentes opções relacionadas à utilização da conta.
+3. Entre essas opções está **"Excluir minha conta"**.
+4. A ação de exclusão aparece no mesmo espaço geral das demais opções do usuário.
 
-### Problema para o usuário
+### Problema identificado
 
-A exclusão da conta é uma ação potencialmente destrutiva e possui consequências maiores que ações comuns de navegação ou consulta.
+A ação de exclusão da conta, por ser uma operação destrutiva, aparece próxima às demais ações da interface, sem uma diferenciação visual evidente observada na tela analisada.
 
-Sua apresentação junto às ações rotineiras pode não destacar suficientemente a diferença de impacto entre essa ação e as demais.
+Isso pode aumentar o risco de o usuário interpretar a ação como uma operação comum.
 
-**Severidade:** 3 — Alta
+**Severidade:** 3 — Problema grave.
 
 **Evidência:** `evidencias/h04-dashboard-exclusao.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se:
-
-* separar visualmente ações destrutivas das ações rotineiras;
-* utilizar uma apresentação visual diferenciada para a exclusão;
-* adicionar uma confirmação antes da exclusão definitiva;
-* informar claramente as consequências da ação;
-* permitir que o usuário cancele a operação antes da confirmação definitiva.
-
-### Resultado esperado
-
-A ação de exclusão deverá exigir uma confirmação consciente do usuário, reduzindo a possibilidade de uma exclusão não intencional.
-
 ---
 
-## H5.2 — Identificação dos campos obrigatórios
+### H5.2 — Identificação dos campos obrigatórios
 
-### Problema identificado
+**Tela/fluxo analisado:** Cadastro de adotante
 
-**Ausência de indicação visual antecipada dos campos obrigatórios.**
+**URL:** `http://localhost:5173/cadastro/ADOTANTE`
 
 ### Fluxo atual
 
-No formulário de cadastro, os campos são apresentados sem uma indicação visual explícita, como:
+1. O usuário acessa o formulário de cadastro.
+2. São apresentados campos como **Nome**, **E-mail** e **Senha**.
+3. Os campos não apresentam uma indicação visual explícita, como `*` ou a palavra **"obrigatório"**, para informar quais são necessários.
 
-```text
-Nome *
-E-mail *
-Senha *
-```
+### Problema identificado
 
-ou:
+O formulário não apresenta uma indicação visual direta dos campos obrigatórios. Dessa forma, o usuário precisa descobrir essa informação durante o preenchimento ou a tentativa de envio do formulário.
 
-```text
-Nome (obrigatório)
-```
-
-### Problema para o usuário
-
-O usuário pode não saber antecipadamente quais campos são obrigatórios antes de tentar enviar o formulário.
-
-Isso pode aumentar a possibilidade de preenchimento incompleto e exigir uma nova interação para descobrir quais informações são necessárias.
-
-**Severidade:** 2 — Média
+**Severidade:** 2 — Problema menor.
 
 **Evidência:** `evidencias/h07-campos-obrigatorios.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se:
-
-* indicar visualmente os campos obrigatórios;
-* utilizar um padrão consistente para essa indicação;
-* manter a indicação próxima ao respectivo campo;
-* complementar a indicação visual com mensagens de validação claras quando necessário.
-
-### Resultado esperado
-
-O usuário deverá conseguir identificar os campos obrigatórios antes de enviar o formulário, reduzindo erros de preenchimento.
-
 ---
 
-## H5.3 — Estado de lista sem resultados
+### H5.3 — Lista sem resultados
 
-### Ponto de atenção identificado
+**Tela/fluxo analisado:** Listagem de animais
 
-**Filtros e elementos de navegação permanecem disponíveis quando não existem resultados.**
+**URL:** `http://localhost:5173/animais/GATO`
 
 ### Fluxo atual
 
-Ao acessar uma categoria sem animais disponíveis, o sistema apresenta uma mensagem informando que não existem resultados.
+1. O usuário acessa a área de animais.
+2. Seleciona a categoria **"Gatos"**.
+3. O sistema apresenta a indicação **"0 disponíveis"** e **"Nenhum gato disponível"**.
+4. Os elementos de navegação e filtragem continuam disponíveis na tela.
 
-Mesmo nesse estado, elementos relacionados à filtragem e navegação permanecem disponíveis na interface.
+### Problema identificado
 
-**Severidade:** 1 — Baixa
+Quando não existem animais disponíveis para a categoria selecionada, o sistema apresenta a ausência de resultados, mas mantém os elementos de filtragem e navegação disponíveis.
+
+Essa situação pode deixar o usuário sem uma indicação clara sobre o que fazer após não encontrar resultados.
+
+**Severidade:** 1 — Problema cosmético/baixo impacto.
 
 **Evidência:** `evidencias/h06-lista-vazia.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se avaliar o comportamento da interface quando não houver resultados e:
-
-* apresentar uma mensagem de estado vazio mais informativa;
-* explicar ao usuário que não existem animais disponíveis naquela categoria;
-* avaliar quais filtros ainda são relevantes nesse estado;
-* oferecer uma alternativa de navegação, como retornar à listagem ou consultar outra categoria.
-
-### Resultado esperado
-
-O estado sem resultados deverá orientar o usuário sobre o que aconteceu e sobre quais ações pode realizar em seguida.
-
 ---
 
-# H6 — Reconhecimento em vez de memorização
+## H6 — Reconhecimento em vez de memorização
 
 > Minimize a carga de memória do usuário tornando objetos, ações e opções visíveis.
 
-### Ponto de atenção identificado
+**Tela/fluxo analisado:** Listagem de animais
 
-**O fluxo de exploração começa pela escolha de uma espécie.**
+**URL:** `http://localhost:5173/animais`
 
 ### Fluxo atual
 
-Ao acessar a área de animais, o usuário encontra opções relacionadas às espécies, como **"Gatos"** e **"Cães"**.
+1. O usuário acessa a área de animais.
+2. A interface apresenta as opções **"Gatos"** e **"Cães"**.
+3. Para visualizar os animais, o usuário precisa selecionar uma das categorias.
+4. Não é apresentada uma opção direta de **"Ver todos"** na tela analisada.
 
-Para visualizar os animais, precisa selecionar uma dessas categorias.
+### Problema identificado
 
-### Problema para o usuário
+A navegação inicial da área de animais depende da escolha de uma categoria antes da visualização dos animais.
 
-Para quem deseja apenas **explorar os animais disponíveis**, o fluxo exige uma decisão inicial de categoria.
+O usuário precisa compreender que deve selecionar **"Gatos"** ou **"Cães"** para prosseguir, em vez de visualizar diretamente todos os animais disponíveis e utilizar as categorias como filtros.
 
-O problema não está na existência dos filtros ou categorias — que são úteis —, mas na ausência de uma alternativa igualmente visível para iniciar uma exploração geral.
-
-### Heurística
-
-**H6 — Reconhecimento em vez de memorização**
-
-**Severidade:** 2 — Média
+**Severidade:** 2 — Problema menor.
 
 **Evidência:** `evidencias/h05-listagem-especies.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se avaliar a possibilidade de:
-
-* disponibilizar uma opção **"Ver todos"**;
-* apresentar os animais disponíveis diretamente na página inicial da listagem;
-* manter os filtros de espécie como mecanismos de refinamento;
-* permitir que o usuário reconheça e utilize os filtros sem precisar iniciar obrigatoriamente por eles.
-
-### Resultado esperado
-
-O usuário poderá começar a explorar os animais sem precisar decidir previamente uma categoria, utilizando os filtros apenas quando desejar refinar a busca.
-
 ---
 
-# H7 — Flexibilidade e eficiência de uso
+## H7 — Flexibilidade e eficiência de uso
 
 > Aceleradores — ocultos para o usuário novato — podem agilizar a interação para o usuário experiente.
 
-### Ponto de atenção identificado
+**Tela/fluxo analisado:** Listagem de animais
 
-A área de animais apresenta um fluxo baseado na seleção de categorias, sem uma alternativa adicional para uma exploração mais rápida do catálogo.
+**URL:** `http://localhost:5173/animais`
 
-Esse ponto está relacionado ao mesmo fluxo observado na H6, mas é analisado aqui sob a perspectiva da **eficiência e flexibilidade de uso**.
+### Fluxo atual
 
-**Severidade:** 1 — Baixa
+1. O usuário acessa a listagem de animais.
+2. As opções disponíveis inicialmente são as categorias **"Gatos"** e **"Cães"**.
+3. O usuário precisa entrar em uma categoria para continuar a navegação.
+4. Não é apresentada uma alternativa direta para explorar todos os animais em uma única listagem.
+
+### Problema identificado
+
+A interface oferece apenas a navegação por categoria como caminho inicial para explorar os animais.
+
+A ausência de uma alternativa de exploração mais direta reduz a flexibilidade do fluxo, principalmente para usuários que desejam apenas visualizar os animais disponíveis sem definir previamente uma espécie.
+
+**Severidade:** 2 — Problema menor.
 
 **Evidência:** `evidencias/h05-listagem-especies.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se avaliar a disponibilização de:
-
-* acesso direto à listagem geral;
-* filtros para refinamento;
-* mecanismos de busca ou ordenação, caso sejam adequados ao escopo do sistema.
-
-### Resultado esperado
-
-O usuário poderá escolher entre uma exploração simples ou um caminho mais rápido para encontrar animais específicos.
-
 ---
 
-# H8 — Estética e design minimalista
+## H8 — Estética e design minimalista
 
 > Os diálogos não devem conter informações que são irrelevantes ou pouco usadas.
 
-### Problema identificado
+**Tela/fluxo analisado:** Cadastro de adotante
 
-**Diferença visual entre campos preenchidos e não preenchidos no cadastro.**
+**URL:** `http://localhost:5173/cadastro/ADOTANTE`
 
 ### Fluxo atual
 
-Na tela de cadastro, os campos **"Nome"** e **"E-mail"**, quando preenchidos, apresentam uma aparência de fundo diferente do campo **"Senha"**.
+1. O usuário acessa o formulário de cadastro.
+2. Os campos **Nome** e **E-mail** aparecem preenchidos.
+3. Esses campos apresentam uma coloração de fundo diferente do campo **Senha**.
+4. A diferença visual pode fazer com que os campos preenchidos sejam interpretados como desabilitados ou somente leitura.
 
-### Problema para o usuário
+### Problema identificado
 
-A diferença visual pode fazer com que os campos preenchidos sejam interpretados como desabilitados ou somente leitura, mesmo quando continuam fazendo parte do formulário.
+Os campos do formulário apresentam estados visuais diferentes sem uma indicação suficientemente clara do significado dessa diferença.
 
-### Heurística
+A alteração visual dos campos preenchidos pode gerar dúvida sobre a possibilidade de edição dos valores.
 
-**H8 — Estética e design minimalista**
-
-**Severidade:** 2 — Média
+**Severidade:** 2 — Problema menor.
 
 **Evidência:** `evidencias/h03-cadastro-inputs.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se:
-
-* padronizar a aparência dos campos do formulário;
-* diferenciar visualmente estados como preenchido, focado, desabilitado e somente leitura;
-* manter contraste suficiente entre texto, fundo e bordas;
-* utilizar o mesmo padrão visual para campos com estados equivalentes.
-
-### Resultado esperado
-
-O usuário deverá compreender visualmente quais campos estão ativos, preenchidos ou desabilitados, sem depender de tentativa e erro.
-
 ---
 
-# H9 — Ajudar os usuários a reconhecer, diagnosticar e recuperar-se de erros
+## H9 — Ajudar os usuários a reconhecer, diagnosticar e recuperar erros
 
-> As mensagens de erro devem ser expressas em linguagem simples, indicar precisamente o problema e sugerir uma solução construtiva.
+> As mensagens de erro devem ser expressas em linguagem simples (sem códigos), indicar precisamente o problema e sugerir uma solução construtiva.
 
-### Problema identificado
-
-**Mensagem de erro "Token inválido ou expirado."**
+**Tela/fluxo analisado:** Cadastro/Login
 
 ### Fluxo atual
 
-Durante uma tentativa de cadastro, o sistema apresentou a mensagem:
+1. O usuário realiza uma tentativa de cadastro/login.
+2. O sistema apresenta a mensagem:
+   **"Token inválido ou expirado."**
 
-> **"Token inválido ou expirado."**
+### Problema identificado
 
-### Problema para o usuário
+A mensagem apresentada utiliza o termo técnico **"Token"**, que pode não ser compreendido por usuários comuns.
 
-A mensagem utiliza o termo técnico **"token"** sem explicar o que aconteceu em uma linguagem adequada ao usuário final.
+Além disso, a mensagem informa a condição do erro, mas não apresenta uma orientação clara sobre o que o usuário deve fazer para recuperar o acesso ou continuar o fluxo.
 
-Além disso, não apresenta uma orientação clara sobre como recuperar-se do erro.
-
-### Heurística
-
-**H9 — Ajudar os usuários a reconhecer, diagnosticar e recuperar-se de erros**
-
-**Severidade:** 2 — Média
+**Severidade:** 3 — Problema grave.
 
 **Evidência:** `evidencias/h08-erro-token.png`
 
-### Planejamento da correção
-
-Durante o redesign, pretende-se:
-
-* substituir termos técnicos por mensagens compreensíveis;
-* explicar de forma objetiva o que ocorreu;
-* indicar uma ação que o usuário possa realizar para tentar solucionar o problema;
-* manter as mensagens de erro próximas ao contexto em que o problema ocorreu;
-* evitar expor detalhes técnicos internos desnecessários ao usuário.
-
-### Exemplo de direção para a correção
-
-Em vez de apresentar apenas:
-
-> "Token inválido ou expirado."
-
-A interface poderá apresentar uma mensagem em linguagem orientada ao usuário, acompanhada de uma ação de recuperação adequada ao fluxo.
-
-### Resultado esperado
-
-O usuário deverá compreender o problema e saber qual ação realizar para tentar continuar o processo.
-
-### Observação
-
-A avaliação registra o **comportamento observado na interface**. A causa técnica responsável pela mensagem não é determinada nesta avaliação heurística.
-
 ---
 
-# H10 — Ajuda e documentação
+## H10 — Ajuda e documentação
 
 > É melhor que o sistema não precise de explicação adicional, mas pode ser necessário fornecer ajuda e documentação fáceis de buscar.
 
-### Resultado
-
-**Nenhum problema significativo identificado durante a avaliação.**
-
-Nas telas analisadas, não foi identificado um problema específico relacionado à ausência de orientação que impedisse a compreensão das funcionalidades avaliadas.
-
-**Severidade:** Não se aplica.
-
-**Evidência:** Não se aplica.
-
-**Planejamento da correção:** Não se aplica. Durante o redesign, a equipe deverá manter textos e orientações suficientemente claros para que o usuário consiga utilizar as funcionalidades sem depender de documentação externa.
+**Resultado:** Nenhum problema significativo identificado durante a avaliação.
 
 ---
 
-# 5. Resumo dos problemas e planejamento das correções
+# 4. Síntese dos problemas identificados
 
-| ID  | Heurística | Problema observado                                        | Severidade | Planejamento da correção                                      | Evidência                     |
-| --- | ---------- | --------------------------------------------------------- | ---------: | ------------------------------------------------------------- | ----------------------------- |
-| P01 | H3         | Dificuldade para trocar o tipo de acesso durante o login  |          2 | Permitir troca direta de perfil e retorno ao fluxo de seleção | `h02-login-perfil.png`        |
-| P02 | H4         | Apresentação visual pouco uniforme entre opções de acesso |          2 | Padronizar componentes e hierarquia visual                    | `h01-home-botoes.png`         |
-| P03 | H5         | Exclusão da conta junto às ações rotineiras               |          3 | Destacar ação destrutiva e exigir confirmação                 | `h04-dashboard-exclusao.png`  |
-| P04 | H5         | Campos obrigatórios sem indicação visual antecipada       |          2 | Indicar campos obrigatórios e melhorar validação              | `h07-campos-obrigatorios.png` |
-| P05 | H5         | Filtros permanecem disponíveis em estado sem resultados   |          1 | Melhorar estado vazio e orientar próxima ação                 | `h06-lista-vazia.png`         |
-| P06 | H6         | Exploração inicia pela escolha de uma espécie             |          2 | Disponibilizar opção de visualizar todos os animais           | `h05-listagem-especies.png`   |
-| P07 | H7         | Ausência de alternativa mais direta para exploração       |          1 | Avaliar listagem geral, busca e filtros                       | `h05-listagem-especies.png`   |
-| P08 | H8         | Campos preenchidos possuem aparência visual diferente     |          2 | Padronizar estados visuais dos campos                         | `h03-cadastro-inputs.png`     |
-| P09 | H9         | Mensagem técnica sem orientação de recuperação            |          2 | Utilizar linguagem simples e orientar recuperação             | `h08-erro-token.png`          |
-
----
-
-# 6. Síntese por heurística
-
-| Heurística                                                  | Resultado                                  |
-| ----------------------------------------------------------- | ------------------------------------------ |
-| **H1 — Visibilidade do status do sistema**                  | Nenhum problema significativo identificado |
-| **H2 — Correspondência entre sistema e mundo real**         | Nenhum problema significativo identificado |
-| **H3 — Controle e liberdade do usuário**                    | Problema identificado                      |
-| **H4 — Consistência e padrões**                             | Ponto de atenção identificado              |
-| **H5 — Prevenção de erros**                                 | Problemas identificados                    |
-| **H6 — Reconhecimento em vez de memorização**               | Ponto de atenção identificado              |
-| **H7 — Flexibilidade e eficiência de uso**                  | Ponto de atenção identificado              |
-| **H8 — Estética e design minimalista**                      | Problema identificado                      |
-| **H9 — Reconhecimento, diagnóstico e recuperação de erros** | Problema identificado                      |
-| **H10 — Ajuda e documentação**                              | Nenhum problema significativo identificado |
+| ID  | Heurística | Problema                                                                      | Severidade | Evidência                     |
+| --- | ---------- | ----------------------------------------------------------------------------- | ---------: | ----------------------------- |
+| P01 | H3         | Fluxo pouco direto para trocar o tipo de acesso após uma escolha inicial      |          2 | `h02-login-perfil.png`        |
+| P02 | H4         | Diferenças no padrão visual dos caminhos de acesso                            |          2 | `h01-home-botoes.png`         |
+| P03 | H5         | Ação de exclusão da conta próxima às ações comuns                             |          3 | `h04-dashboard-exclusao.png`  |
+| P04 | H5         | Campos obrigatórios sem indicação visual explícita                            |          2 | `h07-campos-obrigatorios.png` |
+| P05 | H5         | Estado de lista vazia sem orientação clara sobre a continuidade do fluxo      |          1 | `h06-lista-vazia.png`         |
+| P06 | H6         | Navegação inicial depende da escolha de uma categoria                         |          2 | `h05-listagem-especies.png`   |
+| P07 | H7         | Ausência de caminho alternativo para exploração direta dos animais            |          2 | `h05-listagem-especies.png`   |
+| P08 | H8         | Diferença visual entre campos preenchidos e não preenchidos pode gerar dúvida |          2 | `h03-cadastro-inputs.png`     |
+| P09 | H9         | Mensagem de erro utiliza termo técnico e não orienta claramente a recuperação |          3 | `h08-erro-token.png`          |
 
 ---
 
-# 7. Evidências
+# 5. Evidências
 
-As capturas de tela utilizadas como evidências estão armazenadas em:
+As capturas utilizadas na avaliação estão disponíveis no diretório:
 
-```text
-docs/tp4-manutenção-evolutiva/redesign/evidencias/
-```
+`docs/tp4-manutenção-evolutiva/redesign/evidencias/`
 
-Arquivos:
-
-```text
-h01-home-botoes.png
-h02-login-perfil.png
-h03-cadastro-inputs.png
-h04-dashboard-exclusao.png
-h05-listagem-especies.png
-h06-lista-vazia.png
-h07-campos-obrigatorios.png
-h08-erro-token.png
-```
-
-As imagens correspondem às situações observadas durante a avaliação e documentam visualmente os pontos identificados.
+* `h01-home-botoes.png`
+* `h02-login-perfil.png`
+* `h03-cadastro-inputs.png`
+* `h04-dashboard-exclusao.png`
+* `h05-listagem-especies.png`
+* `h06-lista-vazia.png`
+* `h07-campos-obrigatorios.png`
+* `h08-erro-token.png`
 
 ---
 
-# 8. Limitações da avaliação
+# 6. Limitações da avaliação
 
-A avaliação foi realizada sobre as funcionalidades que estavam disponíveis e acessíveis durante o período de análise.
+Alguns fluxos não puderam ser avaliados completamente durante a análise:
 
-Algumas funcionalidades não puderam ser avaliadas integralmente devido às condições do ambiente de execução e à disponibilidade de dados.
+* detalhes dos animais, devido à ausência de animais disponíveis;
+* fluxo de agendamento, devido à ausência de animais/horários disponíveis;
+* funcionalidades administrativas, devido à indisponibilidade das credenciais necessárias;
+* operações de CRUD de animais;
+* login com Google;
+* sistema de favoritos;
+* alguns cenários de erro e carregamento que não puderam ser reproduzidos diretamente.
 
-Entre as limitações observadas estão:
-
-* ausência de animais disponíveis em determinadas categorias;
-* impossibilidade de avaliar integralmente o fluxo de agendamento quando não havia animais ou horários disponíveis;
-* acesso limitado às funcionalidades administrativas;
-* impossibilidade de avaliar integralmente operações de cadastro, edição e exclusão de animais na área administrativa;
-* fluxo de autenticação com Google não avaliado integralmente;
-* funcionalidades relacionadas a favoritos não avaliadas quando dependiam da existência de animais disponíveis;
-* não foram provocados deliberadamente erros de servidor ou falhas técnicas que não ocorressem durante o uso normal.
-
-Dessa forma, os resultados representam as condições observadas durante a avaliação e não devem ser interpretados como uma análise exaustiva de todas as funcionalidades internas do sistema.
+Dessa forma, os problemas registrados neste documento correspondem aos comportamentos que puderam ser observados durante a avaliação da versão atual do sistema.
 
 ---
 
-# 9. Considerações finais
+# 7. Considerações finais
 
-A avaliação heurística permitiu identificar pontos da interface atual do Whiskerworld que podem ser considerados na etapa posterior de redesign.
+A avaliação identificou problemas relacionados principalmente ao controle do usuário, consistência visual, prevenção de erros, flexibilidade de navegação, apresentação dos formulários e tratamento de mensagens de erro.
 
-Os principais pontos observados estão relacionados a:
-
-* controle do fluxo de acesso;
-* consistência visual;
-* prevenção de ações potencialmente destrutivas;
-* indicação de campos obrigatórios;
-* tratamento de estados sem resultados;
-* exploração e navegação pelos animais;
-* apresentação visual dos campos de formulário;
-* clareza das mensagens de erro.
-
-Para cada problema ou ponto de atenção identificado, foi registrado um **planejamento inicial de correção**, indicando a direção que poderá ser adotada durante o redesign.
-
-Essas propostas não representam ainda a implementação definitiva. Elas servem como referência para orientar as decisões da equipe na próxima etapa do trabalho.
-
-As alterações realizadas posteriormente deverão ser comparadas com o estado atual documentado nesta avaliação, permitindo demonstrar quais problemas foram tratados e como as mudanças se relacionam às heurísticas de Nielsen.
-
-A avaliação representa o estado observado do sistema antes das modificações de redesign.
+Os problemas identificados e suas respectivas evidências servem como registro da situação atual do sistema antes da etapa de redesign.
