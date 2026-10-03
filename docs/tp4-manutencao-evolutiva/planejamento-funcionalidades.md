@@ -22,7 +22,7 @@ Para cada problema encontrado, foi registrada uma captura de tela correspondente
 
 ---
 
-## 3. Escala de Severidade
+# 3. Escala de Severidade
 
 | Severidade | Classificação         | Descrição                                                                                |
 | ---------- | --------------------- | ---------------------------------------------------------------------------------------- |
@@ -154,7 +154,7 @@ A interface deve oferecer formas eficientes de interação, permitindo que usuá
 **Problema:**
 Na área de listagem de animais, o usuário é direcionado inicialmente para a escolha entre categorias como "Gatos" e "Cães".
 
-Não é apresentada uma alternativa direta para visualizar todos os animais disponíveis de uma única vez, o que acrescenta uma etapa à exploração do conteúdo.
+Não é apresentada uma alternativa direta para visualizar todos os animais de uma única vez, o que acrescenta uma etapa à exploração do conteúdo.
 
 **Evidência:** `h05-listagem-especies.png`
 
@@ -178,14 +178,14 @@ Essa diferença de apresentação pode fazer com que o usuário tenha dúvidas s
 
 **Severidade:** 2 — Problema menor.
 
-### P07 — Botão de favorito apresenta tamanho reduzido
+### P07 — Botão de favorito apresenta baixa visibilidade
 
 **Problema:**
-O botão de favorito apresenta dimensões reduzidas em relação aos demais elementos de interação da interface.
+O botão utilizado para favoritar um animal apresenta baixa visibilidade devido à sua aparência quase transparente em relação aos demais elementos da interface.
 
-O tamanho reduzido pode diminuir sua visibilidade e tornar sua interação menos confortável, principalmente para usuários que ainda não conhecem a funcionalidade.
+Essa característica pode dificultar que o usuário identifique rapidamente a função e perceba que o elemento é interativo.
 
-**Evidência:** captura de tela da tela de listagem ou detalhes do animal contendo o botão de favorito.
+**Evidência:** captura de tela da tela do animal em que o botão de favorito aparece quase transparente.
 
 **Severidade:** 2 — Problema menor.
 
@@ -234,7 +234,7 @@ Durante a inspeção das funcionalidades avaliadas, não foi identificado um pro
 | P04 | H5         | Ação de exclusão de conta exposta no dashboard           | `h04-dashboard-exclusao.png`  | 3          |
 | P05 | H7         | Navegação depende da seleção de espécie                  | `h05-listagem-especies.png`   | 2          |
 | P06 | H8         | Estado visual dos campos preenchidos pode gerar dúvida   | `h03-cadastro-inputs.png`     | 2          |
-| P07 | H8         | Botão de favorito apresenta tamanho reduzido             | Captura do botão de favorito  | 2          |
+| P07 | H8         | Botão de favorito apresenta baixa visibilidade           | Foto do animal com favorito   | 2          |
 | P08 | H9         | Mensagem de erro técnica sem orientação para recuperação | `h08-erro-token.png`          | 3          |
 
 ---
@@ -303,7 +303,7 @@ Utilizada para evidenciar o **P08**, relacionado à mensagem técnica apresentad
 
 ### Captura do botão de favorito
 
-Deve ser adicionada para evidenciar o **P07**, relacionado ao tamanho reduzido do botão de favorito.
+Deve ser adicionada para evidenciar o **P07**, mostrando o botão de favorito com aparência quase transparente na interface de interação com o animal.
 
 ---
 
@@ -322,6 +322,8 @@ A ausência de problemas registrados em determinadas heurísticas não significa
 A avaliação heurística da versão atual do Whiskerworld identificou **8 problemas de usabilidade**, distribuídos entre as heurísticas H3, H4, H5, H7, H8 e H9.
 
 Os problemas encontrados estão relacionados principalmente à liberdade de navegação, consistência visual, prevenção de ações potencialmente prejudiciais, flexibilidade de navegação, apresentação dos elementos de interação e comunicação de erros.
+
+Entre os problemas identificados, destacam-se a dificuldade de alternância entre perfis, a exposição da exclusão de conta, a ausência de indicação dos campos obrigatórios, a baixa visibilidade do botão de favorito e a utilização de uma mensagem técnica para comunicar um erro.
 
 As evidências apresentadas permitem registrar o estado atual da interface antes das alterações previstas no trabalho, servindo como diagnóstico da versão original do sistema.
 
