@@ -1,221 +1,595 @@
-# Planejamento da Manutenção Evolutiva - WhiskerWorld
+# Avaliação Heurística do Sistema Atual — Whiskerworld
 
-## 1. Identificação do sistema
+## 1. Objetivo
 
-O **WhiskerWorld** é um sistema web voltado ao gerenciamento de adoção de animais. A plataforma permite o cadastro e a visualização de animais, autenticação de usuários, manifestação de interesse, agendamento de visitas e gerenciamento administrativo.
+Esta avaliação tem como objetivo analisar a interface atual do sistema **Whiskerworld** antes da etapa de redesign, identificando problemas de usabilidade com base nas **10 Heurísticas de Usabilidade de Nielsen**.
 
-## 2. Objetivo
+A análise busca registrar os pontos observados na versão atual do sistema, incluindo problemas de usabilidade, seu impacto, nível de severidade, evidências visuais e o planejamento das possíveis correções.
 
-Este documento apresenta o planejamento de duas novas funcionalidades que serão incorporadas ao WhiskerWorld como parte da manutenção evolutiva do sistema:
+Os resultados desta avaliação servirão como base para a etapa posterior de redesign, permitindo relacionar as alterações realizadas às heurísticas de usabilidade correspondentes.
 
-1. Questionário de compatibilidade para adoção;
-2. Acompanhamento pós-adoção.
-
-As funcionalidades propostas ampliam o escopo do produto e melhoram a experiência dos usuários. Elas não têm como objetivo corrigir defeitos existentes.
+Esta etapa contempla a **avaliação heurística do sistema atual e o planejamento das correções identificadas**, não incluindo a implementação do redesign, novas funcionalidades ou melhorias de acessibilidade.
 
 ---
 
-## 3. Funcionalidade 1 - Questionário de compatibilidade para adoção
+# 2. Metodologia
 
-### 3.1 Descrição
+A avaliação foi realizada por meio da navegação e inspeção das principais telas e fluxos disponíveis na versão atual do Whiskerworld.
 
-Será desenvolvido um questionário para auxiliar o adotante a avaliar se sua rotina e suas condições são compatíveis com as necessidades do animal escolhido.
+Foram analisadas as seguintes áreas:
 
-O usuário responderá perguntas sobre moradia, disponibilidade de tempo, condições financeiras, presença de crianças ou outros animais e experiência anterior com pets. Ao final, o sistema apresentará um resultado de compatibilidade.
+* Página inicial;
+* Tela de login;
+* Tela de cadastro;
+* Dashboard do usuário;
+* Listagem de animais;
+* Categorias de animais;
+* Estado de lista sem resultados;
+* Formulários;
+* Mensagens de erro apresentadas pelo sistema.
 
-### 3.2 Necessidade identificada
+Cada uma das 10 heurísticas de Nielsen foi analisada individualmente.
 
-Atualmente, o usuário pode demonstrar interesse em um animal sem realizar uma avaliação inicial sobre sua capacidade de atender às necessidades do pet.
+Quando um problema foi identificado, foram registrados:
 
-Isso pode gerar solicitações incompatíveis com as necessidades do animal e aumentar o risco de desistência ou devolução.
+* tela ou fluxo em que o problema ocorre;
+* descrição do problema;
+* fluxo atual;
+* impacto para o usuário;
+* heurística relacionada;
+* nível de severidade;
+* evidência visual;
+* planejamento da correção.
 
-### 3.3 Justificativa
-
-A funcionalidade contribuirá para uma adoção mais consciente, permitindo que o usuário reflita sobre as responsabilidades envolvidas antes de enviar uma solicitação.
-
-O questionário será apenas orientativo e não substituirá a avaliação realizada pelos responsáveis pela adoção.
-
-### 3.4 Atores envolvidos
-
-- Adotante;
-- Administrador.
-
-### 3.5 Fluxo principal
-
-1. O adotante acessa os detalhes de um animal.
-2. O sistema apresenta a opção **Verificar compatibilidade**.
-3. O adotante inicia o questionário.
-4. O sistema apresenta as perguntas.
-5. O adotante responde e envia o questionário.
-6. O sistema valida as respostas.
-7. O sistema calcula e apresenta o resultado de compatibilidade.
-8. O adotante pode retornar aos detalhes do animal ou prosseguir para a manifestação de interesse.
-
-### 3.6 Perguntas sugeridas
-
-- Qual é o tipo de residência do adotante?
-- O imóvel permite animais?
-- Existe espaço adequado para o animal?
-- Há crianças na residência?
-- Há outros animais na residência?
-- Por quantas horas o animal ficará sozinho?
-- Existe disponibilidade para passeios e cuidados diários?
-- Existe disponibilidade financeira para alimentação e atendimento veterinário?
-- O adotante possui experiência anterior com animais?
-- Todos os moradores concordam com a adoção?
-
-### 3.7 Regras de negócio
-
-- O questionário deverá estar relacionado ao animal selecionado.
-- Todas as perguntas obrigatórias deverão ser respondidas.
-- O sistema deverá apresentar o resultado como **Alta**, **Média** ou **Baixa compatibilidade**.
-- O resultado deverá apresentar uma breve orientação ao usuário.
-- Um resultado baixo não deverá bloquear automaticamente a solicitação de adoção.
-- O sistema deverá informar que o resultado é apenas orientativo.
-- O questionário não substituirá a análise do administrador.
-
-### 3.8 Critérios de aceitação
-
-- [ ] A opção **Verificar compatibilidade** está disponível na página de detalhes do animal.
-- [ ] O sistema apresenta todas as perguntas planejadas.
-- [ ] As perguntas obrigatórias são validadas.
-- [ ] O resultado é calculado e apresentado após o envio.
-- [ ] O resultado informa o nível de compatibilidade.
-- [ ] O sistema informa que o resultado é orientativo.
-- [ ] O adotante consegue retornar aos detalhes do animal.
-- [ ] O adotante consegue prosseguir para a manifestação de interesse.
-- [ ] A funcionalidade não interfere no fluxo atual de solicitação de adoção.
-
-### 3.9 Verificação
-
-A funcionalidade será verificada por meio dos seguintes testes:
-
-- preenchimento com respostas de alta compatibilidade;
-- preenchimento com respostas de média compatibilidade;
-- preenchimento com respostas de baixa compatibilidade;
-- tentativa de envio com perguntas obrigatórias vazias;
-- verificação da mensagem orientativa;
-- verificação da navegação entre o questionário e os detalhes do animal.
+Quando não foi identificado um problema significativo, a heurística foi registrada como **"Nenhum problema significativo identificado"**.
 
 ---
 
-## 4. Funcionalidade 2 - Acompanhamento pós-adoção
+# 3. Critérios de severidade
 
-### 4.1 Descrição
-
-Será desenvolvida uma área de acompanhamento pós-adoção, na qual o adotante poderá registrar atualizações sobre a adaptação e o bem-estar do animal adotado.
-
-Cada atualização poderá conter uma descrição, data e fotografia. O administrador poderá visualizar os registros enviados.
-
-### 4.2 Necessidade identificada
-
-Atualmente, o WhiskerWorld acompanha o processo até a aprovação da adoção, mas não disponibiliza um recurso para registrar informações sobre o animal depois que ele é adotado.
-
-### 4.3 Justificativa
-
-O acompanhamento permitirá que a organização responsável verifique como o animal está se adaptando ao novo lar e mantenha contato com o adotante.
-
-A funcionalidade amplia o processo de adoção e contribui para o bem-estar do animal.
-
-### 4.4 Atores envolvidos
-
-- Adotante;
-- Administrador.
-
-### 4.5 Fluxo principal
-
-1. O administrador aprova uma solicitação de adoção.
-2. A adoção aprovada passa a ser exibida na área do adotante.
-3. O adotante seleciona a opção **Registrar acompanhamento**.
-4. O sistema apresenta um formulário.
-5. O adotante informa a data, escreve a atualização e pode adicionar uma fotografia.
-6. O sistema valida e salva os dados.
-7. A atualização é exibida no histórico pós-adoção.
-8. O administrador pode visualizar o acompanhamento enviado.
-
-### 4.6 Dados do acompanhamento
-
-Cada registro poderá conter:
-
-- identificação da adoção;
-- identificação do animal;
-- identificação do adotante;
-- data do acompanhamento;
-- descrição da adaptação do animal;
-- fotografia opcional;
-- data de criação do registro.
-
-### 4.7 Regras de negócio
-
-- Apenas usuários autenticados poderão acessar a funcionalidade.
-- O adotante somente poderá registrar o acompanhamento de um animal cuja adoção tenha sido aprovada para ele.
-- A descrição será obrigatória.
-- A fotografia será opcional.
-- O sistema deverá validar o formato e o tamanho da imagem.
-- Os registros deverão ser apresentados em ordem cronológica.
-- O adotante somente poderá visualizar os próprios acompanhamentos.
-- O administrador poderá visualizar todos os acompanhamentos.
-- O registro de uma atualização não deverá modificar o status da adoção.
-
-### 4.8 Critérios de aceitação
-
-- [ ] A funcionalidade está disponível somente para adoções aprovadas.
-- [ ] O adotante consegue registrar uma atualização.
-- [ ] O sistema exige o preenchimento da descrição.
-- [ ] O sistema permite adicionar uma fotografia opcional.
-- [ ] Os dados são armazenados corretamente.
-- [ ] As atualizações são exibidas em ordem cronológica.
-- [ ] O adotante visualiza somente seus próprios registros.
-- [ ] O administrador consegue visualizar os acompanhamentos.
-- [ ] Usuários não autorizados não conseguem acessar os registros.
-- [ ] O registro não modifica o status da adoção.
-
-### 4.9 Verificação
-
-A funcionalidade será verificada por meio dos seguintes testes:
-
-- cadastro de acompanhamento para uma adoção aprovada;
-- tentativa de envio sem descrição;
-- envio com e sem fotografia;
-- tentativa de acesso por usuário não autenticado;
-- tentativa de registrar acompanhamento de uma adoção pertencente a outro usuário;
-- visualização do histórico pelo adotante;
-- visualização dos registros pelo administrador;
-- confirmação de que o status da adoção permanece inalterado.
+| Severidade      | Descrição                                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **1 — Baixa**   | Problema de pequena importância, com pouco impacto na utilização do sistema.                                             |
+| **2 — Média**   | Problema que pode causar confusão ou dificuldade durante a utilização, mas não impede a realização da tarefa.            |
+| **3 — Alta**    | Problema que pode dificultar significativamente uma tarefa importante ou levar o usuário a realizar uma ação indesejada. |
+| **4 — Crítica** | Problema que impede ou compromete gravemente a utilização de uma funcionalidade essencial.                               |
 
 ---
 
-## 5. Componentes que poderão ser afetados
+# 4. Avaliação das 10 Heurísticas
 
-A implementação poderá envolver:
+## H1 — Visibilidade do status do sistema
 
-- página de detalhes do animal;
-- área do perfil do adotante;
-- área administrativa;
-- componentes de formulário;
-- rotas do frontend;
-- serviços relacionados aos animais e às adoções;
-- banco de dados Firebase;
-- regras de autenticação e autorização.
+> O sistema deve sempre manter o usuário informado sobre o que está acontecendo através de feedback adequado em um tempo razoável.
 
-Os nomes exatos dos arquivos deverão ser registrados após a análise da estrutura atual do projeto pela responsável pela implementação.
+### Resultado
 
-## 6. Evidências da implementação
+**Nenhum problema significativo identificado.**
 
-Para comprovar a implementação, deverão ser apresentados:
+Durante a avaliação das telas e fluxos disponíveis, não foi identificado um problema significativo relacionado à ausência de feedback ou à falta de informação sobre o estado das ações realizadas pelo usuário.
 
-- capturas de tela das novas interfaces;
-- vídeo demonstrando os fluxos completos;
-- resultados dos testes dos critérios de aceitação;
-- commits relacionados a cada funcionalidade;
-- comparação entre o sistema antes e depois;
-- atualização do `README.md`;
-- registro das alterações no `CHANGELOG.md`.
+**Severidade:** Não se aplica.
 
-## 7. Resultado esperado
+**Evidência:** Não se aplica.
 
-Espera-se que o questionário de compatibilidade auxilie o adotante a tomar uma decisão mais consciente antes de solicitar a adoção.
+**Planejamento da correção:** Não se aplica. A heurística será mantida como referência durante o redesign para evitar a introdução de problemas relacionados à visibilidade do status do sistema.
 
-O acompanhamento pós-adoção deverá permitir o registro da adaptação e do bem-estar do animal depois da aprovação.
+---
 
-As duas funcionalidades caracterizam manutenção evolutiva porque adicionam novas capacidades ao WhiskerWorld e ampliam o escopo original do sistema.
+## H2 — Correspondência entre o sistema e o mundo real
+
+> O sistema deve falar a linguagem do usuário, com palavras, frases e conceitos familiares ao mundo real, em vez de termos orientados à máquina.
+
+### Resultado
+
+**Nenhum problema significativo identificado.**
+
+Os principais termos utilizados pelo sistema, como **"Adotante"**, **"Gatos"**, **"Cães"** e **"Animais"**, apresentam relação direta com o contexto de adoção de animais.
+
+Durante a avaliação, não foi identificado um uso significativo de termos técnicos ou orientados à máquina que dificultasse a compreensão das funcionalidades principais.
+
+**Severidade:** Não se aplica.
+
+**Evidência:** Não se aplica.
+
+**Planejamento da correção:** Não se aplica. Os termos considerados compreensíveis devem ser mantidos durante o redesign.
+
+---
+
+# H3 — Controle e liberdade do usuário
+
+> Os usuários frequentemente escolhem funções por engano e precisam de uma "saída de emergência" clara para deixar o estado indesejado sem precisar passar por um processo longo.
+
+### Problema identificado
+
+**Dificuldade para trocar o tipo de acesso durante o login.**
+
+### Fluxo atual
+
+Na página inicial, o usuário pode escolher entre diferentes tipos de acesso, como **"Sou Adotante"** e **"Sou Administrador"**.
+
+Ao selecionar **"Sou Adotante"**, o usuário é direcionado para:
+
+```text
+/login?tipo=ADOTANTE
+```
+
+Na tela seguinte, o sistema apresenta **"Área do Adotante"**.
+
+Caso o usuário perceba que escolheu o tipo de acesso incorreto ou queira acessar outra área, precisa utilizar **"Voltar ao início"** e retornar à página inicial para realizar uma nova escolha.
+
+### Problema para o usuário
+
+O usuário não possui uma forma direta de alterar o tipo de acesso dentro do próprio fluxo de login.
+
+Isso cria um caminho desnecessariamente longo para uma situação simples: **trocar o perfil de acesso**.
+
+**Heurística:** H3 — Controle e liberdade do usuário
+
+**Severidade:** 2 — Média
+
+**Evidência:** `evidencias/h02-login-perfil.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se:
+
+* disponibilizar uma opção mais direta para **trocar o tipo de acesso**;
+* permitir que o usuário retorne à seleção de perfil sem precisar voltar completamente para a página inicial;
+* manter uma ação de retorno claramente identificada;
+* preservar os dados já preenchidos no formulário quando possível, evitando retrabalho.
+
+### Resultado esperado
+
+O usuário deverá conseguir corrigir uma escolha de perfil de maneira mais direta, sem precisar abandonar completamente o fluxo de login.
+
+---
+
+# H4 — Consistência e padrões
+
+> Os usuários não devem ter que adivinhar se diferentes palavras, situações ou ações significam a mesma coisa. Siga convenções de plataforma.
+
+### Ponto de atenção identificado
+
+**Diferença visual entre as opções de acesso na página inicial.**
+
+### Fluxo atual
+
+Na seção **"Como deseja acessar?"**, são apresentadas as opções:
+
+* **Sou Adotante**
+* **Sou Administrador**
+
+Os dois caminhos pertencem à mesma categoria de decisão — escolha do tipo de acesso — porém utilizam estilos e cores diferentes em seus botões.
+
+### Problema para o usuário
+
+A diferença visual não impede o uso do sistema e **não foi considerada, isoladamente, uma falha funcional**.
+
+Entretanto, a apresentação poderia estabelecer um padrão visual mais consistente para opções que pertencem ao mesmo grupo de escolha.
+
+Por esse motivo, este item é tratado como **ponto de atenção para o redesign**, e não como um problema crítico.
+
+**Heurística:** H4 — Consistência e padrões
+
+**Severidade:** 2 — Média
+
+**Evidência:** `evidencias/h01-home-botoes.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se:
+
+* estabelecer um padrão visual comum para as opções de acesso;
+* manter a diferenciação entre os perfis sem depender exclusivamente de cores;
+* utilizar hierarquia visual consistente para títulos, textos e botões;
+* garantir que ações equivalentes possuam aparência e comportamento previsíveis.
+
+### Resultado esperado
+
+As opções de acesso deverão continuar sendo facilmente diferenciáveis, mas apresentar uma organização visual mais consistente.
+
+---
+
+# H5 — Prevenção de erros
+
+> Mais do que boas mensagens de erro, é preciso um design cuidadoso que previna a ocorrência de falhas antes mesmo que o usuário faça a ação.
+
+## H5.1 — Exclusão da conta
+
+### Problema identificado
+
+**Ação de exclusão da conta apresentada junto às ações rotineiras.**
+
+### Fluxo atual
+
+No dashboard do usuário, a opção **"Excluir minha conta"** aparece na mesma área geral das demais funcionalidades.
+
+### Problema para o usuário
+
+A exclusão da conta é uma ação potencialmente destrutiva e possui consequências maiores que ações comuns de navegação ou consulta.
+
+Sua apresentação junto às ações rotineiras pode não destacar suficientemente a diferença de impacto entre essa ação e as demais.
+
+**Severidade:** 3 — Alta
+
+**Evidência:** `evidencias/h04-dashboard-exclusao.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se:
+
+* separar visualmente ações destrutivas das ações rotineiras;
+* utilizar uma apresentação visual diferenciada para a exclusão;
+* adicionar uma confirmação antes da exclusão definitiva;
+* informar claramente as consequências da ação;
+* permitir que o usuário cancele a operação antes da confirmação definitiva.
+
+### Resultado esperado
+
+A ação de exclusão deverá exigir uma confirmação consciente do usuário, reduzindo a possibilidade de uma exclusão não intencional.
+
+---
+
+## H5.2 — Identificação dos campos obrigatórios
+
+### Problema identificado
+
+**Ausência de indicação visual antecipada dos campos obrigatórios.**
+
+### Fluxo atual
+
+No formulário de cadastro, os campos são apresentados sem uma indicação visual explícita, como:
+
+```text
+Nome *
+E-mail *
+Senha *
+```
+
+ou:
+
+```text
+Nome (obrigatório)
+```
+
+### Problema para o usuário
+
+O usuário pode não saber antecipadamente quais campos são obrigatórios antes de tentar enviar o formulário.
+
+Isso pode aumentar a possibilidade de preenchimento incompleto e exigir uma nova interação para descobrir quais informações são necessárias.
+
+**Severidade:** 2 — Média
+
+**Evidência:** `evidencias/h07-campos-obrigatorios.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se:
+
+* indicar visualmente os campos obrigatórios;
+* utilizar um padrão consistente para essa indicação;
+* manter a indicação próxima ao respectivo campo;
+* complementar a indicação visual com mensagens de validação claras quando necessário.
+
+### Resultado esperado
+
+O usuário deverá conseguir identificar os campos obrigatórios antes de enviar o formulário, reduzindo erros de preenchimento.
+
+---
+
+## H5.3 — Estado de lista sem resultados
+
+### Ponto de atenção identificado
+
+**Filtros e elementos de navegação permanecem disponíveis quando não existem resultados.**
+
+### Fluxo atual
+
+Ao acessar uma categoria sem animais disponíveis, o sistema apresenta uma mensagem informando que não existem resultados.
+
+Mesmo nesse estado, elementos relacionados à filtragem e navegação permanecem disponíveis na interface.
+
+**Severidade:** 1 — Baixa
+
+**Evidência:** `evidencias/h06-lista-vazia.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se avaliar o comportamento da interface quando não houver resultados e:
+
+* apresentar uma mensagem de estado vazio mais informativa;
+* explicar ao usuário que não existem animais disponíveis naquela categoria;
+* avaliar quais filtros ainda são relevantes nesse estado;
+* oferecer uma alternativa de navegação, como retornar à listagem ou consultar outra categoria.
+
+### Resultado esperado
+
+O estado sem resultados deverá orientar o usuário sobre o que aconteceu e sobre quais ações pode realizar em seguida.
+
+---
+
+# H6 — Reconhecimento em vez de memorização
+
+> Minimize a carga de memória do usuário tornando objetos, ações e opções visíveis.
+
+### Ponto de atenção identificado
+
+**O fluxo de exploração começa pela escolha de uma espécie.**
+
+### Fluxo atual
+
+Ao acessar a área de animais, o usuário encontra opções relacionadas às espécies, como **"Gatos"** e **"Cães"**.
+
+Para visualizar os animais, precisa selecionar uma dessas categorias.
+
+### Problema para o usuário
+
+Para quem deseja apenas **explorar os animais disponíveis**, o fluxo exige uma decisão inicial de categoria.
+
+O problema não está na existência dos filtros ou categorias — que são úteis —, mas na ausência de uma alternativa igualmente visível para iniciar uma exploração geral.
+
+### Heurística
+
+**H6 — Reconhecimento em vez de memorização**
+
+**Severidade:** 2 — Média
+
+**Evidência:** `evidencias/h05-listagem-especies.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se avaliar a possibilidade de:
+
+* disponibilizar uma opção **"Ver todos"**;
+* apresentar os animais disponíveis diretamente na página inicial da listagem;
+* manter os filtros de espécie como mecanismos de refinamento;
+* permitir que o usuário reconheça e utilize os filtros sem precisar iniciar obrigatoriamente por eles.
+
+### Resultado esperado
+
+O usuário poderá começar a explorar os animais sem precisar decidir previamente uma categoria, utilizando os filtros apenas quando desejar refinar a busca.
+
+---
+
+# H7 — Flexibilidade e eficiência de uso
+
+> Aceleradores — ocultos para o usuário novato — podem agilizar a interação para o usuário experiente.
+
+### Ponto de atenção identificado
+
+A área de animais apresenta um fluxo baseado na seleção de categorias, sem uma alternativa adicional para uma exploração mais rápida do catálogo.
+
+Esse ponto está relacionado ao mesmo fluxo observado na H6, mas é analisado aqui sob a perspectiva da **eficiência e flexibilidade de uso**.
+
+**Severidade:** 1 — Baixa
+
+**Evidência:** `evidencias/h05-listagem-especies.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se avaliar a disponibilização de:
+
+* acesso direto à listagem geral;
+* filtros para refinamento;
+* mecanismos de busca ou ordenação, caso sejam adequados ao escopo do sistema.
+
+### Resultado esperado
+
+O usuário poderá escolher entre uma exploração simples ou um caminho mais rápido para encontrar animais específicos.
+
+---
+
+# H8 — Estética e design minimalista
+
+> Os diálogos não devem conter informações que são irrelevantes ou pouco usadas.
+
+### Problema identificado
+
+**Diferença visual entre campos preenchidos e não preenchidos no cadastro.**
+
+### Fluxo atual
+
+Na tela de cadastro, os campos **"Nome"** e **"E-mail"**, quando preenchidos, apresentam uma aparência de fundo diferente do campo **"Senha"**.
+
+### Problema para o usuário
+
+A diferença visual pode fazer com que os campos preenchidos sejam interpretados como desabilitados ou somente leitura, mesmo quando continuam fazendo parte do formulário.
+
+### Heurística
+
+**H8 — Estética e design minimalista**
+
+**Severidade:** 2 — Média
+
+**Evidência:** `evidencias/h03-cadastro-inputs.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se:
+
+* padronizar a aparência dos campos do formulário;
+* diferenciar visualmente estados como preenchido, focado, desabilitado e somente leitura;
+* manter contraste suficiente entre texto, fundo e bordas;
+* utilizar o mesmo padrão visual para campos com estados equivalentes.
+
+### Resultado esperado
+
+O usuário deverá compreender visualmente quais campos estão ativos, preenchidos ou desabilitados, sem depender de tentativa e erro.
+
+---
+
+# H9 — Ajudar os usuários a reconhecer, diagnosticar e recuperar-se de erros
+
+> As mensagens de erro devem ser expressas em linguagem simples, indicar precisamente o problema e sugerir uma solução construtiva.
+
+### Problema identificado
+
+**Mensagem de erro "Token inválido ou expirado."**
+
+### Fluxo atual
+
+Durante uma tentativa de cadastro, o sistema apresentou a mensagem:
+
+> **"Token inválido ou expirado."**
+
+### Problema para o usuário
+
+A mensagem utiliza o termo técnico **"token"** sem explicar o que aconteceu em uma linguagem adequada ao usuário final.
+
+Além disso, não apresenta uma orientação clara sobre como recuperar-se do erro.
+
+### Heurística
+
+**H9 — Ajudar os usuários a reconhecer, diagnosticar e recuperar-se de erros**
+
+**Severidade:** 2 — Média
+
+**Evidência:** `evidencias/h08-erro-token.png`
+
+### Planejamento da correção
+
+Durante o redesign, pretende-se:
+
+* substituir termos técnicos por mensagens compreensíveis;
+* explicar de forma objetiva o que ocorreu;
+* indicar uma ação que o usuário possa realizar para tentar solucionar o problema;
+* manter as mensagens de erro próximas ao contexto em que o problema ocorreu;
+* evitar expor detalhes técnicos internos desnecessários ao usuário.
+
+### Exemplo de direção para a correção
+
+Em vez de apresentar apenas:
+
+> "Token inválido ou expirado."
+
+A interface poderá apresentar uma mensagem em linguagem orientada ao usuário, acompanhada de uma ação de recuperação adequada ao fluxo.
+
+### Resultado esperado
+
+O usuário deverá compreender o problema e saber qual ação realizar para tentar continuar o processo.
+
+### Observação
+
+A avaliação registra o **comportamento observado na interface**. A causa técnica responsável pela mensagem não é determinada nesta avaliação heurística.
+
+---
+
+# H10 — Ajuda e documentação
+
+> É melhor que o sistema não precise de explicação adicional, mas pode ser necessário fornecer ajuda e documentação fáceis de buscar.
+
+### Resultado
+
+**Nenhum problema significativo identificado durante a avaliação.**
+
+Nas telas analisadas, não foi identificado um problema específico relacionado à ausência de orientação que impedisse a compreensão das funcionalidades avaliadas.
+
+**Severidade:** Não se aplica.
+
+**Evidência:** Não se aplica.
+
+**Planejamento da correção:** Não se aplica. Durante o redesign, a equipe deverá manter textos e orientações suficientemente claros para que o usuário consiga utilizar as funcionalidades sem depender de documentação externa.
+
+---
+
+# 5. Resumo dos problemas e planejamento das correções
+
+| ID  | Heurística | Problema observado                                        | Severidade | Planejamento da correção                                      | Evidência                     |
+| --- | ---------- | --------------------------------------------------------- | ---------: | ------------------------------------------------------------- | ----------------------------- |
+| P01 | H3         | Dificuldade para trocar o tipo de acesso durante o login  |          2 | Permitir troca direta de perfil e retorno ao fluxo de seleção | `h02-login-perfil.png`        |
+| P02 | H4         | Apresentação visual pouco uniforme entre opções de acesso |          2 | Padronizar componentes e hierarquia visual                    | `h01-home-botoes.png`         |
+| P03 | H5         | Exclusão da conta junto às ações rotineiras               |          3 | Destacar ação destrutiva e exigir confirmação                 | `h04-dashboard-exclusao.png`  |
+| P04 | H5         | Campos obrigatórios sem indicação visual antecipada       |          2 | Indicar campos obrigatórios e melhorar validação              | `h07-campos-obrigatorios.png` |
+| P05 | H5         | Filtros permanecem disponíveis em estado sem resultados   |          1 | Melhorar estado vazio e orientar próxima ação                 | `h06-lista-vazia.png`         |
+| P06 | H6         | Exploração inicia pela escolha de uma espécie             |          2 | Disponibilizar opção de visualizar todos os animais           | `h05-listagem-especies.png`   |
+| P07 | H7         | Ausência de alternativa mais direta para exploração       |          1 | Avaliar listagem geral, busca e filtros                       | `h05-listagem-especies.png`   |
+| P08 | H8         | Campos preenchidos possuem aparência visual diferente     |          2 | Padronizar estados visuais dos campos                         | `h03-cadastro-inputs.png`     |
+| P09 | H9         | Mensagem técnica sem orientação de recuperação            |          2 | Utilizar linguagem simples e orientar recuperação             | `h08-erro-token.png`          |
+
+---
+
+# 6. Síntese por heurística
+
+| Heurística                                                  | Resultado                                  |
+| ----------------------------------------------------------- | ------------------------------------------ |
+| **H1 — Visibilidade do status do sistema**                  | Nenhum problema significativo identificado |
+| **H2 — Correspondência entre sistema e mundo real**         | Nenhum problema significativo identificado |
+| **H3 — Controle e liberdade do usuário**                    | Problema identificado                      |
+| **H4 — Consistência e padrões**                             | Ponto de atenção identificado              |
+| **H5 — Prevenção de erros**                                 | Problemas identificados                    |
+| **H6 — Reconhecimento em vez de memorização**               | Ponto de atenção identificado              |
+| **H7 — Flexibilidade e eficiência de uso**                  | Ponto de atenção identificado              |
+| **H8 — Estética e design minimalista**                      | Problema identificado                      |
+| **H9 — Reconhecimento, diagnóstico e recuperação de erros** | Problema identificado                      |
+| **H10 — Ajuda e documentação**                              | Nenhum problema significativo identificado |
+
+---
+
+# 7. Evidências
+
+As capturas de tela utilizadas como evidências estão armazenadas em:
+
+```text
+docs/tp4-manutenção-evolutiva/redesign/evidencias/
+```
+
+Arquivos:
+
+```text
+h01-home-botoes.png
+h02-login-perfil.png
+h03-cadastro-inputs.png
+h04-dashboard-exclusao.png
+h05-listagem-especies.png
+h06-lista-vazia.png
+h07-campos-obrigatorios.png
+h08-erro-token.png
+```
+
+As imagens correspondem às situações observadas durante a avaliação e documentam visualmente os pontos identificados.
+
+---
+
+# 8. Limitações da avaliação
+
+A avaliação foi realizada sobre as funcionalidades que estavam disponíveis e acessíveis durante o período de análise.
+
+Algumas funcionalidades não puderam ser avaliadas integralmente devido às condições do ambiente de execução e à disponibilidade de dados.
+
+Entre as limitações observadas estão:
+
+* ausência de animais disponíveis em determinadas categorias;
+* impossibilidade de avaliar integralmente o fluxo de agendamento quando não havia animais ou horários disponíveis;
+* acesso limitado às funcionalidades administrativas;
+* impossibilidade de avaliar integralmente operações de cadastro, edição e exclusão de animais na área administrativa;
+* fluxo de autenticação com Google não avaliado integralmente;
+* funcionalidades relacionadas a favoritos não avaliadas quando dependiam da existência de animais disponíveis;
+* não foram provocados deliberadamente erros de servidor ou falhas técnicas que não ocorressem durante o uso normal.
+
+Dessa forma, os resultados representam as condições observadas durante a avaliação e não devem ser interpretados como uma análise exaustiva de todas as funcionalidades internas do sistema.
+
+---
+
+# 9. Considerações finais
+
+A avaliação heurística permitiu identificar pontos da interface atual do Whiskerworld que podem ser considerados na etapa posterior de redesign.
+
+Os principais pontos observados estão relacionados a:
+
+* controle do fluxo de acesso;
+* consistência visual;
+* prevenção de ações potencialmente destrutivas;
+* indicação de campos obrigatórios;
+* tratamento de estados sem resultados;
+* exploração e navegação pelos animais;
+* apresentação visual dos campos de formulário;
+* clareza das mensagens de erro.
+
+Para cada problema ou ponto de atenção identificado, foi registrado um **planejamento inicial de correção**, indicando a direção que poderá ser adotada durante o redesign.
+
+Essas propostas não representam ainda a implementação definitiva. Elas servem como referência para orientar as decisões da equipe na próxima etapa do trabalho.
+
+As alterações realizadas posteriormente deverão ser comparadas com o estado atual documentado nesta avaliação, permitindo demonstrar quais problemas foram tratados e como as mudanças se relacionam às heurísticas de Nielsen.
+
+A avaliação representa o estado observado do sistema antes das modificações de redesign.
