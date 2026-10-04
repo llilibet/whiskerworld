@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { getUsuarioLogado } from '../services/api';
 import { usuariosService } from '../services/usuariosService';
+import ContaMenu from './ContaMenu';
 
 export default function Navbar({ variant = 'light' }) {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function Navbar({ variant = 'light' }) {
         <div className="navbar__logo">
           <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
+        <ContaMenu />
       </nav>
     );
   }
@@ -31,6 +33,7 @@ export default function Navbar({ variant = 'light' }) {
         </div>
         <div className="navbar__links">
           <Link to="/dashboard" className="navbar__link">Minha Área</Link>
+          <ContaMenu />
         </div>
       </nav>
     );
@@ -42,6 +45,7 @@ export default function Navbar({ variant = 'light' }) {
         <div className="navbar__logo">
           <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
+        <ContaMenu />
       </nav>
     );
   }

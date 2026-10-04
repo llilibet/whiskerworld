@@ -121,7 +121,7 @@ export default function HomePage() {
                 className="btn btn--green"
                 onClick={() => navigate('/login?tipo=ADOTANTE')}
               >
-                🐾 Encontrar Pets
+                Entrar como Adotante →
               </button>
             </div>
 
@@ -143,10 +143,10 @@ export default function HomePage() {
 
               <button
                 type="button"
-                className="btn btn--orange"
+                className="btn btn--green"
                 onClick={() => navigate('/login?tipo=ADMIN')}
               >
-                🔐 Acessar Painel
+                Entrar como Administrador →
               </button>
             </div>
           </div>

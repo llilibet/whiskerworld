@@ -69,7 +69,7 @@ export default function AdminDashboardPage() {
             <h1 className="admin-header__title">🛡️ Painel Administrativo</h1>
             <p className="admin-header__sub">Gerencie animais e agendamentos do abrigo</p>
           </div>
-          <button className="btn btn--outline-red" onClick={handleLogout}>
+          <button className="btn btn--outline-gray" onClick={handleLogout}>
             → Sair
           </button>
         </div>

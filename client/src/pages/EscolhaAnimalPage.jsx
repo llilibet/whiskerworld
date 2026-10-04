@@ -21,7 +21,22 @@ export default function EscolhaAnimalPage() {
 
         <span className="escolha-badge">🐾 Adoção Responsável</span>
         <h1 className="escolha-title">O que você procura? 🤔</h1>
-        <p className="escolha-subtitle">Escolha o tipo de pet que deseja conhecer</p>
+        <p className="escolha-subtitle">Veja todos os pets disponíveis ou filtre por espécie</p>
+
+        <button
+          type="button"
+          className="ver-todos-card"
+          onClick={() => navigate('/animais/TODOS')}
+        >
+          <span className="ver-todos-card__emoji" aria-hidden="true">🐱🐶</span>
+          <span className="ver-todos-card__texto">
+            <strong>Ver todos os animais</strong>
+            <span>Explore gatos e cães disponíveis em uma única lista</span>
+          </span>
+          <span className="ver-todos-card__seta" aria-hidden="true">→</span>
+        </button>
+
+        <p className="escolha-ou">ou escolha uma espécie</p>
 
         <div className="pet-type-cards">
           {/* Gatos */}
@@ -37,7 +52,7 @@ export default function EscolhaAnimalPage() {
             <p className="pet-type-card__desc">
               Felinos independentes, carinhosos e cheios de personalidade
             </p>
-            <button className="btn btn--orange btn--full">🐱 Ver Gatos</button>
+            <button className="btn btn--green btn--full">🐱 Ver Gatos</button>
           </div>
 
           {/* Cães */}
@@ -53,7 +68,7 @@ export default function EscolhaAnimalPage() {
             <p className="pet-type-card__desc">
               Companheiros fiéis, brincalhões e sempre prontos para te amar
             </p>
-            <button className="btn btn--blue btn--full">🐾 Ver Cães</button>
+            <button className="btn btn--green btn--full">🐶 Ver Cães</button>
           </div>
         </div>
 
