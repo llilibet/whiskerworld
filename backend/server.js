@@ -67,11 +67,17 @@ const animaisRoutes     = require("./src/routes/animais");
 const agendamentosRoutes = require("./src/routes/agendamentos");
 const favoritosRoutes   = require("./src/routes/favoritos");
 const apiDashboardRoute = require("./src/routes/apiDashboard");
+const compatibilidadeRoutes = require("./src/routes/compatibilidade");
+const adocoesRoutes = require("./src/routes/adocoes");
+const acompanhamentosRoutes = require('./src/routes/acompanhamentos');
 
 app.use("/usuarios", usuariosRoutes);
 app.use("/animais", animaisRoutes);
 app.use("/agendamentos", agendamentosRoutes);
 app.use("/favoritos", favoritosRoutes);
+app.use("/compatibilidade", compatibilidadeRoutes);
+app.use("/adocoes", adocoesRoutes);
+app.use('/acompanhamentos', acompanhamentosRoutes);
 
 // Dashboard da API
 app.use("/docs", apiDashboardRoute);
@@ -79,6 +85,21 @@ app.use("/docs", apiDashboardRoute);
 // Rota de saúde para verificar se a API está funcionando
 app.get("/api/health", (_req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
+});
+
+app.use((erro, req, res, next) => {
+  const status = erro.status || 500;
+
+  if (status >= 500) {
+    console.error(erro);
+  }
+
+  res.status(status).json({
+    mensagem:
+      status >= 500
+        ? "Erro interno do servidor."
+        : erro.message,
+  });
 });
 
 // IMPORTANTE: só roda localmente

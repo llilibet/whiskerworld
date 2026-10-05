@@ -9,6 +9,8 @@ import EscolhaAnimalPage from './pages/EscolhaAnimalPage';
 import AnimaisListPage from './pages/AnimaisListPage';
 import AgendarVisitaPage from './pages/AgendarVisitaPage';
 import AnimalDetailPage from './pages/AnimalDetailPage';
+import CompatibilidadePage from './pages/CompatibilidadePage';
+import AcompanhamentoPage from './pages/AcompanhamentoPage';
 
 function PrivateRoute({ children, role }) {
   const token = localStorage.getItem('token');
@@ -88,6 +90,16 @@ export default function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/animal/:animalId/compatibilidade"
+          element={
+            <PrivateRoute role="ADOTANTE">
+              <CompatibilidadePage />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/agendar/:animalId"
           element={
@@ -96,6 +108,25 @@ export default function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/adocoes/:adocaoId/acompanhamento"
+          element={
+            <PrivateRoute role="ADOTANTE">
+              <AcompanhamentoPage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/adocoes/:adocaoId/acompanhamento"
+          element={
+            <PrivateRoute role="ADMIN">
+              <AcompanhamentoPage />
+            </PrivateRoute>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
