@@ -71,6 +71,11 @@ Além disso, os modais não fechavam com a tecla Esc, e o contorno de foco dos b
 - A lista "Meses/Anos" da idade, que não tem rótulo visível, recebeu `aria-label="Unidade da idade"`.
 - Os emojis decorativos dos rótulos (🏷️, 📅, 🔵…) foram marcados com `aria-hidden="true"`, para o leitor não anunciar "etiqueta", "calendário" ou "círculo azul" antes do nome do campo.
 
+Cadastro de animal, campo **Sexo**. O balão mostra o nome que o Chrome entrega ao leitor de tela: vazio no antes, "Sexo" no depois.
+
+| Antes | Depois |
+|---|---|
+| ![Antes](evidencias-acessibilidade/antes-leitor-campo-sexo.png) | ![Depois](evidencias-acessibilidade/depois-leitor-campo-sexo.png) |
 
 ### Melhoria 2 — Nome acessível em botões só com ícone
 
@@ -98,6 +103,11 @@ Além disso, os modais não fechavam com a tecla Esc, e o contorno de foco dos b
 | Remover favorito | "Remover Luna dos favoritos" |
 | Mostrar senha | "Mostrar senha", com `aria-pressed` para informar se a senha está visível |
 
+Painel do administrador, botão 🗑️. O leitor de tela anunciava "🗑️" e passou a anunciar "Excluir maeve".
+
+| Antes | Depois |
+|---|---|
+| ![Antes](evidencias-acessibilidade/antes-leitor-botao-excluir.png) | ![Depois](evidencias-acessibilidade/depois-leitor-botao-excluir.png) |
 
 ### Melhoria 3 — Contraste de cores adequado
 
@@ -156,6 +166,12 @@ Login do administrador com o campo de e-mail focado pela tecla Tab:
 
 
 ---
+
+Dashboard do adotante: modal de exclusão aberto e, em seguida, a tecla **Esc**. No antes o modal continua aberto; no depois ele fecha.
+
+| Antes | Depois |
+|---|---|
+| ![Antes](evidencias-acessibilidade/antes-teclado-modal-apos-esc.png) | ![Depois](evidencias-acessibilidade/depois-teclado-modal-apos-esc.png) |
 
 ## 4. Arquivos alterados
 
