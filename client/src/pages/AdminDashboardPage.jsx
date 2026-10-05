@@ -369,9 +369,10 @@ export default function AdminDashboardPage() {
                               handleStatusAgendamento(ag.id, 'CONFIRMADO')
                             }
                             title="Confirmar"
+                            aria-label={`Confirmar agendamento de ${ag.nome_usuario || ag.email_usuario || 'usuário'} para ${ag.nome_animal}`}
                             disabled={concluindoAdocao}
                           >
-                            ✔
+                            <span aria-hidden="true">✔</span>
                           </button>
 
                           <button
@@ -381,9 +382,10 @@ export default function AdminDashboardPage() {
                               handleStatusAgendamento(ag.id, 'CANCELADO')
                             }
                             title="Cancelar"
+                            aria-label={`Cancelar agendamento de ${ag.nome_usuario || ag.email_usuario || 'usuário'} para ${ag.nome_animal}`}
                             disabled={concluindoAdocao}
                           >
-                            ✖
+                            <span aria-hidden="true">✖</span>
                           </button>
                         </div>
                       )}

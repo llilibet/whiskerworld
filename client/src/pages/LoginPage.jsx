@@ -57,8 +57,8 @@ export default function LoginPage() {
           <form className="login-form" onSubmit={handleSubmit}>
             <p className="legenda-obrigatorio"><span className="obrigatorio" aria-hidden="true">*</span> Campos obrigatórios</p>
             <div className="form-group">
-              <label className="form-label">🔵 E-mail <span className="obrigatorio" aria-hidden="true">*</span></label>
-              <input
+              <label className="form-label" htmlFor="login-e-mail"><span aria-hidden="true">🔵</span> E-mail <span className="obrigatorio" aria-hidden="true">*</span></label>
+              <input id="login-e-mail"
                 className="form-input"
                 type="email"
                 placeholder="seu@email.com"
@@ -69,9 +69,9 @@ export default function LoginPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">🔒 Senha <span className="obrigatorio" aria-hidden="true">*</span></label>
+              <label className="form-label" htmlFor="login-senha"><span aria-hidden="true">🔒</span> Senha <span className="obrigatorio" aria-hidden="true">*</span></label>
               <div className="form-input-wrapper">
-                <input
+                <input id="login-senha"
                   className="form-input"
                   type={mostrarSenha ? 'text' : 'password'}
                   placeholder="••••••••"
@@ -83,8 +83,10 @@ export default function LoginPage() {
                   type="button"
                   className="form-eye-btn"
                   onClick={() => setMostrarSenha(!mostrarSenha)}
+                  aria-label="Mostrar senha"
+                  aria-pressed={mostrarSenha}
                 >
-                  {mostrarSenha ? '🙈' : '👁️'}
+                  <span aria-hidden="true">{mostrarSenha ? '🙈' : '👁️'}</span>
                 </button>
               </div>
             </div>
@@ -98,7 +100,7 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <div style={{ textAlign: 'center', color: '#aaa', margin: '12px 0', fontSize: '13px' }}>ou</div>
+          <div style={{ textAlign: 'center', color: '#666', margin: '12px 0', fontSize: '13px' }}>ou</div>
           <button
             type="button"
             className="btn btn--full"

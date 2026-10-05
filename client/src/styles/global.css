@@ -1482,3 +1482,44 @@ input, select, textarea { font-family: inherit; }
   .revisao-bloco__item { grid-template-columns: 1fr; gap: 0; }
   .alert--acao { flex-wrap: wrap; }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Acessibilidade (TP4) — contraste de cores e foco visível
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Melhoria 3: contraste mínimo de 4,5:1 para texto (WCAG 2.1 — 1.4.3) ── */
+:root { --text-muted: #5C6B55; }               /* era #7A8C72 (3,6:1 no branco) */
+.muted { color: var(--text-muted); }
+.login-left__subtitle { opacity: 1; color: #E6ECE4; }
+.login-back { color: var(--text-muted); }
+.document-link { color: var(--green-dark); }
+.document-link:hover { color: #2f5429; }
+.badge-count-pink { color: #A8234B; }
+.status-badge--pendente { color: #B33F00; }
+.aa-card__disponivel { background: #2F7A27; }
+.fav-btn--ativo { background: #C0392B; border-color: #C0392B; }
+.fav-btn--ativo:hover { background: #A93226; }
+.navbar--light { background: var(--green-dark); }   /* era #5A8F47 (3,4:1 com o texto branco) */
+.conta-menu__toggle { background: rgba(0,0,0,.22); }
+.conta-menu__toggle:hover,
+.conta-menu__toggle[aria-expanded="true"] { background: rgba(0,0,0,.32); }
+.conta-menu__perfil { opacity: 1; }
+.agendamento-item__info,
+.profile-card__desc,
+.feature-card__desc { color: var(--text-muted); }
+
+/* ── Melhoria 4: foco visível na navegação por teclado (WCAG 2.1 — 2.4.7) ── */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #1B5E9E;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(255,255,255,.9);
+}
+.form-input:focus-visible,
+.form-select:focus-visible,
+.form-textarea:focus-visible {
+  outline: 2px solid #1B5E9E;
+  outline-offset: 1px;
+}

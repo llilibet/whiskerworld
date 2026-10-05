@@ -54,7 +54,7 @@ export default function AnimalDetailPage() {
               }
               <span style={{
                 position: 'absolute', top: 12, right: 12,
-                background: '#4caf50', color: '#fff',
+                background: '#2F7A27', color: '#fff',
                 borderRadius: 20, padding: '4px 12px',
                 fontSize: 12, fontWeight: 700,
               }}>✓ DISPONÍVEL</span>
@@ -79,7 +79,7 @@ export default function AnimalDetailPage() {
               {/* Descrição */}
               {animal.descricao && (
                 <div style={{ marginBottom: 20 }}>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#6b7c63', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>📝 Sobre</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#4f5e48', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.5px' }}>📝 Sobre</p>
                   <p style={{ color: '#3a3a3a', lineHeight: 1.7, fontSize: 15 }}>{animal.descricao}</p>
                 </div>
               )}
@@ -87,7 +87,7 @@ export default function AnimalDetailPage() {
               {/* Histórico */}
               {animal.historico && (
                 <div style={{ marginBottom: 24, background: '#f8faf6', borderRadius: 10, padding: '16px 18px', borderLeft: '4px solid #4caf50' }}>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#4caf50', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>📂 Histórico do Pet</p>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: '#2F7A27', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>📂 Histórico do Pet</p>
                   <p style={{ color: '#3a3a3a', lineHeight: 1.8, fontSize: 15, whiteSpace: 'pre-wrap' }}>{animal.historico}</p>
                 </div>
               )}
