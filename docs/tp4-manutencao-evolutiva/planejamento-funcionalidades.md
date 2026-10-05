@@ -6,11 +6,6 @@ O **WhiskerWorld** é um sistema web voltado ao gerenciamento de adoção de ani
 
 Este documento reúne o planejamento das duas funcionalidades, a justificativa de sua inclusão e o registro da implementação, no diretório `docs/tp4-manutencao-evolutiva/`.
 
-**Responsável:** [Preencher nome]  
-**Data da atualização:** 05/10/2026  
-**Situação:** implementação integrada à `main`, conforme confirmação da responsável; evidências e validações individuais a completar.  
-**Pull request:** [Adicionar número e link]  
-**Commit de integração:** [Adicionar hash e link]
 
 ## 2. Objetivo
 
