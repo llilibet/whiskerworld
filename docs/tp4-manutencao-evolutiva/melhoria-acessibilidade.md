@@ -28,8 +28,8 @@ As melhorias foram aplicadas sobre a versão do sistema que já inclui o redesig
 Com o sistema rodando localmente, as telas foram analisadas de três formas:
 
 1. **Auditoria automatizada** com o **Lighthouse**, do Chrome DevTools, e com o [axe-core](https://github.com/dequelabs/axe-core), que é o motor de regras usado pelo Lighthouse. Foram aplicados os critérios da WCAG 2.1, níveis A e AA.
-2. **Painel de Acessibilidade do Chrome DevTools**, que mostra o nome que um leitor de tela (NVDA, JAWS, VoiceOver, TalkBack) anuncia para cada campo e botão.
-3. **Navegação apenas com teclado** (Tab, Shift+Tab, Enter, Espaço e Esc) nos fluxos principais.
+2. **Árvore de acessibilidade do Chrome**, a mesma informação exibida no painel *Accessibility* do DevTools, que indica o nome que um leitor de tela (NVDA, JAWS, VoiceOver, TalkBack) anuncia para cada campo e botão.
+3. **Navegação apenas com teclado** (Tab e Esc) no login, no dashboard do adotante (modal de exclusão de conta) e no cadastro de animal.
 
 Foram analisadas 13 telas: login, cadastro de adotante, cadastro de animal, as etapas do agendamento, dashboard do adotante, escolha de espécie, listagem e detalhe de animal, compatibilidade, acompanhamento e painel do administrador.
 
