@@ -12,6 +12,14 @@ export default defineConfig({
       '/favoritos': { target: 'http://localhost:3000', changeOrigin: true },
       '/uploads': { target: 'http://localhost:3000', changeOrigin: true },
       '/compatibilidade': { target: 'http://localhost:3000', changeOrigin: true },
+      '/adocoes': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/acompanhamentos': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
     },
   },
   build: {

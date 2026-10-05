@@ -68,12 +68,16 @@ const agendamentosRoutes = require("./src/routes/agendamentos");
 const favoritosRoutes   = require("./src/routes/favoritos");
 const apiDashboardRoute = require("./src/routes/apiDashboard");
 const compatibilidadeRoutes = require("./src/routes/compatibilidade");
+const adocoesRoutes = require("./src/routes/adocoes");
+const acompanhamentosRoutes = require('./src/routes/acompanhamentos');
 
 app.use("/usuarios", usuariosRoutes);
 app.use("/animais", animaisRoutes);
 app.use("/agendamentos", agendamentosRoutes);
 app.use("/favoritos", favoritosRoutes);
 app.use("/compatibilidade", compatibilidadeRoutes);
+app.use("/adocoes", adocoesRoutes);
+app.use('/acompanhamentos', acompanhamentosRoutes);
 
 // Dashboard da API
 app.use("/docs", apiDashboardRoute);
