@@ -94,7 +94,7 @@ Cadastro de animal, campo **Sexo**. O balão mostra o nome que o Chrome entrega 
 
 **Solução implementada:** cada botão recebeu um `aria-label` que descreve a ação e o item, e o ícone foi marcado com `aria-hidden="true"`:
 
-| Botão | Depois, o leitor anuncia |
+| Botão | Depois, o leitor anuncia (exemplo com o animal "Luna") |
 |---|---|
 | Excluir animal | "Excluir Luna" |
 | Editar animal | "Editar Luna" |
