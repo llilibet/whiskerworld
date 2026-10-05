@@ -133,6 +133,11 @@ Além disso, os modais não fechavam com a tecla Esc, e o contorno de foco dos b
 
 **Solução implementada:** todos os links e botões ganharam um contorno azul de 3 px, com um halo branco que garante contraste sobre fundos claros e escuros. Ele usa `:focus-visible`, então aparece na navegação por teclado e não aparece no clique do mouse. Os campos de formulário ganharam um contorno azul de 2 px.
 
+Login do administrador com o campo de e-mail focado pela tecla Tab:
+
+| Antes | Depois |
+|---|---|
+| ![Foco no campo antes](evidencias-acessibilidade/antes-teclado-foco-campo.png) | ![Foco no campo depois](evidencias-acessibilidade/depois-teclado-foco-campo.png) |
 
 ### Melhoria 5 — Modais acessíveis pelo teclado
 
