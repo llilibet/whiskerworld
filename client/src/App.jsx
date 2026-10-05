@@ -9,6 +9,7 @@ import EscolhaAnimalPage from './pages/EscolhaAnimalPage';
 import AnimaisListPage from './pages/AnimaisListPage';
 import AgendarVisitaPage from './pages/AgendarVisitaPage';
 import AnimalDetailPage from './pages/AnimalDetailPage';
+import CompatibilidadePage from './pages/CompatibilidadePage';
 
 function PrivateRoute({ children, role }) {
   const token = localStorage.getItem('token');
@@ -88,6 +89,16 @@ export default function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/animal/:animalId/compatibilidade"
+          element={
+            <PrivateRoute role="ADOTANTE">
+              <CompatibilidadePage />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/agendar/:animalId"
           element={

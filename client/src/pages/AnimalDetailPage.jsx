@@ -92,6 +92,14 @@ export default function AnimalDetailPage() {
                 </div>
               )}
 
+              <button
+                className="btn btn--outline"
+                style={{ width: '100%', marginBottom: 12 }}
+                onClick={() => navigate(`/animal/${animal.id}/compatibilidade`)}
+              >
+                Verificar compatibilidade
+              </button>
+
               {/* Botões */}
               <div style={{ display: 'flex', gap: 12 }}>
                 <button
