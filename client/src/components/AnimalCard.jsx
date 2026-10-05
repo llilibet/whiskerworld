@@ -17,13 +17,13 @@ export default function AnimalCard({ animal, onEditar, onDeletar, showActions = 
       {showActions && (
         <div className="animal-card__actions">
           {onEditar && (
-            <button className="btn btn--edit" onClick={() => onEditar(animal)}>
-              ✏️ Editar
+            <button type="button" className="btn btn--edit" onClick={() => onEditar(animal)} aria-label={`Editar ${animal.nome}`}>
+              <span aria-hidden="true">✏️</span> Editar
             </button>
           )}
           {onDeletar && (
-            <button className="btn btn--delete" onClick={() => onDeletar(animal.id)}>
-              🗑️
+            <button type="button" className="btn btn--delete" onClick={() => onDeletar(animal.id)} aria-label={`Excluir ${animal.nome}`}>
+              <span aria-hidden="true">🗑️</span>
             </button>
           )}
         </div>

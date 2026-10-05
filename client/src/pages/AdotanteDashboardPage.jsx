@@ -6,6 +6,7 @@ import { favoritosService } from '../services/favoritosService';
 import { agendamentosService } from '../services/agendamentosService';
 import { usuariosService } from '../services/usuariosService';
 import { adocoesService } from '../services/adocoesService';
+import { useDialogAcessivel } from '../hooks/useDialogAcessivel';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
@@ -34,6 +35,7 @@ export default function AdotanteDashboardPage() {
   const [exclusaoAberta, setExclusaoAberta] = useState(false);
   const [excluindoConta, setExcluindoConta] = useState(false);
   const [textoConfirmacao, setTextoConfirmacao] = useState('');
+  const modalExclusaoRef = useDialogAcessivel(exclusaoAberta, () => !excluindoConta && setExclusaoAberta(false));
 
   const [adocoes, setAdocoes] = useState([]);
   const [carregandoAdocoes, setCarregandoAdocoes] = useState(true);
@@ -167,10 +169,12 @@ export default function AdotanteDashboardPage() {
               {favoritos.map(fav => (
                 <div key={fav.id} className="fav-card">
                   <button
+                    type="button"
                     className="fav-card__remove"
                     onClick={() => handleRemoverFavorito(fav.animal_id)}
                     title="Remover favorito"
-                  >✕</button>
+                    aria-label={`Remover ${fav.animal_nome} dos favoritos`}
+                  ><span aria-hidden="true">✕</span></button>
                   {fav.animal_foto
                     ? <img className="fav-card__img" src={`${BASE}${fav.animal_foto}`} alt={fav.animal_nome} />
                     : <div className="fav-card__img fav-card__img--empty">🐾</div>
@@ -338,8 +342,10 @@ export default function AdotanteDashboardPage() {
       {exclusaoAberta && (
         <div className="account-modal__backdrop" onClick={() => !excluindoConta && setExclusaoAberta(false)}>
           <section
+            ref={modalExclusaoRef}
             className="account-modal"
             role="dialog"
+            tabIndex={-1}
             aria-modal="true"
             aria-labelledby="account-modal-title"
             onClick={(e) => e.stopPropagation()}

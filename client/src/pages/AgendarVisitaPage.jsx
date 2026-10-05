@@ -190,7 +190,7 @@ export default function AgendarVisitaPage() {
           <h2 style={{ fontSize: 26, fontWeight: 700, color: '#1e2d1a', marginBottom: 10 }}>
             Visita agendada com sucesso!
           </h2>
-          <p style={{ color: '#6b7c63', marginBottom: 28 }}>
+          <p style={{ color: '#4f5e48', marginBottom: 28 }}>
             Sua visita para conhecer <strong>{animal?.nome}</strong> foi solicitada.<br />
             Aguarde a confirmação em Meus Agendamentos.
           </p>
@@ -271,8 +271,8 @@ export default function AgendarVisitaPage() {
                 <h3 className="agendar-section-title">👤 Seus Dados</h3>
                 <p className="legenda-obrigatorio"><Obrigatorio /> Campos obrigatórios</p>
                 <div className="form-group">
-                  <label className="form-label">👤 Nome completo <Obrigatorio /></label>
-                  <input
+                  <label className="form-label" htmlFor="agendar-nome-completo"><span aria-hidden="true">👤</span> Nome completo <Obrigatorio /></label>
+                  <input id="agendar-nome-completo"
                     className="form-input"
                     name="nome"
                     value={nome}
@@ -283,8 +283,8 @@ export default function AgendarVisitaPage() {
                 </div>
                 <div className="agendar-date-row">
                   <div className="form-group">
-                    <label className="form-label">📱 Telefone <Obrigatorio /></label>
-                    <input
+                    <label className="form-label" htmlFor="agendar-telefone"><span aria-hidden="true">📱</span> Telefone <Obrigatorio /></label>
+                    <input id="agendar-telefone"
                       className="form-input"
                       type="tel"
                       name="telefone"
@@ -295,8 +295,8 @@ export default function AgendarVisitaPage() {
                     />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">🆔 CPF <Obrigatorio /></label>
-                    <input
+                    <label className="form-label" htmlFor="agendar-cpf"><span aria-hidden="true">🆔</span> CPF <Obrigatorio /></label>
+                    <input id="agendar-cpf"
                       className="form-input"
                       name="cpf"
                       value={cpf}
@@ -307,8 +307,8 @@ export default function AgendarVisitaPage() {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">🎂 Sua idade <Obrigatorio /></label>
-                  <input
+                  <label className="form-label" htmlFor="agendar-sua-idade"><span aria-hidden="true">🎂</span> Sua idade <Obrigatorio /></label>
+                  <input id="agendar-sua-idade"
                     className="form-input"
                     type="number"
                     name="idadeAdotante"
@@ -329,16 +329,16 @@ export default function AgendarVisitaPage() {
                   <h3 className="agendar-section-title">🏠 Residência</h3>
                   <div className="agendar-date-row">
                     <div className="form-group">
-                      <label className="form-label">Tipo de moradia</label>
-                      <select className="form-select" value={tipoMoradia} onChange={e => setTipoMoradia(e.target.value)}>
+                      <label className="form-label" htmlFor="agendar-tipo-de-moradia">Tipo de moradia</label>
+                      <select id="agendar-tipo-de-moradia" className="form-select" value={tipoMoradia} onChange={e => setTipoMoradia(e.target.value)}>
                         <option value="CASA">Casa</option>
                         <option value="APARTAMENTO">Apartamento</option>
                         <option value="OUTRO">Outro</option>
                       </select>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Situação</label>
-                      <select className="form-select" value={moradiaPropria} onChange={e => setMoradiaPropria(e.target.value)}>
+                      <label className="form-label" htmlFor="agendar-situacao">Situação</label>
+                      <select id="agendar-situacao" className="form-select" value={moradiaPropria} onChange={e => setMoradiaPropria(e.target.value)}>
                         <option value="PROPRIA">Própria</option>
                         <option value="ALUGADA">Alugada</option>
                       </select>
@@ -346,16 +346,16 @@ export default function AgendarVisitaPage() {
                   </div>
                   <div className="agendar-date-row">
                     <div className="form-group">
-                      <label className="form-label">Tamanho da moradia</label>
-                      <select className="form-select" value={tamanhoMoradia} onChange={e => setTamanhoMoradia(e.target.value)}>
+                      <label className="form-label" htmlFor="agendar-tamanho-da-moradia">Tamanho da moradia</label>
+                      <select id="agendar-tamanho-da-moradia" className="form-select" value={tamanhoMoradia} onChange={e => setTamanhoMoradia(e.target.value)}>
                         <option value="PEQUENO">Pequeno</option>
                         <option value="MEDIO">Médio</option>
                         <option value="GRANDE">Grande</option>
                       </select>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Tem espaço externo?</label>
-                      <select className="form-select" value={temEspacoExterno} onChange={e => setTemEspacoExterno(e.target.value)}>
+                      <label className="form-label" htmlFor="agendar-tem-espaco-externo">Tem espaço externo?</label>
+                      <select id="agendar-tem-espaco-externo" className="form-select" value={temEspacoExterno} onChange={e => setTemEspacoExterno(e.target.value)}>
                         <option value="SIM">Sim (quintal / área)</option>
                         <option value="NAO">Não</option>
                       </select>
@@ -367,31 +367,31 @@ export default function AgendarVisitaPage() {
                   <h3 className="agendar-section-title">⏰ Rotina</h3>
                   <div className="agendar-date-row">
                     <div className="form-group">
-                      <label className="form-label">Horas que o pet ficaria sozinho por dia</label>
-                      <select className="form-select" value={horasSozinho} onChange={e => setHorasSozinho(e.target.value)}>
+                      <label className="form-label" htmlFor="agendar-horas-que-o">Horas que o pet ficaria sozinho por dia</label>
+                      <select id="agendar-horas-que-o" className="form-select" value={horasSozinho} onChange={e => setHorasSozinho(e.target.value)}>
                         {['0','1','2','3','4','5','6','7','8','9','10','11','12'].map(h => (
                           <option key={h} value={h}>{h}h</option>
                         ))}
                       </select>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">Já tem outros pets?</label>
-                      <select className="form-select" value={temOutrosPets} onChange={e => setTemOutrosPets(e.target.value)}>
+                      <label className="form-label" htmlFor="agendar-ja-tem-outros">Já tem outros pets?</label>
+                      <select id="agendar-ja-tem-outros" className="form-select" value={temOutrosPets} onChange={e => setTemOutrosPets(e.target.value)}>
                         <option value="NAO">Não</option>
                         <option value="SIM">Sim</option>
                       </select>
                     </div>
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Tem crianças em casa?</label>
-                    <select className="form-select" value={temCriancas} onChange={e => setTemCriancas(e.target.value)}>
+                    <label className="form-label" htmlFor="agendar-tem-criancas-em">Tem crianças em casa?</label>
+                    <select id="agendar-tem-criancas-em" className="form-select" value={temCriancas} onChange={e => setTemCriancas(e.target.value)}>
                       <option value="NAO">Não</option>
                       <option value="SIM">Sim</option>
                     </select>
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Descreva sua rotina diária (opcional)</label>
-                    <textarea
+                    <label className="form-label" htmlFor="agendar-descreva-sua-rotina">Descreva sua rotina diária (opcional)</label>
+                    <textarea id="agendar-descreva-sua-rotina"
                       className="form-textarea"
                       rows={2}
                       value={descricaoRotina}
@@ -408,24 +408,24 @@ export default function AgendarVisitaPage() {
                 <h3 className="agendar-section-title">💚 Condições de Cuidado</h3>
                 <div className="agendar-date-row">
                   <div className="form-group">
-                    <label className="form-label">Experiência com pets</label>
-                    <select className="form-select" value={experienciaPets} onChange={e => setExperienciaPets(e.target.value)}>
+                    <label className="form-label" htmlFor="agendar-experiencia-com-pets">Experiência com pets</label>
+                    <select id="agendar-experiencia-com-pets" className="form-select" value={experienciaPets} onChange={e => setExperienciaPets(e.target.value)}>
                       <option value="NENHUMA">Nenhuma</option>
                       <option value="POUCA">Pouca</option>
                       <option value="MUITA">Muita</option>
                     </select>
                   </div>
                   <div className="form-group">
-                    <label className="form-label">Tem acesso a veterinário?</label>
-                    <select className="form-select" value={temAcessoVeterinario} onChange={e => setTemAcessoVeterinario(e.target.value)}>
+                    <label className="form-label" htmlFor="agendar-tem-acesso-a">Tem acesso a veterinário?</label>
+                    <select id="agendar-tem-acesso-a" className="form-select" value={temAcessoVeterinario} onChange={e => setTemAcessoVeterinario(e.target.value)}>
                       <option value="SIM">Sim</option>
                       <option value="NAO">Não</option>
                     </select>
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Por que deseja adotar? (opcional)</label>
-                  <textarea
+                  <label className="form-label" htmlFor="agendar-por-que-deseja">Por que deseja adotar? (opcional)</label>
+                  <textarea id="agendar-por-que-deseja"
                     className="form-textarea"
                     rows={2}
                     value={motivoAdocao}
@@ -443,8 +443,8 @@ export default function AgendarVisitaPage() {
                   <p className="legenda-obrigatorio"><Obrigatorio /> Campos obrigatórios</p>
                   <div className="agendar-date-row">
                     <div className="form-group">
-                      <label className="form-label">📅 Data da visita <Obrigatorio /></label>
-                      <input
+                      <label className="form-label" htmlFor="agendar-data-da-visita"><span aria-hidden="true">📅</span> Data da visita <Obrigatorio /></label>
+                      <input id="agendar-data-da-visita"
                         className="form-input"
                         type="date"
                         name="dataVisita"
@@ -457,8 +457,8 @@ export default function AgendarVisitaPage() {
                       <p className="form-hint">📌 Segunda a Sábado (Domingo não disponível)</p>
                     </div>
                     <div className="form-group">
-                      <label className="form-label">🕐 Horário <Obrigatorio /></label>
-                      <select
+                      <label className="form-label" htmlFor="agendar-horario"><span aria-hidden="true">🕐</span> Horário <Obrigatorio /></label>
+                      <select id="agendar-horario"
                         className="form-select"
                         value={horaVisita}
                         onChange={e => setHoraVisita(e.target.value)}
@@ -481,8 +481,8 @@ export default function AgendarVisitaPage() {
                 <div className="agendar-form-card">
                   <h3 className="agendar-section-title">💬 Informação Adicional</h3>
                   <div className="form-group">
-                    <label className="form-label">Observações (opcional)</label>
-                    <textarea
+                    <label className="form-label" htmlFor="agendar-observacoes-opcional">Observações (opcional)</label>
+                    <textarea id="agendar-observacoes-opcional"
                       className="form-textarea"
                       rows={3}
                       value={observacoes}

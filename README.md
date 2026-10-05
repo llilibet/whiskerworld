@@ -9,6 +9,7 @@ Whiskerworld é um sistema web para aproximar adotantes, ONGs e administradores 
 - Seguranca: senhas com `bcrypt`, autenticacao JWT e CORS configuravel por ambiente.
 - Responsividade: frontend React/Vite com estilos responsivos para apresentacao em desktop e mobile.
 - Separacao de responsabilidades: frontend em `client/`, backend Express em `backend/`.
+- Acessibilidade: formularios e botoes compativeis com leitores de tela, foco visivel e modais acessiveis pelo teclado, e contraste de cores WCAG 2.1 AA (ver [Acessibilidade](#8-acessibilidade)).
 
 ---
 
@@ -125,11 +126,12 @@ whiskerworld/
 ├── client/                   # Frontend React + Vite
 │   ├── src/
 │   │   ├── components/       # Navbar, Footer, AnimalCard
-│   │   ├── hooks/            # useAuth, useAnimais
+│   │   ├── hooks/            # useAuth, useAnimais, useDialogAcessivel
 │   │   ├── pages/            # Páginas da aplicação
 │   │   ├── services/         # Camada de comunicação com a API
 │   │   ├── firebase.js       # Configuração Firebase cliente
 │   │   └── App.jsx           # Rotas React Router
+│   ├── tests/                # Testes do frontend (acessibilidade)
 │   └── vite.config.js        # Proxy Vite → backend :3000
 ├── docs/
 │   ├── tp1-manutencao-corretiva/
@@ -139,7 +141,14 @@ whiskerworld/
 │   │
 │   ├── tp2-manutencao-preventiva/
 │   │   └── diagnostico-manutencao-preventiva.md
+│   ├── tp4-manutencao-evolutiva/
+│   │   ├── evidencias/
+│   │   ├── evidencias-acessibilidade/
+│   │   ├── melhoria-acessibilidade.md
+│   │   ├── planejamento-funcionalidades.md
+│   │   └── redesign/
 │   ├── apresentacao-sistema.md 
+├── CHANGELOG.md              # Histórico de versões
 ├── .env                      # Variáveis de ambiente (não versionar)
 ├── package.json              # Scripts e dependências do backend
 └── vercel.json               # Configuração de deploy Vercel
@@ -177,3 +186,26 @@ whiskerworld/
 | `ADMIN` | Painel admin, cadastro/edição de animais, gestão de agendamentos |
 
 O tipo é definido no cadastro e armazenado como **custom claim** no Firebase Auth.
+
+---
+
+## 8. Acessibilidade
+
+O Whiskerworld segue as diretrizes **WCAG 2.1, níveis A e AA**. A auditoria de acessibilidade não aponta nenhum problema nas 13 telas do sistema.
+
+| Recurso | O que garante |
+|---|---|
+| **Rótulos nos campos** | Todo campo de formulário tem rótulo associado (`<label htmlFor>`), e o leitor de tela anuncia o nome do campo, não o placeholder |
+| **Botões só com ícone** | Botões como 🗑️, ✔, ✖, ✕ e 👁️ têm `aria-label` descritivo, por exemplo "Excluir Luna" ou "Confirmar agendamento de Alicia de Souza para Luna" |
+| **Contraste de cores** | Todos os textos têm contraste mínimo de 4,5:1 |
+| **Foco visível** | Contorno azul de 3 px no elemento focado pelo teclado (`:focus-visible`) |
+| **Modais pelo teclado** | Os modais recebem o foco ao abrir, mantêm o Tab dentro deles, fecham com Esc e devolvem o foco ao botão de origem (hook `useDialogAcessivel`) |
+
+Para rodar os testes de acessibilidade:
+
+```bash
+cd client
+npm test
+```
+
+A justificativa da melhoria, os problemas corrigidos e as evidências de antes e depois estão em [`docs/tp4-manutencao-evolutiva/melhoria-acessibilidade.md`](docs/tp4-manutencao-evolutiva/melhoria-acessibilidade.md). O histórico de versões está no [`CHANGELOG.md`](CHANGELOG.md).

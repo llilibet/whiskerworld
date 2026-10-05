@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { usuariosService } from '../services/usuariosService';
+import { useDialogAcessivel } from '../hooks/useDialogAcessivel';
 
 export default function CadastroPage() {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ export default function CadastroPage() {
   };
 
   const fecharDocumento = () => setDocumentoAberto(null);
+  const documentoRef = useDialogAcessivel(Boolean(documentoAberto), fecharDocumento);
 
   return (
     <div className="page page--centered">
@@ -51,16 +53,16 @@ export default function CadastroPage() {
         <form onSubmit={handleSubmit}>
           <p className="legenda-obrigatorio"><span className="obrigatorio" aria-hidden="true">*</span> Campos obrigatórios</p>
           <div className="form-group">
-            <label className="form-label">Nome <span className="obrigatorio" aria-hidden="true">*</span></label>
-            <input className="form-input" name="nome" value={form.nome} onChange={handleChange} required />
+            <label className="form-label" htmlFor="cadastro-nome">Nome <span className="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="cadastro-nome" className="form-input" name="nome" value={form.nome} onChange={handleChange} required />
           </div>
           <div className="form-group">
-            <label className="form-label">E-mail <span className="obrigatorio" aria-hidden="true">*</span></label>
-            <input className="form-input" type="email" name="email" value={form.email} onChange={handleChange} required />
+            <label className="form-label" htmlFor="cadastro-e-mail">E-mail <span className="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="cadastro-e-mail" className="form-input" type="email" name="email" value={form.email} onChange={handleChange} required />
           </div>
           <div className="form-group">
-            <label className="form-label">Senha <span className="obrigatorio" aria-hidden="true">*</span></label>
-            <input className="form-input" type="password" name="senha" value={form.senha} onChange={handleChange} required />
+            <label className="form-label" htmlFor="cadastro-senha">Senha <span className="obrigatorio" aria-hidden="true">*</span></label>
+            <input id="cadastro-senha" className="form-input" type="password" name="senha" value={form.senha} onChange={handleChange} required />
           </div>
 
           <div className="form-group">
@@ -87,8 +89,10 @@ export default function CadastroPage() {
       {documentoAberto && (
         <div className="document-modal__backdrop" onClick={fecharDocumento}>
           <section
+            ref={documentoRef}
             className="document-modal"
             role="dialog"
+            tabIndex={-1}
             aria-modal="true"
             aria-labelledby="document-modal-title"
             onClick={(e) => e.stopPropagation()}

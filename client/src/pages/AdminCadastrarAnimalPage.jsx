@@ -112,8 +112,8 @@ export default function AdminCadastrarAnimalPage() {
               <h2 className="form-section__title">📋 Informações Básicas</h2>
 
               <div className="form-group">
-                <label className="form-label">🏷️ Nome do Animal <span className="obrigatorio" aria-hidden="true">*</span></label>
-                <input
+                <label className="form-label" htmlFor="animal-nome-do-animal"><span aria-hidden="true">🏷️</span> Nome do Animal <span className="obrigatorio" aria-hidden="true">*</span></label>
+                <input id="animal-nome-do-animal"
                   className="form-input"
                   name="nome"
                   placeholder="Ex: Luna, Thor, Mel..."
@@ -125,9 +125,9 @@ export default function AdminCadastrarAnimalPage() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">📅 Idade <span className="obrigatorio" aria-hidden="true">*</span></label>
+                  <label className="form-label" htmlFor="animal-idade"><span aria-hidden="true">📅</span> Idade <span className="obrigatorio" aria-hidden="true">*</span></label>
                   <div style={{ display: 'flex', gap: 8 }}>
-                    <input
+                    <input id="animal-idade"
                       className="form-input"
                       name="idadeNum"
                       type="number"
@@ -141,6 +141,7 @@ export default function AdminCadastrarAnimalPage() {
                     <select
                       className="form-select"
                       name="idadeUnidade"
+                      aria-label="Unidade da idade"
                       value={form.idadeUnidade}
                       onChange={handleChange}
                       style={{ flex: 1 }}
@@ -151,8 +152,8 @@ export default function AdminCadastrarAnimalPage() {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">⚧ Sexo <span className="obrigatorio" aria-hidden="true">*</span></label>
-                  <select className="form-select" name="sexo" value={form.sexo} onChange={handleChange} required>
+                  <label className="form-label" htmlFor="animal-sexo"><span aria-hidden="true">⚧</span> Sexo <span className="obrigatorio" aria-hidden="true">*</span></label>
+                  <select id="animal-sexo" className="form-select" name="sexo" value={form.sexo} onChange={handleChange} required>
                     <option value="">Selecione o sexo</option>
                     <option value="MACHO">Macho</option>
                     <option value="FEMEA">Fêmea</option>
@@ -162,16 +163,16 @@ export default function AdminCadastrarAnimalPage() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">🐾 Tipo de Animal <span className="obrigatorio" aria-hidden="true">*</span></label>
-                  <select className="form-select" name="tipo" value={form.tipo} onChange={handleChange} required>
+                  <label className="form-label" htmlFor="animal-tipo-de-animal"><span aria-hidden="true">🐾</span> Tipo de Animal <span className="obrigatorio" aria-hidden="true">*</span></label>
+                  <select id="animal-tipo-de-animal" className="form-select" name="tipo" value={form.tipo} onChange={handleChange} required>
                     <option value="">Selecione o tipo</option>
                     <option value="GATO">Gato</option>
                     <option value="CAO">Cão</option>
                   </select>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">📏 Porte <span className="obrigatorio" aria-hidden="true">*</span></label>
-                  <select className="form-select" name="porte" value={form.porte} onChange={handleChange} required>
+                  <label className="form-label" htmlFor="animal-porte"><span aria-hidden="true">📏</span> Porte <span className="obrigatorio" aria-hidden="true">*</span></label>
+                  <select id="animal-porte" className="form-select" name="porte" value={form.porte} onChange={handleChange} required>
                     <option value="">Selecione o porte</option>
                     <option value="PEQUENO">Pequeno</option>
                     <option value="MEDIO">Médio</option>
@@ -182,8 +183,8 @@ export default function AdminCadastrarAnimalPage() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">🧬 Raça</label>
-                  <input
+                  <label className="form-label" htmlFor="animal-raca"><span aria-hidden="true">🧬</span> Raça</label>
+                  <input id="animal-raca"
                     className="form-input"
                     name="raca"
                     placeholder="Ex: Labrador, Siamês, SRD..."
@@ -192,8 +193,8 @@ export default function AdminCadastrarAnimalPage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">💉 Vacinado?</label>
-                  <select className="form-select" name="vacinado" value={form.vacinado} onChange={handleChange}>
+                  <label className="form-label" htmlFor="animal-vacinado"><span aria-hidden="true">💉</span> Vacinado?</label>
+                  <select id="animal-vacinado" className="form-select" name="vacinado" value={form.vacinado} onChange={handleChange}>
                     <option value="0">❌ Não</option>
                     <option value="1">✅ Sim</option>
                   </select>
@@ -201,8 +202,8 @@ export default function AdminCadastrarAnimalPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">📊 Status</label>
-                <select className="form-select" name="status" value={form.status} onChange={handleChange}>
+                <label className="form-label" htmlFor="animal-status"><span aria-hidden="true">📊</span> Status</label>
+                <select id="animal-status" className="form-select" name="status" value={form.status} onChange={handleChange}>
                   <option value="DISPONIVEL">✅ Disponível</option>
                   <option value="EM_PROCESSO">⏳ Em Processo de Adoção</option>
                   <option value="ADOTADO">❤️ Adotado</option>
@@ -210,8 +211,8 @@ export default function AdminCadastrarAnimalPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">📝 Descrição <span className="obrigatorio" aria-hidden="true">*</span></label>
-                <textarea
+                <label className="form-label" htmlFor="animal-descricao"><span aria-hidden="true">📝</span> Descrição <span className="obrigatorio" aria-hidden="true">*</span></label>
+                <textarea id="animal-descricao"
                   className="form-textarea"
                   name="descricao"
                   rows={4}
@@ -223,8 +224,8 @@ export default function AdminCadastrarAnimalPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">📂 Histórico do Pet <span className="obrigatorio" aria-hidden="true">*</span></label>
-                <textarea
+                <label className="form-label" htmlFor="animal-historico-do-pet"><span aria-hidden="true">📂</span> Histórico do Pet <span className="obrigatorio" aria-hidden="true">*</span></label>
+                <textarea id="animal-historico-do-pet"
                   className="form-textarea"
                   name="historico"
                   rows={4}

@@ -106,7 +106,7 @@ export default function AnimaisListPage() {
         <div style={{ maxWidth: 680, margin: '0 auto 28px', display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
             {/* Espécie: permite alternar entre todos e cada espécie sem voltar */}
-            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Espécie:</span>
+            <span style={{ fontSize: 13, color: '#4f5e48', fontWeight: 600 }}>Espécie:</span>
             {[['TODOS', '🐾 Todos'], ['GATO', '🐱 Gatos'], ['CAO', '🐶 Cães']].map(([val, label]) => (
               <button
                 key={val}
@@ -121,7 +121,7 @@ export default function AnimaisListPage() {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
             {/* Sexo */}
-            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Sexo:</span>
+            <span style={{ fontSize: 13, color: '#4f5e48', fontWeight: 600 }}>Sexo:</span>
             {[['', 'Todos'], ['MACHO', '♂ Macho'], ['FEMEA', '♀ Fêmea']].map(([val, label]) => (
               <button
                 key={val}
@@ -135,7 +135,7 @@ export default function AnimaisListPage() {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
             {/* Porte */}
-            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Porte:</span>
+            <span style={{ fontSize: 13, color: '#4f5e48', fontWeight: 600 }}>Porte:</span>
             {[['', 'Todos'], ['PEQUENO', 'Pequeno'], ['MEDIO', 'Médio'], ['GRANDE', 'Grande']].map(([val, label]) => (
               <button
                 key={val}
@@ -149,7 +149,7 @@ export default function AnimaisListPage() {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
             {/* Idade */}
-            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Idade:</span>
+            <span style={{ fontSize: 13, color: '#4f5e48', fontWeight: 600 }}>Idade:</span>
             {[['', 'Todos'], ['meses', 'Filhote (meses)'], ['anos', 'Adulto (anos)']].map(([val, label]) => (
               <button
                 key={val}
