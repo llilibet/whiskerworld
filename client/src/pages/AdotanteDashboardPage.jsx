@@ -5,6 +5,7 @@ import { getUsuarioLogado } from '../services/api';
 import { favoritosService } from '../services/favoritosService';
 import { agendamentosService } from '../services/agendamentosService';
 import { usuariosService } from '../services/usuariosService';
+import { adocoesService } from '../services/adocoesService';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
@@ -30,6 +31,37 @@ export default function AdotanteDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [exclusaoAberta, setExclusaoAberta] = useState(false);
   const [excluindoConta, setExcluindoConta] = useState(false);
+
+  const [adocoes, setAdocoes] = useState([]);
+  const [carregandoAdocoes, setCarregandoAdocoes] = useState(true);
+  const [erroAdocoes, setErroAdocoes] = useState('');
+
+  useEffect(() => {
+    let ativo = true;
+
+    adocoesService.listarMinhas()
+      .then((dados) => {
+        if (ativo) {
+          setAdocoes(dados || []);
+        }
+      })
+      .catch((erro) => {
+        if (ativo) {
+          setErroAdocoes(
+            erro.message || 'Não foi possível carregar suas adoções.'
+          );
+        }
+      })
+      .finally(() => {
+        if (ativo) {
+          setCarregandoAdocoes(false);
+        }
+      });
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -203,6 +235,74 @@ export default function AdotanteDashboardPage() {
             </div>
           )}
         </div>
+
+        {/* Minhas adoções */}
+        <section className="fav-panel">
+          <div className="fav-panel__header">
+            <h2 className="fav-panel__title">❤️ Minhas adoções</h2>
+
+            {!carregandoAdocoes && !erroAdocoes && (
+              <span className="badge-count-green">
+                {adocoes.length} {adocoes.length === 1 ? 'adoção' : 'adoções'}
+              </span>
+            )}
+          </div>
+
+          {carregandoAdocoes ? (
+            <p className="muted">Carregando suas adoções...</p>
+          ) : erroAdocoes ? (
+            <p role="alert">{erroAdocoes}</p>
+          ) : adocoes.length === 0 ? (
+            <p className="muted">
+              Você ainda não possui adoções concluídas. Elas aparecerão aqui
+              após o registro pelo administrador.
+            </p>
+          ) : (
+            <div className="agend-list">
+              {adocoes.map((adocao) => (
+                <div key={adocao.id} className="agend-item">
+                  <div className="agend-item__info">
+                    <p className="agend-item__animal">
+                      🐾 {adocao.nome_animal || 'Animal adotado'}
+                    </p>
+
+                    <p className="agend-item__date">
+                      Adoção registrada em{' '}
+                      {adocao.data_adocao
+                        ? new Date(adocao.data_adocao).toLocaleDateString('pt-BR')
+                        : 'data não informada'}
+                    </p>
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      alignItems: 'center',
+                      gap: 12,
+                    }}
+                  >
+                    <span className="status-badge status-badge--confirmado">
+                      Adoção aprovada
+                    </span>
+
+                    <button
+                      type="button"
+                      className="btn btn--green"
+                      onClick={() =>
+                        navigate(
+                          `/adocoes/${encodeURIComponent(adocao.id)}/acompanhamento`
+                        )
+                      }
+                    >
+                      Registrar acompanhamento
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
         <div className="fav-panel">
           <div className="fav-panel__header">
