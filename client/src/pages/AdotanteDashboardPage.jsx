@@ -9,6 +9,8 @@ import { adocoesService } from '../services/adocoesService';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
+const PALAVRA_CONFIRMACAO = 'EXCLUIR';
+
 const STATUS_MAP = {
   PENDENTE:   { label: 'Pendente',   cls: 'status-badge--pendente' },
   CONFIRMADO: { label: 'Confirmado', cls: 'status-badge--confirmado' },
@@ -31,6 +33,7 @@ export default function AdotanteDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [exclusaoAberta, setExclusaoAberta] = useState(false);
   const [excluindoConta, setExcluindoConta] = useState(false);
+  const [textoConfirmacao, setTextoConfirmacao] = useState('');
 
   const [adocoes, setAdocoes] = useState([]);
   const [carregandoAdocoes, setCarregandoAdocoes] = useState(true);
@@ -127,7 +130,7 @@ export default function AdotanteDashboardPage() {
             <p className="welcome-card__greeting">🐾 Bem-vinda(o) de volta,</p>
             <h1 className="welcome-card__name">{usuario?.nome || 'Adotante'}</h1>
           </div>
-          <button className="btn btn--outline-red" onClick={handleLogout}>← Sair</button>
+          <button className="btn btn--outline-gray" onClick={handleLogout}>← Sair</button>
         </div>
 
         {/* ── Explore Banner ── */}
@@ -304,15 +307,32 @@ export default function AdotanteDashboardPage() {
           )}
         </section>
 
-        <div className="fav-panel">
-          <div className="fav-panel__header">
-            <h2 className="fav-panel__title">Minha conta</h2>
+        {/* ── Zona de perigo: separada das ações comuns ── */}
+        <section className="zona-perigo" aria-labelledby="zona-perigo-titulo">
+          <div className="zona-perigo__cabecalho">
+            <span className="zona-perigo__icone" aria-hidden="true">⚠️</span>
+            <div>
+              <h2 id="zona-perigo-titulo" className="zona-perigo__titulo">Zona de perigo</h2>
+              <p className="zona-perigo__desc">
+                Ações desta seção são <strong>permanentes</strong> e não podem ser desfeitas.
+              </p>
+            </div>
           </div>
-          <p className="muted">A exclusão remove sua conta e os dados relacionados.</p>
-          <button className="btn btn--outline-red" onClick={() => setExclusaoAberta(true)}>
-            Excluir minha conta
-          </button>
-        </div>
+          <div className="zona-perigo__acao">
+            <div>
+              <p className="zona-perigo__acao-titulo">Excluir minha conta</p>
+              <p className="zona-perigo__acao-desc">
+                Remove sua conta, seus favoritos e seus agendamentos.
+              </p>
+            </div>
+            <button
+              className="btn btn--outline-red"
+              onClick={() => { setTextoConfirmacao(''); setExclusaoAberta(true); }}
+            >
+              Excluir conta…
+            </button>
+          </div>
+        </section>
       </main>
 
       {exclusaoAberta && (
@@ -334,6 +354,17 @@ export default function AdotanteDashboardPage() {
               <span aria-hidden="true">✓</span>
               <p><strong>O que será removido:</strong> seus favoritos, agendamentos e dados de acesso.</p>
             </div>
+            <label className="account-modal__confirmacao">
+              <span>Para confirmar, digite <strong>{PALAVRA_CONFIRMACAO}</strong> no campo abaixo:</span>
+              <input
+                className="form-input"
+                value={textoConfirmacao}
+                onChange={(e) => setTextoConfirmacao(e.target.value)}
+                placeholder={PALAVRA_CONFIRMACAO}
+                autoFocus
+                disabled={excluindoConta}
+              />
+            </label>
             <div className="account-modal__actions">
               <button
                 type="button"
@@ -347,7 +378,7 @@ export default function AdotanteDashboardPage() {
                 type="button"
                 className="btn btn--danger"
                 onClick={handleExcluirConta}
-                disabled={excluindoConta}
+                disabled={excluindoConta || textoConfirmacao.trim().toUpperCase() !== PALAVRA_CONFIRMACAO}
               >
                 {excluindoConta ? 'Excluindo...' : 'Sim, excluir conta'}
               </button>

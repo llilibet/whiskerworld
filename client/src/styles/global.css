@@ -1302,3 +1302,183 @@ input, select, textarea { font-family: inherit; }
     min-height: auto;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Redesign — melhorias da avaliação heurística (TP4)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── P01 — Menu da conta / troca de perfil (H3) ───────────────── */
+.navbar__acoes { display: flex; align-items: center; gap: 12px; }
+.conta-menu { position: relative; }
+.conta-menu__toggle {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 12px 6px 6px; border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.14); border: 1.5px solid rgba(255,255,255,.55);
+  color: #fff; text-align: left; transition: background .15s;
+}
+.conta-menu__toggle:hover,
+.conta-menu__toggle[aria-expanded="true"] { background: rgba(255,255,255,.26); }
+.conta-menu__avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.conta-menu__info { display: flex; flex-direction: column; line-height: 1.2; }
+.conta-menu__nome { font-size: 13px; font-weight: 700; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conta-menu__perfil { font-size: 11px; opacity: .85; }
+.conta-menu__seta { font-size: 12px; }
+.conta-menu__dropdown {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 50;
+  width: 260px; background: #fff; border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg); padding: 8px; border: 1px solid #e5eee0;
+}
+.conta-menu__secao { font-size: 12px; color: var(--text-muted); padding: 8px 10px 6px; }
+.conta-menu__item {
+  display: block; width: 100%; text-align: left; padding: 10px; border-radius: var(--radius-sm);
+  font-size: 14px; font-weight: 500; color: var(--text-dark); background: none; border: none;
+}
+.conta-menu__item:hover { background: var(--green-pale); }
+.conta-menu__item--destaque { color: var(--green-dark); font-weight: 700; }
+.conta-menu__divisor { border: none; border-top: 1px solid #eee; margin: 6px 0; }
+
+/* ── P02 — Opções de acesso padronizadas (H4) ─────────────────── */
+.login-page--admin .login-left { background: var(--green-dark); }
+
+/* ── P03 — Indicação de campos obrigatórios (H4) ──────────────── */
+.obrigatorio { color: #C0392B; font-weight: 700; margin-left: 2px; }
+.legenda-obrigatorio { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; text-align: left; }
+
+/* ── P08 — Estados padronizados dos campos (H8) ───────────────── */
+/* Vazio e preenchido têm a mesma aparência; só foco e erro mudam. */
+.form-input, .form-select, .form-textarea { background-color: #fff; border-color: #D3DFCD; }
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
+  -webkit-text-fill-color: var(--text-dark);
+  caret-color: var(--text-dark);
+  transition: background-color 9999s ease-out 0s;
+}
+.form-input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 1000px #fff inset, 0 0 0 3px rgba(94,158,74,.2); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(94,158,74,.2);
+}
+.form-input:user-invalid, .form-select:user-invalid, .form-textarea:user-invalid {
+  border-color: #C0392B; background-color: #fff;
+}
+.form-input:user-invalid:focus, .form-select:user-invalid:focus, .form-textarea:user-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(192,57,43,.15);
+}
+.form-input:disabled, .form-select:disabled, .form-textarea:disabled {
+  background-color: #F4F6F3; color: var(--text-muted); cursor: not-allowed;
+}
+
+/* ── P04 — Zona de perigo para exclusão da conta (H5) ─────────── */
+.zona-perigo {
+  margin-top: 36px; border: 1.5px solid #F0C4BE; border-radius: var(--radius-lg);
+  background: #FFF8F7; padding: 22px 24px;
+}
+.zona-perigo__cabecalho { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; }
+.zona-perigo__icone { font-size: 22px; }
+.zona-perigo__titulo { font-size: 17px; font-weight: 700; color: #A93226; }
+.zona-perigo__desc { font-size: 13px; color: #7a4a44; }
+.zona-perigo__acao {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  background: #fff; border: 1px solid #F3D5D1; border-radius: var(--radius-md); padding: 14px 16px;
+}
+.zona-perigo__acao-titulo { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+.zona-perigo__acao-desc { font-size: 12px; color: var(--text-muted); }
+.account-modal__confirmacao {
+  display: flex; flex-direction: column; gap: 8px; margin-top: 18px;
+  font-size: 13px; color: var(--text-mid); text-align: left;
+}
+
+/* ── P05 — Estado do preview de imagem (H5) ───────────────────── */
+.foto-preview { width: 150px; }
+.foto-preview__placeholder {
+  width: 140px; height: 140px; border-radius: 12px;
+  background: #F6F8F5; border: 2px dashed #C9D6C2; color: var(--text-muted);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  font-size: 30px; text-align: center; padding: 10px;
+}
+.foto-preview__placeholder-texto { font-size: 11px; font-weight: 600; line-height: 1.3; }
+.foto-preview__img { width: 140px; height: 140px; border: 3px solid var(--green-mid); }
+.foto-preview__status { font-size: 11px; color: var(--text-muted); text-align: center; }
+.foto-preview__status--ok { color: var(--green-dark); font-weight: 700; }
+.foto-preview__arquivo { font-size: 11px; color: var(--text-muted); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.foto-upload-zone:focus-visible { outline: 3px solid rgba(94,158,74,.35); outline-offset: 2px; }
+.foto-upload-zone--preenchida { border-style: solid; border-color: var(--green-mid); background: #EEF7E9; }
+
+/* ── P06 — Acesso direto à listagem geral (H7) ────────────────── */
+.ver-todos-card {
+  display: flex; align-items: center; gap: 18px; width: 100%; max-width: 620px;
+  margin: 0 auto 18px; padding: 18px 24px; border-radius: var(--radius-lg);
+  background: var(--green-dark); color: #fff; text-align: left;
+  box-shadow: var(--shadow-md); transition: transform .15s, box-shadow .15s; position: relative; z-index: 1;
+}
+.ver-todos-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.ver-todos-card__emoji { font-size: 30px; }
+.ver-todos-card__texto { display: flex; flex-direction: column; flex: 1; }
+.ver-todos-card__texto strong { font-size: 18px; }
+.ver-todos-card__texto span { font-size: 13px; opacity: .85; }
+.ver-todos-card__seta { font-size: 22px; font-weight: 700; }
+.escolha-ou { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── P07 — Agendamento em etapas (H7) ─────────────────────────── */
+.stepper { display: flex; list-style: none; gap: 6px; margin: 8px 0 10px; }
+.stepper__item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  position: relative; text-align: center;
+}
+.stepper__item:not(:last-child)::after {
+  content: ""; position: absolute; top: 15px; left: calc(50% + 20px); right: calc(-50% + 20px);
+  height: 2px; background: #D7E3D1;
+}
+.stepper__item--feita:not(:last-child)::after { background: var(--green-mid); }
+.stepper__numero {
+  width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; background: #fff; border: 2px solid #D7E3D1; color: var(--text-muted);
+}
+.stepper__item--atual .stepper__numero { background: var(--green-dark); border-color: var(--green-dark); color: #fff; }
+.stepper__item--feita .stepper__numero { background: var(--green-pale); border-color: var(--green-mid); color: var(--green-dark); }
+.stepper__titulo { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+.stepper__item--atual .stepper__titulo { color: var(--green-dark); }
+.stepper__resumo { text-align: center; font-size: 14px; color: var(--text-mid); margin-bottom: 18px; }
+.stepper-acoes { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.revisao-bloco { border: 1px solid #E3ECDE; border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 12px; }
+.revisao-bloco__cabecalho { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.revisao-bloco__titulo { font-size: 14px; font-weight: 700; color: var(--green-dark); }
+.revisao-bloco__lista { display: grid; gap: 4px; }
+.revisao-bloco__item { display: grid; grid-template-columns: 170px 1fr; gap: 8px; font-size: 13px; }
+.revisao-bloco__item dt { color: var(--text-muted); }
+.revisao-bloco__item dd { color: var(--text-dark); font-weight: 500; }
+
+/* ── P09 — Botão de favorito visível (H8) ─────────────────────── */
+.fav-btn {
+  position: absolute; top: 10px; right: 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px 6px 10px; border-radius: var(--radius-pill);
+  background: #fff; border: 2px solid #E05555; color: #C0392B;
+  font-size: 12px; font-weight: 700; box-shadow: 0 2px 10px rgba(0,0,0,.18);
+  transition: transform .15s, background .15s, color .15s;
+}
+.fav-btn:hover { transform: scale(1.06); background: #FFF0F0; }
+.fav-btn:focus-visible { outline: 3px solid rgba(224,85,85,.4); outline-offset: 2px; }
+.fav-btn__icone { font-size: 16px; line-height: 1; }
+.fav-btn--ativo { background: #E05555; color: #fff; }
+.fav-btn--ativo:hover { background: #C94444; }
+
+/* ── P10 — Erro com orientação de recuperação (H9) ────────────── */
+.alert--acao { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+.alert__icone { font-size: 22px; line-height: 1; }
+.alert__corpo { flex: 1; }
+.alert__corpo p { margin-top: 2px; }
+.alert__titulo { display: block; font-size: 14px; }
+.alert__dica { font-size: 12px; opacity: .85; }
+.alert--acao .btn { align-self: center; white-space: nowrap; padding: 8px 14px; font-size: 12px; }
+
+@media (max-width: 600px) {
+  .conta-menu__info { display: none; }
+  .stepper__titulo { display: none; }
+  .revisao-bloco__item { grid-template-columns: 1fr; gap: 0; }
+  .alert--acao { flex-wrap: wrap; }
+}

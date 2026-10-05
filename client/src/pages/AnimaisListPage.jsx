@@ -3,10 +3,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { animaisService } from '../services/animaisService';
 import { favoritosService } from '../services/favoritosService';
 import { getUsuarioLogado } from '../services/api';
+import ContaMenu from '../components/ContaMenu';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
 const TIPO_CONFIG = {
+  TODOS: {
+    emoji: '🐾',
+    titulo: 'Todos os animais',
+    subtitulo: 'Gatos e cães esperando por um lar',
+    empty: 'Nenhum animal disponível',
+    emptySub: 'No momento não temos animais para adoção. Volte em breve!',
+  },
   GATO: {
     emoji: '🐱',
     titulo: 'Gatos',
@@ -26,8 +34,8 @@ const TIPO_CONFIG = {
 export default function AnimaisListPage() {
   const { tipo } = useParams();
   const navigate = useNavigate();
-  const tipoNorm = (tipo || 'GATO').toUpperCase();
-  const config = TIPO_CONFIG[tipoNorm] || TIPO_CONFIG.GATO;
+  const tipoNorm = TIPO_CONFIG[(tipo || '').toUpperCase()] ? tipo.toUpperCase() : 'TODOS';
+  const config = TIPO_CONFIG[tipoNorm];
   const usuario = getUsuarioLogado();
 
   const [animais, setAnimais] = useState([]);
@@ -42,7 +50,7 @@ export default function AnimaisListPage() {
     try {
       const logado = getUsuarioLogado();
       const [lista, favs] = await Promise.all([
-        animaisService.listar(tipoNorm),
+        animaisService.listar(tipoNorm === 'TODOS' ? undefined : tipoNorm),
         logado ? favoritosService.listar() : Promise.resolve([]),
       ]);
       setAnimais(lista || []);
@@ -78,7 +86,10 @@ export default function AnimaisListPage() {
         <div className="navbar__logo">
           <img src="/logo.png" alt="Whiskerworld" className="navbar__logo-img" />
         </div>
-        <button className="btn btn--outline-white" onClick={() => navigate(-1)}>← Voltar</button>
+        <div className="navbar__acoes">
+          <button className="btn btn--outline-white" onClick={() => navigate('/animais')}>← Voltar</button>
+          <ContaMenu />
+        </div>
       </nav>
 
       <main className="animais-main">
@@ -93,6 +104,21 @@ export default function AnimaisListPage() {
 
         {/* ── Filtros ── */}
         <div style={{ maxWidth: 680, margin: '0 auto 28px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
+            {/* Espécie: permite alternar entre todos e cada espécie sem voltar */}
+            <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Espécie:</span>
+            {[['TODOS', '🐾 Todos'], ['GATO', '🐱 Gatos'], ['CAO', '🐶 Cães']].map(([val, label]) => (
+              <button
+                key={val}
+                onClick={() => navigate(`/animais/${val}`, { replace: true })}
+                className={`btn btn--xs ${tipoNorm === val ? 'btn--green' : 'btn--xs-outline'}`}
+                aria-pressed={tipoNorm === val}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
             {/* Sexo */}
             <span style={{ fontSize: 13, color: '#6b7c63', fontWeight: 600 }}>Sexo:</span>
@@ -201,11 +227,14 @@ function AnimalCardAdotante({ animal, isFav, onToggleFav, onAgendar }) {
         }
         <span className="aa-card__disponivel">✓ DISPONÍVEL</span>
         <button
-          className={`aa-card__heart${isFav ? ' aa-card__heart--active' : ''}`}
+          type="button"
+          className={`fav-btn${isFav ? ' fav-btn--ativo' : ''}`}
           onClick={onToggleFav}
+          aria-pressed={isFav}
           title={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
         >
-          {isFav ? '❤️' : '🤍'}
+          <span className="fav-btn__icone" aria-hidden="true">{isFav ? '♥' : '♡'}</span>
+          <span className="fav-btn__texto">{isFav ? 'Favoritado' : 'Favoritar'}</span>
         </button>
       </div>
 

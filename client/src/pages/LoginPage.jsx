@@ -55,8 +55,9 @@ export default function LoginPage() {
           {erro && <div className="alert alert--error">{erro}</div>}
 
           <form className="login-form" onSubmit={handleSubmit}>
+            <p className="legenda-obrigatorio"><span className="obrigatorio" aria-hidden="true">*</span> Campos obrigatórios</p>
             <div className="form-group">
-              <label className="form-label">🔵 E-mail</label>
+              <label className="form-label">🔵 E-mail <span className="obrigatorio" aria-hidden="true">*</span></label>
               <input
                 className="form-input"
                 type="email"
@@ -68,7 +69,7 @@ export default function LoginPage() {
             </div>
 
             <div className="form-group">
-              <label className="form-label">🔒 Senha</label>
+              <label className="form-label">🔒 Senha <span className="obrigatorio" aria-hidden="true">*</span></label>
               <div className="form-input-wrapper">
                 <input
                   className="form-input"
@@ -90,7 +91,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className={`btn btn--full ${isAdmin ? 'btn--orange' : 'btn--green'}`}
+              className="btn btn--full btn--green"
               disabled={loading}
             >
               {loading ? 'Entrando…' : '🔐 Entrar'}

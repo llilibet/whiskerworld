@@ -186,7 +186,7 @@ export default function AdminDashboardPage() {
 
           <button
             type="button"
-            className="btn btn--outline-red"
+            className="btn btn--outline-gray"
             onClick={handleLogout}
             disabled={concluindoAdocao}
           >

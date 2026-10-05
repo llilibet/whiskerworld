@@ -49,31 +49,32 @@ export default function CadastroPage() {
         {erro && <div className="alert alert--error">{erro}</div>}
 
         <form onSubmit={handleSubmit}>
+          <p className="legenda-obrigatorio"><span className="obrigatorio" aria-hidden="true">*</span> Campos obrigatórios</p>
           <div className="form-group">
-            <label className="form-label">Nome</label>
+            <label className="form-label">Nome <span className="obrigatorio" aria-hidden="true">*</span></label>
             <input className="form-input" name="nome" value={form.nome} onChange={handleChange} required />
           </div>
           <div className="form-group">
-            <label className="form-label">E-mail</label>
+            <label className="form-label">E-mail <span className="obrigatorio" aria-hidden="true">*</span></label>
             <input className="form-input" type="email" name="email" value={form.email} onChange={handleChange} required />
           </div>
           <div className="form-group">
-            <label className="form-label">Senha</label>
+            <label className="form-label">Senha <span className="obrigatorio" aria-hidden="true">*</span></label>
             <input className="form-input" type="password" name="senha" value={form.senha} onChange={handleChange} required />
           </div>
 
           <div className="form-group">
             <label className="form-label">
               <input type="checkbox" name="aceitouTermos" checked={form.aceitouTermos} onChange={(e) => setForm({ ...form, aceitouTermos: e.target.checked })} required />{' '}
-              Aceito os <button type="button" className="document-link" onClick={() => setDocumentoAberto('termos')}>Termos de Uso</button>.
+              Aceito os <button type="button" className="document-link" onClick={() => setDocumentoAberto('termos')}>Termos de Uso</button>. <span className="obrigatorio" aria-hidden="true">*</span>
             </label>
             <label className="form-label">
               <input type="checkbox" name="aceitouPrivacidade" checked={form.aceitouPrivacidade} onChange={(e) => setForm({ ...form, aceitouPrivacidade: e.target.checked })} required />{' '}
-              Aceito a <button type="button" className="document-link" onClick={() => setDocumentoAberto('privacidade')}>Política de Privacidade</button>.
+              Aceito a <button type="button" className="document-link" onClick={() => setDocumentoAberto('privacidade')}>Política de Privacidade</button>. <span className="obrigatorio" aria-hidden="true">*</span>
             </label>
           </div>
 
-          <button type="submit" className={`btn btn--full ${isAdmin ? 'btn--orange' : 'btn--green'}`} disabled={loading}>
+          <button type="submit" className="btn btn--full btn--green" disabled={loading}>
             {loading ? 'Cadastrando…' : 'Cadastrar'}
           </button>
         </form>

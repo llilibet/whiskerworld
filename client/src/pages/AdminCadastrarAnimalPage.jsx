@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { animaisService } from '../services/animaisService';
+import ErroAlerta from '../components/ErroAlerta';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
@@ -37,7 +38,7 @@ export default function AdminCadastrarAnimalPage() {
           historico: animal.historico || '',
         });
         if (animal.foto_url) setPreviewUrl(`${BASE}${animal.foto_url}`);
-      }).catch((e) => setErro(e.message));
+      }).catch((e) => setErro(e));
     }
   }, [id, isEdicao]);
 
@@ -82,7 +83,7 @@ export default function AdminCadastrarAnimalPage() {
       }
       navigate('/admin');
     } catch (e) {
-      setErro(e.message);
+      setErro(e);
     } finally {
       setLoading(false);
     }
@@ -102,15 +103,16 @@ export default function AdminCadastrarAnimalPage() {
             Preencha os dados do pet para disponibilizá-lo para adoção
           </p>
 
-          {erro && <div className="alert alert--error">{erro}</div>}
+          <ErroAlerta erro={erro} />
 
           <form onSubmit={handleSubmit}>
+            <p className="legenda-obrigatorio"><span className="obrigatorio" aria-hidden="true">*</span> Campos obrigatórios</p>
             {/* ── Informações Básicas ── */}
             <div className="form-section">
               <h2 className="form-section__title">📋 Informações Básicas</h2>
 
               <div className="form-group">
-                <label className="form-label">🏷️ Nome do Animal</label>
+                <label className="form-label">🏷️ Nome do Animal <span className="obrigatorio" aria-hidden="true">*</span></label>
                 <input
                   className="form-input"
                   name="nome"
@@ -123,7 +125,7 @@ export default function AdminCadastrarAnimalPage() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">📅 Idade</label>
+                  <label className="form-label">📅 Idade <span className="obrigatorio" aria-hidden="true">*</span></label>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <input
                       className="form-input"
@@ -149,7 +151,7 @@ export default function AdminCadastrarAnimalPage() {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">⚧ Sexo</label>
+                  <label className="form-label">⚧ Sexo <span className="obrigatorio" aria-hidden="true">*</span></label>
                   <select className="form-select" name="sexo" value={form.sexo} onChange={handleChange} required>
                     <option value="">Selecione o sexo</option>
                     <option value="MACHO">Macho</option>
@@ -160,7 +162,7 @@ export default function AdminCadastrarAnimalPage() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">🐾 Tipo de Animal</label>
+                  <label className="form-label">🐾 Tipo de Animal <span className="obrigatorio" aria-hidden="true">*</span></label>
                   <select className="form-select" name="tipo" value={form.tipo} onChange={handleChange} required>
                     <option value="">Selecione o tipo</option>
                     <option value="GATO">Gato</option>
@@ -168,7 +170,7 @@ export default function AdminCadastrarAnimalPage() {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label className="form-label">� Porte</label>
+                  <label className="form-label">📏 Porte <span className="obrigatorio" aria-hidden="true">*</span></label>
                   <select className="form-select" name="porte" value={form.porte} onChange={handleChange} required>
                     <option value="">Selecione o porte</option>
                     <option value="PEQUENO">Pequeno</option>
@@ -208,7 +210,7 @@ export default function AdminCadastrarAnimalPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">📝 Descrição</label>
+                <label className="form-label">📝 Descrição <span className="obrigatorio" aria-hidden="true">*</span></label>
                 <textarea
                   className="form-textarea"
                   name="descricao"
@@ -221,7 +223,7 @@ export default function AdminCadastrarAnimalPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">📂 Histórico do Pet</label>
+                <label className="form-label">📂 Histórico do Pet <span className="obrigatorio" aria-hidden="true">*</span></label>
                 <textarea
                   className="form-textarea"
                   name="historico"
@@ -236,12 +238,20 @@ export default function AdminCadastrarAnimalPage() {
 
             {/* ── Foto ── */}
             <div className="form-section">
-              <h2 className="form-section__title">📷 Foto do Animal</h2>
+              <h2 className="form-section__title">📷 Foto do Animal{!isEdicao && <> <span className="obrigatorio" aria-hidden="true">*</span></>}</h2>
               {fotoErro && <div className="alert alert--error">{fotoErro}</div>}
               <div className="foto-upload-row">
-                <div className="foto-upload-zone" onClick={() => fileInputRef.current?.click()}>
-                  <span className="foto-upload-zone__icon">📁</span>
-                  <span className="foto-upload-zone__text">Clique para escolher arquivo</span>
+                <div
+                  className={`foto-upload-zone${previewUrl ? ' foto-upload-zone--preenchida' : ''}`}
+                  onClick={() => fileInputRef.current?.click()}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click(); } }}
+                >
+                  <span className="foto-upload-zone__icon">{previewUrl ? '🔄' : '📁'}</span>
+                  <span className="foto-upload-zone__text">
+                    {previewUrl ? 'Clique para trocar a imagem' : 'Clique para escolher uma imagem'}
+                  </span>
                   <span className="foto-upload-zone__hint">JPG, PNG ou WEBP (máx. 2MB)</span>
                   {isEdicao && (
                     <span className="foto-upload-zone__hint">ℹ️ Ao editar, deixe em branco para manter a foto atual.</span>
@@ -255,11 +265,23 @@ export default function AdminCadastrarAnimalPage() {
                   />
                 </div>
                 <div className="foto-preview">
-                  <span className="foto-preview__label">Preview</span>
+                  <span className="foto-preview__label">Pré-visualização</span>
                   {previewUrl ? (
-                    <img className="foto-preview__img" src={previewUrl} alt="Preview" />
+                    <>
+                      <img className="foto-preview__img" src={previewUrl} alt="Pré-visualização da foto do animal" />
+                      <span className="foto-preview__status foto-preview__status--ok">
+                        ✓ {fotoFile ? 'Imagem selecionada' : 'Foto atual'}
+                      </span>
+                      {fotoFile && <span className="foto-preview__arquivo" title={fotoFile.name}>{fotoFile.name}</span>}
+                    </>
                   ) : (
-                    <div className="foto-preview__placeholder">?</div>
+                    <>
+                      <div className="foto-preview__placeholder">
+                        <span aria-hidden="true">🖼️</span>
+                        <span className="foto-preview__placeholder-texto">Nenhuma imagem selecionada</span>
+                      </div>
+                      <span className="foto-preview__status">A foto aparecerá aqui</span>
+                    </>
                   )}
                 </div>
               </div>

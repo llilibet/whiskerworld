@@ -49,6 +49,19 @@ async function request(path, options = {}, auth = false) {
     const text = await res.text().catch(() => null);
     let json = null;
     try { json = JSON.parse(text); } catch { /* ignore */ }
+
+    // Sessão expirada/ausente: mensagem em linguagem simples + flag para a UI
+    // oferecer a ação de recuperação (fazer login novamente).
+    if (auth && (res.status === 401 || /token/i.test(json?.mensagem || ''))) {
+      const erro = new Error(
+        json?.codigo === 'SESSAO_AUSENTE'
+          ? 'Você precisa estar conectado para continuar. Faça login e tente novamente.'
+          : 'Sua sessão expirou. Faça login novamente para continuar.'
+      );
+      erro.sessaoExpirada = true;
+      throw erro;
+    }
+
     throw new Error((json && json.mensagem) || res.statusText || `Erro ${res.status}`);
   }
 
