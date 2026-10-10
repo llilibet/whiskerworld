@@ -75,9 +75,13 @@ async function registrarAcompanhamento(adocaoId, dados, usuario, foto = null) {
 }
 ```
 
+![Diff da refatoração A](evidencias/prints/09-diff-a-extract-method.png)
+
 ## Refatoração B — Inline Method (`f3b8a2a`)
 
-O corpo de `validarDescricao` voltou para o lugar da chamada. O parâmetro `valor` foi trocado pelo argumento `dados?.descricao`, e o método foi removido. O código ficou igual ao **estado inicial**.
+O corpo de `validarDescricao` voltou para o lugar da chamada. O parâmetro `valor` foi trocado pelo argumento `dados?.descricao`, e o método foi removido. O código ficou igual ao **estado inicial**. O diff de B é o espelho do diff de A: o que A adicionou, B remove.
+
+![Diff da refatoração B](evidencias/prints/10-diff-b-inline-method.png)
 
 ---
 
@@ -97,9 +101,13 @@ $ git diff c3a7cd2 f3b8a2a -- backend/src/services/acompanhamentosService.js
 
 Além disso, os 3 testes de caracterização do acompanhamento passaram nos três estados (antes de A, depois de A e depois de B). Eles cobrem descrição ausente, só com espaços, não textual, acima de 5.000 caracteres, no limite e com espaços nas pontas.
 
+Execução no PowerShell. A primeira e a última hash são iguais, e o diff entre o estado antes de A e depois de B tem 0 linhas:
+
+![Prova do par neutro](evidencias/prints/05-par-neutro-prova.png)
+
 Para reproduzir:
 
-```bash
+```powershell
 git rev-parse c3a7cd2:backend/src/services/acompanhamentosService.js
 git rev-parse 0a61813:backend/src/services/acompanhamentosService.js
 git rev-parse f3b8a2a:backend/src/services/acompanhamentosService.js

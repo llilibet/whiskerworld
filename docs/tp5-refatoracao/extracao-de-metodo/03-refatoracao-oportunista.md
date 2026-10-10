@@ -63,6 +63,10 @@ async function syncGoogleUsuario({ uid, email, nome, tipo }) {
 }
 ```
 
+### Diff da refatoração
+
+![Diff de R3](evidencias/prints/08-diff-r3-normalizar-tipo-usuario.png)
+
 ### Justificativa
 
 - A regra "o tipo padrão é ADOTANTE e é sempre gravado em maiúsculas" passou a ficar em um único lugar. Se mudar, por exemplo para validar apenas `ADOTANTE` e `ADMIN`, a alteração vale para o cadastro por e-mail e para o login pelo Google.

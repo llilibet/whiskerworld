@@ -137,6 +137,12 @@ function gerarOrientacoes(respostas) {
 }
 ```
 
+### Diff da refatoração
+
+Linhas em vermelho (`-`) foram removidas e linhas em verde (`+`) foram adicionadas.
+
+![Diff de R1](evidencias/prints/06-diff-r1-compatibilidade.png)
+
 ### O que melhorou
 
 - O método principal agora pode ser lido como um resumo do algoritmo: validar, pontuar, classificar e orientar.
@@ -147,7 +153,11 @@ function gerarOrientacoes(respostas) {
 ### Por que o comportamento não mudou
 
 - **Testes:** 6 testes de caracterização cobrem entradas inválidas, a ordem das mensagens de erro, os limites de pontuação (10, 6 e 5), o impedimento e a lista completa de orientações. Todos passaram antes e depois.
-- **Comparação exaustiva:** o script [comparar-compatibilidade.js](demonstracao/comparar-compatibilidade.js) executou a função para as **17.496 combinações possíveis** de respostas, além de 7 entradas inválidas. O hash SHA-256 das saídas foi o mesmo nas duas versões: `3bb1777ba861f92d81c045812f476537698acc8d708e9c9aa1e7367b096a1d3b` ([antes](evidencias/hash-compatibilidade-antes.txt) · [depois](evidencias/hash-compatibilidade-depois.txt)).
+- **Comparação exaustiva:** o script [comparar-compatibilidade.js](demonstracao/comparar-compatibilidade.js) executou a função para as **17.496 combinações possíveis** de respostas, além de 7 entradas inválidas. O hash SHA-256 das saídas foi o mesmo nas duas versões: `3bb1777ba861f92d81c045812f476537698acc8d708e9c9aa1e7367b096a1d3b`.
+
+![Hash antes da refatoração](evidencias/prints/03-hash-compatibilidade-antes.png)
+
+![Hash depois da refatoração](evidencias/prints/04-hash-compatibilidade-depois.png)
 
 ---
 
@@ -260,6 +270,10 @@ Métodos extraídos:
 | `salvarDocumentoUsuario(uid, dados)` | Grava o documento do usuário com os campos de consentimento (LGPD). |
 | `traduzirErroCriacaoConta(err)` | Converte códigos de erro do Firebase em `AppError` com mensagem em português. |
 
+### Diff da refatoração
+
+![Diff de R2](evidencias/prints/07-diff-r2-registrar-usuario.png)
+
 ### O que melhorou
 
 - O fluxo do cadastro pode ser lido em sequência: validar, garantir que o e-mail está livre, criar a conta, salvar o documento e devolver o token.
@@ -278,4 +292,8 @@ Foram criados 11 testes de caracterização para `usuariosService`, usando dubl�
 - a tradução de cada código de erro do Firebase;
 - a propagação de erros inesperados.
 
-Todos passaram antes e depois da refatoração ([testes-antes.txt](evidencias/testes-antes.txt) · [testes-depois.txt](evidencias/testes-depois.txt)).
+Todos passaram antes e depois da refatoração:
+
+| Antes | Depois |
+|---|---|
+| ![Testes antes](evidencias/prints/01-testes-antes.png) | ![Testes depois](evidencias/prints/02-testes-depois.png) |

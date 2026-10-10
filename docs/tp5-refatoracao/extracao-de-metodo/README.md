@@ -14,7 +14,9 @@ Parte da **TP5 – Refatoração** do Whiskerworld. Este diretório reúne tudo 
 | 4 | [04-par-neutro-extract-inline.md](04-par-neutro-extract-inline.md) | Par **A + B** (Extract Method + Inline Method) que se anulam |
 | 5 | [05-demonstracao-em-sala.md](05-demonstracao-em-sala.md) | Roteiro da demonstração de que o comportamento não mudou |
 | — | [demonstracao/](demonstracao/) | Script que compara as saídas antes e depois |
-| — | [evidencias/](evidencias/) | Diffs, resultados dos testes e hashes de comparação |
+| — | [demonstracao/gerar-prints/](demonstracao/gerar-prints/) | Script que gera os prints a partir da saída real dos comandos |
+| — | [evidencias/prints/](evidencias/prints/) | Prints do terminal (testes, hashes, diffs e par neutro) |
+| — | [evidencias/](evidencias/) | As mesmas evidências em texto: diffs, resultados dos testes e hashes |
 
 ## Resumo
 
@@ -43,11 +45,24 @@ Antes de alterar qualquer código, criamos **testes de caracterização** (commi
 | Hash SHA-256 das saídas de `calcularCompatibilidade` nas 17.496 combinações de respostas | `3bb1777b…6a1d3b` | `3bb1777b…6a1d3b` |
 | Conteúdo de `acompanhamentosService.js` antes de A e depois de B | blob `82f69465…` | blob `82f69465…` |
 
-Arquivos de evidência: [testes-antes.txt](evidencias/testes-antes.txt), [testes-depois.txt](evidencias/testes-depois.txt), [hash-compatibilidade-antes.txt](evidencias/hash-compatibilidade-antes.txt), [hash-compatibilidade-depois.txt](evidencias/hash-compatibilidade-depois.txt), [prova-par-neutro.txt](evidencias/prova-par-neutro.txt).
+| Testes – antes | Testes – depois |
+|---|---|
+| ![Testes antes da refatoração](evidencias/prints/01-testes-antes.png) | ![Testes depois da refatoração](evidencias/prints/02-testes-depois.png) |
+
+| Comparação exaustiva – antes | Comparação exaustiva – depois |
+|---|---|
+| ![Hash antes](evidencias/prints/03-hash-compatibilidade-antes.png) | ![Hash depois](evidencias/prints/04-hash-compatibilidade-depois.png) |
+
+### Sobre as evidências
+
+- **Prints** ([evidencias/prints/](evidencias/prints/)): as imagens foram **geradas automaticamente a partir da saída real dos comandos**, executados no Windows PowerShell deste repositório. O script [gerar-prints/gerar.sh](demonstracao/gerar-prints/gerar.sh) roda cada comando, captura a saída com as cores e a renderiza com a aparência do Windows Terminal. Para reproduzir as imagens, basta rodar o script de novo.
+- **Arquivos de texto** ([evidencias/](evidencias/)): a mesma saída em texto puro (`testes-*.txt`, `hash-*.txt`, `prova-par-neutro.txt`). Os arquivos `.diff` mostram exatamente o que mudou em cada refatoração: linhas com `-` foram removidas e linhas com `+` foram adicionadas.
 
 ## Histórico de commits
 
 Cada etapa ficou em um commit separado na branch `refatoracao/extracao-de-metodo`, para que antes e depois possam ser comparados com `git diff`:
+
+![Histórico de commits](evidencias/prints/00-historico-commits.png)
 
 ```text
 654a967 test: adiciona testes de caracterizacao antes da extracao de metodo
