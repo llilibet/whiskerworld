@@ -1,0 +1,45 @@
+diff --git a/backend/src/services/acompanhamentosService.js b/backend/src/services/acompanhamentosService.js
+index b8d1939..82f6946 100644
+--- a/backend/src/services/acompanhamentosService.js
++++ b/backend/src/services/acompanhamentosService.js
+@@ -71,10 +71,17 @@ function validarData(valor) {
+   return valor;
+ }
+ 
+-function validarDescricao(valor) {
++async function registrarAcompanhamento(
++  adocaoId,
++  dados,
++  usuario,
++  foto = null
++) {
++  const adocao = await verificarAcesso(adocaoId, usuario, true);
++
+   const descricao =
+-    typeof valor === 'string'
+-      ? valor.trim()
++    typeof dados?.descricao === 'string'
++      ? dados.descricao.trim()
+       : '';
+ 
+   if (!descricao) {
+@@ -88,19 +95,6 @@ function validarDescricao(valor) {
+     );
+   }
+ 
+-  return descricao;
+-}
+-
+-async function registrarAcompanhamento(
+-  adocaoId,
+-  dados,
+-  usuario,
+-  foto = null
+-) {
+-  const adocao = await verificarAcesso(adocaoId, usuario, true);
+-
+-  const descricao = validarDescricao(dados?.descricao);
+-
+   const dataAcompanhamento = validarData(
+     dados?.data_acompanhamento
+   );

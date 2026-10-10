@@ -5,32 +5,37 @@ const favoritosRepository = require('../repositories/favoritosRepository');
 const agendamentosRepository = require('../repositories/agendamentosRepository');
 const AppError = require('../errors/AppError');
 
-async function registrarUsuario({ nome, email, senha, tipo, aceitouTermos, aceitouPrivacidade }) {
+// Valida os dados do formulário e devolve nome e e-mail já normalizados.
+function validarDadosCadastro({ nome, email, senha, aceitouTermos, aceitouPrivacidade }) {
   if (!nome || !email || !senha) {
     throw new AppError('Nome, email e senha são obrigatórios.', 400);
   }
   if (aceitouTermos !== true || aceitouPrivacidade !== true) {
     throw new AppError('É necessário aceitar os Termos de Uso e a Política de Privacidade.', 400);
   }
-  nome = nome.trim();
-  email = email.trim().toLowerCase();
+  const nomeNormalizado = nome.trim();
+  const emailNormalizado = email.trim().toLowerCase();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+  if (!emailRegex.test(emailNormalizado)) {
     throw new AppError('Formato de e-mail inválido.', 400);
   }
   if (senha.length < 6) {
     throw new AppError('A senha deve ter pelo menos 6 caracteres.', 400);
   }
-  tipo = (tipo || 'ADOTANTE').toUpperCase();
+  return { nome: nomeNormalizado, email: emailNormalizado };
+}
 
-  // Verifica se o e-mail já existe no Firestore
+function normalizarTipoUsuario(tipo) {
+  return (tipo || 'ADOTANTE').toUpperCase();
+}
+
+async function garantirEmailDisponivel(email) {
   const existente = await usuariosRepository.findByEmail(email);
   if (existente) {
     throw new AppError('E-mail já cadastrado.', 409);
   }
 
-  // Verifica se o e-mail já existe no Firebase Auth
   try {
     await admin.auth().getUserByEmail(email);
     // Se chegou aqui, o e-mail já existe no Auth
@@ -40,7 +45,42 @@ async function registrarUsuario({ nome, email, senha, tipo, aceitouTermos, aceit
     // auth/user-not-found significa que o e-mail está livre — prosseguir
     if (err.code !== 'auth/user-not-found') throw err;
   }
+}
 
+async function salvarDocumentoUsuario(uid, { nome, email, tipo }) {
+  const consentimentoEm = new Date().toISOString();
+  await db.collection('usuarios').doc(uid).set({
+    nome,
+    email,
+    tipo,
+    termosAceitos: true,
+    termosAceitosEm: consentimentoEm,
+    versaoTermos: '1.0',
+    privacidadeAceita: true,
+    privacidadeAceitaEm: consentimentoEm,
+    versaoPrivacidade: '1.0',
+  });
+}
+
+function traduzirErroCriacaoConta(err) {
+  if (err.code === 'auth/email-already-exists') {
+    return new AppError('E-mail já cadastrado.', 409);
+  }
+  if (err.code === 'auth/invalid-email') {
+    return new AppError('Formato de e-mail inválido.', 400);
+  }
+  if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
+    return new AppError('Senha fraca. Use pelo menos 6 caracteres.', 400);
+  }
+  return err;
+}
+
+async function registrarUsuario(dados) {
+  const { nome, email } = validarDadosCadastro(dados);
+  const { senha } = dados;
+  const tipo = normalizarTipoUsuario(dados.tipo);
+
+  await garantirEmailDisponivel(email);
 
   try {
     const userRecord = await admin.auth().createUser({
@@ -52,19 +92,7 @@ async function registrarUsuario({ nome, email, senha, tipo, aceitouTermos, aceit
     // Claims ficam embutidas no ID token — sem precisar de lookup no Firestore
     await admin.auth().setCustomUserClaims(userRecord.uid, { tipo, nome });
 
-    // Documento no Firestore com UID como ID
-    const consentimentoEm = new Date().toISOString();
-    await db.collection('usuarios').doc(userRecord.uid).set({
-      nome,
-      email,
-      tipo,
-      termosAceitos: true,
-      termosAceitosEm: consentimentoEm,
-      versaoTermos: '1.0',
-      privacidadeAceita: true,
-      privacidadeAceitaEm: consentimentoEm,
-      versaoPrivacidade: '1.0',
-    });
+    await salvarDocumentoUsuario(userRecord.uid, { nome, email, tipo });
 
     // Custom token para o frontend fazer signInWithCustomToken
     const customToken = await admin.auth().createCustomToken(userRecord.uid);
@@ -74,16 +102,7 @@ async function registrarUsuario({ nome, email, senha, tipo, aceitouTermos, aceit
       customToken,
     };
   } catch (err) {
-    if (err.code === 'auth/email-already-exists') {
-      throw new AppError('E-mail já cadastrado.', 409);
-    }
-    if (err.code === 'auth/invalid-email') {
-      throw new AppError('Formato de e-mail inválido.', 400);
-    }
-    if (err.code === 'auth/weak-password' || err.code === 'auth/invalid-password') {
-      throw new AppError('Senha fraca. Use pelo menos 6 caracteres.', 400);
-    }
-    throw err;
+    throw traduzirErroCriacaoConta(err);
   }
 }
 
@@ -108,7 +127,7 @@ async function excluirUsuario(uid) {
 async function syncGoogleUsuario({ uid, email, nome, tipo }) {
   const docRef = db.collection('usuarios').doc(uid);
   const doc = await docRef.get();
-  const tipoFinal = (tipo || 'ADOTANTE').toUpperCase();
+  const tipoFinal = normalizarTipoUsuario(tipo);
   let isNew = false;
 
   if (!doc.exists) {

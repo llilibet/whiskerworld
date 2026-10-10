@@ -1,0 +1,4 @@
+Combinações válidas avaliadas: 17496
+Entradas inválidas avaliadas: 7
+Distribuição por nível: {"Alta":552,"Média":1728,"Baixa":15216}
+SHA-256 de todas as saídas: 3bb1777ba861f92d81c045812f476537698acc8d708e9c9aa1e7367b096a1d3b
