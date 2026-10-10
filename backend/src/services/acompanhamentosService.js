@@ -71,10 +71,17 @@ function validarData(valor) {
   return valor;
 }
 
-function validarDescricao(valor) {
+async function registrarAcompanhamento(
+  adocaoId,
+  dados,
+  usuario,
+  foto = null
+) {
+  const adocao = await verificarAcesso(adocaoId, usuario, true);
+
   const descricao =
-    typeof valor === 'string'
-      ? valor.trim()
+    typeof dados?.descricao === 'string'
+      ? dados.descricao.trim()
       : '';
 
   if (!descricao) {
@@ -87,19 +94,6 @@ function validarDescricao(valor) {
       400
     );
   }
-
-  return descricao;
-}
-
-async function registrarAcompanhamento(
-  adocaoId,
-  dados,
-  usuario,
-  foto = null
-) {
-  const adocao = await verificarAcesso(adocaoId, usuario, true);
-
-  const descricao = validarDescricao(dados?.descricao);
 
   const dataAcompanhamento = validarData(
     dados?.data_acompanhamento
