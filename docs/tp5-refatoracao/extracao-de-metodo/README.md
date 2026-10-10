@@ -16,7 +16,7 @@ Parte da **TP5 – Refatoração** do Whiskerworld. Este diretório reúne tudo 
 | — | [demonstracao/](demonstracao/) | Script que compara as saídas antes e depois |
 | — | [demonstracao/gerar-prints/](demonstracao/gerar-prints/) | Script que gera os prints a partir da saída real dos comandos |
 | — | [evidencias/prints/](evidencias/prints/) | Prints do terminal (testes, hashes, diffs e par neutro) |
-| — | [evidencias/](evidencias/) | As mesmas evidências em texto: diffs, resultados dos testes e hashes |
+| — | [evidencias/texto/](evidencias/texto/) | As mesmas evidências em texto: diffs, resultados dos testes e hashes |
 
 ## Resumo
 
@@ -56,7 +56,7 @@ Antes de alterar qualquer código, criamos **testes de caracterização** (commi
 ### Sobre as evidências
 
 - **Prints** ([evidencias/prints/](evidencias/prints/)): as imagens foram **geradas automaticamente a partir da saída real dos comandos**, executados no Windows PowerShell deste repositório. O script [gerar-prints/gerar.sh](demonstracao/gerar-prints/gerar.sh) roda cada comando, captura a saída com as cores e a renderiza com a aparência do Windows Terminal. Para reproduzir as imagens, basta rodar o script de novo.
-- **Arquivos de texto** ([evidencias/](evidencias/)): a mesma saída em texto puro (`testes-*.txt`, `hash-*.txt`, `prova-par-neutro.txt`). Os arquivos `.diff` mostram exatamente o que mudou em cada refatoração: linhas com `-` foram removidas e linhas com `+` foram adicionadas.
+- **Arquivos de texto** ([evidencias/texto/](evidencias/texto/)): a mesma saída em texto puro (`testes-*.txt`, `hash-*.txt`, `prova-par-neutro.txt`). Os arquivos `.diff` mostram exatamente o que mudou em cada refatoração: linhas com `-` foram removidas e linhas com `+` foram adicionadas.
 
 ## Histórico de commits
 
@@ -73,4 +73,4 @@ c3a7cd2 refactor: extrai normalizarTipoUsuario em usuariosService        (R3 - o
 f3b8a2a refactor: internaliza validarDescricao em acompanhamentosService (B  - par neutro)
 ```
 
-> Os hashes valem para esta branch. Se ela for integrada à `main` com *squash* ou *rebase*, os hashes mudam, mas os diffs salvos em [evidencias/](evidencias/) continuam valendo.
+> Os hashes valem para esta branch. Se ela for integrada à `main` com *squash* ou *rebase*, os hashes mudam, mas os diffs salvos em [evidencias/texto/](evidencias/texto/) continuam valendo.

@@ -9,7 +9,7 @@ Segundo o capítulo 9 de *Engenharia de Software Moderna*, uma refatoração é 
 | **Arquivo** | `backend/src/services/usuariosService.js` |
 | **Commit** | `c3a7cd2` |
 | **Smell mitigado** | S4 – Código Duplicado |
-| **Diff completo** | [evidencias/diff-03-normalizar-tipo-usuario.diff](evidencias/diff-03-normalizar-tipo-usuario.diff) |
+| **Diff completo** | [evidencias/texto/diff-03-normalizar-tipo-usuario.diff](evidencias/texto/diff-03-normalizar-tipo-usuario.diff) |
 
 ### Como surgiu
 

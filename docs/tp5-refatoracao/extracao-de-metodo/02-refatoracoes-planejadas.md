@@ -18,7 +18,7 @@ As duas refatorações abaixo foram planejadas assim:
 | **Arquivo** | `backend/src/services/compatibilidadeService.js` |
 | **Commit** | `466e742` |
 | **Smell resolvido** | S1 – Método Longo |
-| **Diff completo** | [evidencias/diff-01-compatibilidade.diff](evidencias/diff-01-compatibilidade.diff) |
+| **Diff completo** | [evidencias/texto/diff-01-compatibilidade.diff](evidencias/texto/diff-01-compatibilidade.diff) |
 
 ### Justificativa
 
@@ -168,7 +168,7 @@ Linhas em vermelho (`-`) foram removidas e linhas em verde (`+`) foram adicionad
 | **Arquivo** | `backend/src/services/usuariosService.js` |
 | **Commit** | `f6b0fc2` |
 | **Smells resolvidos** | S2 – Método Longo · S3 – Comentários que explicam blocos |
-| **Diff completo** | [evidencias/diff-02-registrar-usuario.diff](evidencias/diff-02-registrar-usuario.diff) |
+| **Diff completo** | [evidencias/texto/diff-02-registrar-usuario.diff](evidencias/texto/diff-02-registrar-usuario.diff) |
 
 ### Justificativa
 

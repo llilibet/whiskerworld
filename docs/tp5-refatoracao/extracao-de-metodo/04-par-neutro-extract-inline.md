@@ -11,9 +11,9 @@ Isso mostra o caráter neutro da refatoração: uma refatoração apenas reorgan
 | **Arquivo** | `backend/src/services/acompanhamentosService.js` |
 | **Método afetado** | `registrarAcompanhamento` |
 | **Commit anterior a A** | `c3a7cd2` |
-| **Commit A – Extract Method** | `0a61813` · [diff](evidencias/diff-04-par-neutro-A-extract.diff) |
-| **Commit B – Inline Method** | `f3b8a2a` · [diff](evidencias/diff-05-par-neutro-B-inline.diff) |
-| **Prova** | [evidencias/prova-par-neutro.txt](evidencias/prova-par-neutro.txt) |
+| **Commit A – Extract Method** | `0a61813` · [diff](evidencias/texto/diff-04-par-neutro-A-extract.diff) |
+| **Commit B – Inline Method** | `f3b8a2a` · [diff](evidencias/texto/diff-05-par-neutro-B-inline.diff) |
+| **Prova** | [evidencias/texto/prova-par-neutro.txt](evidencias/texto/prova-par-neutro.txt) |
 
 ---
 
