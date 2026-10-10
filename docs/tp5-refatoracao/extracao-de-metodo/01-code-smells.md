@@ -102,7 +102,7 @@ if (atual.cadastradoPor && atual.cadastradoPor !== adminId) {
 }
 ```
 
-O mesmo bloco aparece em `deletarAnimal`, mudando apenas "editar" para "remover".
+O mesmo bloco aparece em `deletarAnimal`, mudando apenas o nome da variável (`animal`) e a palavra "editar" para "remover".
 
 **Por que é um smell:** a regra de "só o administrador que cadastrou pode alterar o animal" está escrita duas vezes. Uma mudança nessa regra exige alterar os dois lugares.
 

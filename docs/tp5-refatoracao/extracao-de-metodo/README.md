@@ -4,6 +4,12 @@ Parte da **TP5 – Refatoração** do Whiskerworld. Este diretório reúne tudo 
 
 > **Extração de Método:** pegar um trecho de código de um método, movê-lo para um novo método com um nome que explique o que ele faz e substituir o trecho original por uma chamada a esse novo método.
 
+## Por que escolhemos a Extração de Método
+
+- **Ela resolve os problemas que encontramos.** A análise dos serviços do backend encontrou métodos longos, blocos de código explicados por comentários e trechos duplicados ([01-code-smells.md](01-code-smells.md)). A Extração de Método é a solução indicada no capítulo 9 de *Engenharia de Software Moderna* para esses três *code smells*.
+- **Ela é segura para o restante do sistema.** Os métodos extraídos ficam internos a cada serviço: os `module.exports` não mudaram. Por isso, controllers, rotas e frontend não precisaram de nenhuma alteração.
+- **Ela melhora a leitura das regras de negócio mais importantes.** O questionário de compatibilidade (TP4) e o cadastro com consentimento LGPD (TP3) eram os trechos mais difíceis de entender e os que mais tendem a mudar.
+
 ## Navegação
 
 | # | Documento | O que contém |

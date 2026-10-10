@@ -148,7 +148,7 @@ Linhas em vermelho (`-`) foram removidas e linhas em verde (`+`) foram adicionad
 - O método principal agora pode ser lido como um resumo do algoritmo: validar, pontuar, classificar e orientar.
 - `definirNivel` deixou de usar uma variável mutável (`let nivel`) com `if` aninhado e passou a usar retornos antecipados. A regra "impedimento sempre resulta em Baixa" ficou na primeira linha.
 - Para mudar um peso, um limite ou uma orientação, basta abrir o método correspondente.
-- Cada etapa pode ser testada e reutilizada separadamente.
+- Cada etapa ficou isolada em uma função com entrada e saída claras. Hoje essas funções são internas ao módulo, mas podem ser exportadas para testes unitários ou reutilizadas sem nenhuma outra mudança.
 
 ### Por que o comportamento não mudou
 
