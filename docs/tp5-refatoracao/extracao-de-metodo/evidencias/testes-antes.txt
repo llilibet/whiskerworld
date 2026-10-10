@@ -1,0 +1,32 @@
+ok 1 - deve criar um erro controlado com mensagem e status HTTP
+ok 2 - acompanhamento: descrição vazia, só com espaços ou não-texto é recusada
+ok 3 - acompanhamento: descrição acima de 5.000 caracteres é recusada
+ok 4 - acompanhamento: descrição é salva sem espaços nas pontas (limite de 5.000 aceito)
+ok 5 - deve remover a rota pública de cadastro para administradores
+ok 6 - deve ocultar o link de cadastro na tela de login do administrador
+ok 7 - deve bloquear acesso manual à tela de cadastro do administrador
+ok 8 - deve rejeitar agendamento em domingo
+ok 9 - deve permitir agendamento em sábado
+ok 10 - deve rejeitar nome de animal composto apenas por espaços
+ok 11 - deve rejeitar nome de animal com aspas e caracteres especiais
+ok 12 - deve aceitar nome de animal com letras e espaços
+ok 13 - compatibilidade: rejeita respostas ausentes, nulas, não-objeto ou array
+ok 14 - compatibilidade: rejeita o primeiro campo ausente ou inválido, na ordem do questionário
+ok 15 - compatibilidade: respostas ideais resultam em nível Alta, 12 pontos e nenhuma orientação
+ok 16 - compatibilidade: limites de pontuação (10 = Alta, 6 = Média, 5 = Baixa)
+ok 17 - compatibilidade: um campo essencial com "nao" força nível Baixa mesmo com pontuação alta
+ok 18 - compatibilidade: gera todas as orientações, na ordem esperada
+ok 19 - registrarUsuario: exige nome, email e senha
+ok 20 - registrarUsuario: exige aceite dos termos e da política de privacidade
+ok 21 - registrarUsuario: valida formato do e-mail e tamanho da senha
+ok 22 - registrarUsuario: recusa e-mail já cadastrado no Firestore ou no Firebase Auth
+ok 23 - registrarUsuario: propaga erro inesperado ao consultar o Firebase Auth
+ok 24 - registrarUsuario: cria conta, claims, documento com consentimento e token
+ok 25 - registrarUsuario: converte o tipo informado para maiúsculas
+ok 26 - registrarUsuario: traduz erros do Firebase Auth ao criar a conta
+ok 27 - syncGoogleUsuario: cria documento e claims para usuário novo
+ok 28 - syncGoogleUsuario: usa ADOTANTE quando nenhum tipo é informado
+ok 29 - syncGoogleUsuario: respeita o tipo de um usuário já existente
+# tests 29
+# pass 29
+# fail 0
