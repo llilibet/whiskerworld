@@ -1,0 +1,14 @@
+Prova de neutralidade do par A (Extract Method) + B (Inline Method)
+Arquivo: backend/src/services/acompanhamentosService.js
+
+Commit anterior a A : c3a7cd2
+Commit A (extract)  : 0a61813
+Commit B (inline)   : f3b8a2a
+
+Hash do conteudo (git blob) do arquivo em cada commit:
+  antes de A : 82f694650101a7d016ee29ee5584a6d1ed3b8253
+  depois de A: b8d193966e9bd440a4b9f1016349936379251854
+  depois de B: 82f694650101a7d016ee29ee5584a6d1ed3b8253
+
+$ git diff c3a7cd2 HEAD -- backend/src/services/acompanhamentosService.js
+(nenhuma diferenca: o arquivo e identico ao estado anterior a A)
