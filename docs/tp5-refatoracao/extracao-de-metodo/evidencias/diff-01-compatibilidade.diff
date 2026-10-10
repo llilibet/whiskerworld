@@ -1,0 +1,95 @@
+diff --git a/backend/src/services/compatibilidadeService.js b/backend/src/services/compatibilidadeService.js
+index 6136d28..90f3ab5 100644
+--- a/backend/src/services/compatibilidadeService.js
++++ b/backend/src/services/compatibilidadeService.js
+@@ -30,7 +30,7 @@ const camposEssenciais = [
+   'concordancia',
+ ];
+ 
+-function calcularCompatibilidade(respostas) {
++function validarRespostas(respostas) {
+   if (
+     !respostas ||
+     typeof respostas !== 'object' ||
+@@ -47,32 +47,38 @@ function calcularCompatibilidade(respostas) {
+       );
+     }
+   }
++}
+ 
+-  const pontuacao = Object.entries(pontos).reduce(
++function calcularPontuacao(respostas) {
++  return Object.entries(pontos).reduce(
+     (total, [campo, valores]) => total + valores[respostas[campo]],
+     0
+   );
++}
+ 
+-  const temImpedimento = camposEssenciais.some(
++function possuiImpedimento(respostas) {
++  return camposEssenciais.some(
+     (campo) => respostas[campo] === 'nao'
+   );
++}
+ 
+-  let nivel = 'Baixa';
++function definirNivel(pontuacao, temImpedimento) {
++  if (temImpedimento) {
++    return 'Baixa';
++  }
+ 
+-  if (!temImpedimento) {
+-    if (pontuacao >= 10) {
+-      nivel = 'Alta';
+-    } else if (pontuacao >= 6) {
+-      nivel = 'Média';
+-    }
++  if (pontuacao >= 10) {
++    return 'Alta';
+   }
+ 
+-  const mensagens = {
+-    Alta: 'Suas respostas indicam condições favoráveis para assumir os cuidados de um animal. Converse com os responsáveis sobre as necessidades específicas do pet escolhido.',
+-    Média: 'Sua rotina apresenta pontos que precisam de planejamento. Revise as condições de moradia, tempo e cuidados antes de avançar.',
+-    Baixa: 'Suas respostas indicam condições que precisam ser revistas antes da adoção. Converse com os responsáveis para entender os cuidados necessários e as possíveis adaptações.',
+-  };
++  if (pontuacao >= 6) {
++    return 'Média';
++  }
+ 
++  return 'Baixa';
++}
++
++function gerarOrientacoes(respostas) {
+   const orientacoes = [];
+ 
+   if (respostas.permiteAnimais !== 'sim') {
+@@ -117,12 +123,27 @@ function calcularCompatibilidade(respostas) {
+     orientacoes.push('Busque orientação sobre os cuidados e a adaptação do seu primeiro pet.');
+   }
+ 
++  return orientacoes;
++}
++
++function calcularCompatibilidade(respostas) {
++  validarRespostas(respostas);
++
++  const pontuacao = calcularPontuacao(respostas);
++  const nivel = definirNivel(pontuacao, possuiImpedimento(respostas));
++
++  const mensagens = {
++    Alta: 'Suas respostas indicam condições favoráveis para assumir os cuidados de um animal. Converse com os responsáveis sobre as necessidades específicas do pet escolhido.',
++    Média: 'Sua rotina apresenta pontos que precisam de planejamento. Revise as condições de moradia, tempo e cuidados antes de avançar.',
++    Baixa: 'Suas respostas indicam condições que precisam ser revistas antes da adoção. Converse com os responsáveis para entender os cuidados necessários e as possíveis adaptações.',
++  };
++
+   return {
+     nivel,
+     pontuacao,
+     pontuacaoMaxima: 12,
+     mensagem: mensagens[nivel],
+-    orientacoes,
++    orientacoes: gerarOrientacoes(respostas),
+     aviso:
+       'Esta avaliação usa regras simplificadas, sem validação científica, e não avalia todas as necessidades individuais do animal. O resultado é apenas orientativo, não impede a manifestação de interesse e não substitui a análise dos responsáveis pela adoção.',
+   };
