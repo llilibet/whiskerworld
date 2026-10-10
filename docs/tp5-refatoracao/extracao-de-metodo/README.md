@@ -77,5 +77,3 @@ c3a7cd2 refactor: extrai normalizarTipoUsuario em usuariosService        (R3 - o
 0a61813 refactor: extrai validarDescricao em acompanhamentosService      (A  - par neutro)
 f3b8a2a refactor: internaliza validarDescricao em acompanhamentosService (B  - par neutro)
 ```
-
-> Os hashes valem para esta branch. Se ela for integrada à `main` com *squash* ou *rebase*, os hashes mudam, mas os diffs salvos em [evidencias/texto/](evidencias/texto/) continuam valendo.
