@@ -12,7 +12,6 @@ Parte da **TP5 – Refatoração** do Whiskerworld. Este diretório reúne tudo 
 | 2 | [02-refatoracoes-planejadas.md](02-refatoracoes-planejadas.md) | Refatorações **planejadas**: justificativa e código antes/depois |
 | 3 | [03-refatoracao-oportunista.md](03-refatoracao-oportunista.md) | Refatoração **oportunista**, feita durante outra refatoração |
 | 4 | [04-par-neutro-extract-inline.md](04-par-neutro-extract-inline.md) | Par **A + B** (Extract Method + Inline Method) que se anulam |
-| 5 | [05-demonstracao-em-sala.md](05-demonstracao-em-sala.md) | Roteiro da demonstração de que o comportamento não mudou |
 | — | [demonstracao/](demonstracao/) | Script que compara as saídas antes e depois |
 | — | [demonstracao/gerar-prints/](demonstracao/gerar-prints/) | Script que gera os prints a partir da saída real dos comandos |
 | — | [evidencias/prints/](evidencias/prints/) | Prints do terminal (testes, hashes, diffs e par neutro) |

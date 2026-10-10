@@ -43,7 +43,7 @@ GIT='git -c color.ui=always'
 F=backend/src/services/acompanhamentosService.js
 
 # 00 - histórico
-roda "$GIT log --oneline 654a967~1..0a6dd16"
+roda "$GIT log --oneline 654a967~1..f3b8a2a"
 foto 00-historico-commits
 
 # 01/03 - versão antiga (serviços do commit anterior à refatoração)
