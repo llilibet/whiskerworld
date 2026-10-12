@@ -2,6 +2,10 @@ const agendamentosRepository = require('../repositories/agendamentosRepository')
 const animaisRepository = require('../repositories/animaisRepository');
 const AppError = require('../errors/AppError');
 
+function faltamDadosDoAgendamento(animalId, dataVisita, horaVisita) {
+  return !animalId || !dataVisita || !horaVisita;
+}
+
 function validarDataVisita(dataVisita) {
   if (!dataVisita) return;
 

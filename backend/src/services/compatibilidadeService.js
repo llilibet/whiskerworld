@@ -30,15 +30,18 @@ const camposEssenciais = [
   'concordancia',
 ];
 
-function calcularCompatibilidade(respostas) {
-  if (
+function respostasInvalidas(respostas) {
+  return (
     !respostas ||
     typeof respostas !== 'object' ||
     Array.isArray(respostas)
-  ) {
+  );
+}
+function calcularCompatibilidade(respostas) {
+  if (respostasInvalidas(respostas)) {
     throw new AppError('Envie as respostas do questionário.', 400);
   }
-
+  
   for (const [campo, opcoes] of Object.entries(opcoesPermitidas)) {
     if (!opcoes.includes(respostas[campo])) {
       throw new AppError(
