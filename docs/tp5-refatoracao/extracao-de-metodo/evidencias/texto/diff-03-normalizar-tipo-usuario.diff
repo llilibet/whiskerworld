@@ -1,0 +1,33 @@
+diff --git a/backend/src/services/usuariosService.js b/backend/src/services/usuariosService.js
+index 8001404..514de85 100644
+--- a/backend/src/services/usuariosService.js
++++ b/backend/src/services/usuariosService.js
+@@ -26,6 +26,10 @@ function validarDadosCadastro({ nome, email, senha, aceitouTermos, aceitouPrivac
+   return { nome: nomeNormalizado, email: emailNormalizado };
+ }
+ 
++function normalizarTipoUsuario(tipo) {
++  return (tipo || 'ADOTANTE').toUpperCase();
++}
++
+ async function garantirEmailDisponivel(email) {
+   const existente = await usuariosRepository.findByEmail(email);
+   if (existente) {
+@@ -74,7 +78,7 @@ function traduzirErroCriacaoConta(err) {
+ async function registrarUsuario(dados) {
+   const { nome, email } = validarDadosCadastro(dados);
+   const { senha } = dados;
+-  const tipo = (dados.tipo || 'ADOTANTE').toUpperCase();
++  const tipo = normalizarTipoUsuario(dados.tipo);
+ 
+   await garantirEmailDisponivel(email);
+ 
+@@ -123,7 +127,7 @@ async function excluirUsuario(uid) {
+ async function syncGoogleUsuario({ uid, email, nome, tipo }) {
+   const docRef = db.collection('usuarios').doc(uid);
+   const doc = await docRef.get();
+-  const tipoFinal = (tipo || 'ADOTANTE').toUpperCase();
++  const tipoFinal = normalizarTipoUsuario(tipo);
+   let isNew = false;
+ 
+   if (!doc.exists) {
