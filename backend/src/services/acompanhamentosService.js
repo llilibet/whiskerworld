@@ -28,10 +28,12 @@ async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
 
   const administrador = usuario.tipo === 'ADMIN';
 
-  if (
-    (paraRegistrar && !adotanteResponsavel) ||
-    (!paraRegistrar && !adotanteResponsavel && !administrador)
-  ) {
+  // Registrar é exclusivo do adotante; consultar também é permitido ao administrador.
+  const temPermissao = paraRegistrar
+    ? adotanteResponsavel
+    : adotanteResponsavel || administrador;
+
+  if (!temPermissao) {
     throw new AppError(
       'Você não tem permissão para acessar este acompanhamento.',
       403
