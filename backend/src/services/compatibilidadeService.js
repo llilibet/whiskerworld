@@ -30,12 +30,16 @@ const camposEssenciais = [
   'concordancia',
 ];
 
-function validarRespostas(respostas) {
-  if (
+function respostasInvalidas(respostas) {
+  return (
     !respostas ||
     typeof respostas !== 'object' ||
     Array.isArray(respostas)
-  ) {
+  );
+}
+
+function validarRespostas(respostas) {
+  if (respostasInvalidas(respostas)) {
     throw new AppError('Envie as respostas do questionário.', 400);
   }
 
