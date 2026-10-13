@@ -1,0 +1,159 @@
+diff --git a/backend/src/controllers/usuariosController.js b/backend/src/controllers/usuariosController.js
+index 7813c45..1351428 100644
+--- a/backend/src/controllers/usuariosController.js
++++ b/backend/src/controllers/usuariosController.js
+@@ -1,16 +1,16 @@
+ const usuariosService = require('../services/usuariosService');
+ 
+-function handleError(res, err) {
+-  console.error(err);
+-  const status = err.status || 500;
+-  return res.status(status).json({ mensagem: err.message || 'Erro interno.' });
++function handleError(res, erro) {
++  console.error(erro);
++  const status = erro.status || 500;
++  return res.status(status).json({ mensagem: erro.message || 'Erro interno.' });
+ }
+ 
+ async function registrarUsuario(req, res) {
+   try {
+     const result = await usuariosService.registrarUsuario(req.body);
+     return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso.', ...result });
+-  } catch (err) { return handleError(res, err); }
++  } catch (erro) { return handleError(res, erro); }
+ }
+ 
+ async function syncGoogleUsuario(req, res) {
+@@ -19,7 +19,7 @@ async function syncGoogleUsuario(req, res) {
+     const tipo = (req.body?.tipo || 'ADOTANTE').toUpperCase();
+     const result = await usuariosService.syncGoogleUsuario({ uid, email, nome, tipo });
+     return res.json(result);
+-  } catch (err) { return handleError(res, err); }
++  } catch (erro) { return handleError(res, erro); }
+ }
+ 
+ async function retornaUsuarioLogado(req, res) {
+@@ -27,14 +27,14 @@ async function retornaUsuarioLogado(req, res) {
+     if (!req.usuario) return res.status(401).json({ mensagem: 'Não autenticado.' });
+     const { id, nome, email, tipo } = req.usuario;
+     return res.json({ id, nome, email, tipo });
+-  } catch (err) { return handleError(res, err); }
++  } catch (erro) { return handleError(res, erro); }
+ }
+ 
+ async function excluirUsuario(req, res) {
+   try {
+     await usuariosService.excluirUsuario(req.usuario?.id);
+     return res.json({ mensagem: 'Conta excluída com sucesso.' });
+-  } catch (err) { return handleError(res, err); }
++  } catch (erro) { return handleError(res, erro); }
+ }
+ 
+-module.exports = { registrarUsuario, syncGoogleUsuario, retornaUsuarioLogado, excluirUsuario };
++module.exports = { registrarUsuario, syncGoogleUsuario, retornaUsuarioLogado, excluirUsuario };
+\ No newline at end of file
+diff --git a/backend/src/services/animaisService.js b/backend/src/services/animaisService.js
+index 58168f8..c6feb7c 100644
+--- a/backend/src/services/animaisService.js
++++ b/backend/src/services/animaisService.js
+@@ -32,8 +32,8 @@ async function obterAnimalPorId(id) {
+   return animal;
+ }
+ 
+-async function criarAnimal(body, arquivo) {
+-  const { nome, sexo, tipo, idade, porte, descricao } = body;
++async function criarAnimal(dadosNovoAnimal, arquivo) {
++  const { nome, sexo, tipo, idade, porte, descricao } = dadosNovoAnimal;
+   const nomeAnimal = validarNomeAnimal(nome);
+   const camposFaltando = [];
+   if (!nomeAnimal)     camposFaltando.push('nome');
+@@ -41,25 +41,25 @@ async function criarAnimal(body, arquivo) {
+   if (!idade)    camposFaltando.push('idade');
+   if (!porte)    camposFaltando.push('porte');
+   if (!descricao) camposFaltando.push('descrição');
+-  if (!body.historico) camposFaltando.push('histórico');
++  if (!dadosNovoAnimal.historico) camposFaltando.push('histórico');
+   if (!arquivo)  camposFaltando.push('foto');
+   if (camposFaltando.length > 0) {
+     throw new AppError(`Campos obrigatórios ausentes: ${camposFaltando.join(', ')}.`, 400);
+   }
+   const foto_url = arquivo ? await salvarFotoNoStorage(arquivo, nomeAnimal) : null;
+-  const vacinado = body.vacinado === '1' || body.vacinado === 'true' || body.vacinado === true;
++  const vacinado = dadosNovoAnimal.vacinado === '1' || dadosNovoAnimal.vacinado === 'true' || dadosNovoAnimal.vacinado === true;
+   return animaisRepository.create({
+-    ...body,
++    ...dadosNovoAnimal,
+     nome: nomeAnimal,
+     vacinado,
+     foto_url,
+-    tipo: (body.tipo || '').toUpperCase(),
+-    sexo: (body.sexo || '').toUpperCase(),
+-    cadastradoPor: body.cadastradoPor || null,
++    tipo: (dadosNovoAnimal.tipo || '').toUpperCase(),
++    sexo: (dadosNovoAnimal.sexo || '').toUpperCase(),
++    cadastradoPor: dadosNovoAnimal.cadastradoPor || null,
+   });
+ }
+ 
+-async function atualizarAnimal(id, body, arquivo, adminId) {
++async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
+   const atual = await animaisRepository.findById(id);
+   if (!atual) {
+     throw new AppError('Animal não encontrado.', 404);
+@@ -68,26 +68,26 @@ async function atualizarAnimal(id, body, arquivo, adminId) {
+     throw new AppError('Você não tem permissão para editar este animal.', 403);
+   }
+ 
+-  const nomeAnimal = body.nome !== undefined ? validarNomeAnimal(body.nome) : atual.nome;
++  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : atual.nome;
+   const foto_url = arquivo
+     ? await salvarFotoNoStorage(arquivo, nomeAnimal)
+-    : (body.foto_url || atual.foto_url);
++    : (dadosAtualizacao.foto_url || atual.foto_url);
+   const vacinado =
+-    body.vacinado !== undefined
+-      ? body.vacinado == '1' || body.vacinado === true
++    dadosAtualizacao.vacinado !== undefined
++      ? dadosAtualizacao.vacinado == '1' || dadosAtualizacao.vacinado === true
+       : atual.vacinado;
+ 
+   await animaisRepository.update(id, {
+     nome: nomeAnimal,
+-    idade: body.idade || atual.idade,
+-    sexo: (body.sexo || atual.sexo).toUpperCase(),
++    idade: dadosAtualizacao.idade || atual.idade,
++    sexo: (dadosAtualizacao.sexo || atual.sexo).toUpperCase(),
+     vacinado,
+-    status: (body.status || atual.status).toUpperCase(),
+-    tipo: (body.tipo || atual.tipo).toUpperCase(),
+-    descricao: body.descricao !== undefined ? body.descricao : atual.descricao,
+-    raca: body.raca !== undefined ? body.raca : atual.raca,
+-    porte: body.porte !== undefined ? body.porte : atual.porte,
+-    historico: body.historico !== undefined ? body.historico : atual.historico,
++    status: (dadosAtualizacao.status || atual.status).toUpperCase(),
++    tipo: (dadosAtualizacao.tipo || atual.tipo).toUpperCase(),
++    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : atual.descricao,
++    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : atual.raca,
++    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : atual.porte,
++    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : atual.historico,
+     foto_url,
+   });
+ }
+@@ -100,8 +100,8 @@ async function deletarAnimal(id, adminId) {
+   if (animal.cadastradoPor && animal.cadastradoPor !== adminId) {
+     throw new AppError('Você não tem permissão para remover este animal.', 403);
+   }
+-  const count = await animaisRepository.remove(id);
+-  if (!count) {
++  const quantidadeRemovida = await animaisRepository.remove(id);
++  if (!quantidadeRemovida) {
+     throw new AppError('Animal não encontrado.', 404);
+   }
+ }
+@@ -113,4 +113,4 @@ module.exports = {
+   criarAnimal,
+   atualizarAnimal,
+   deletarAnimal,
+-};
++};
+\ No newline at end of file

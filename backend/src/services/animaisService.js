@@ -32,8 +32,8 @@ async function obterAnimalPorId(id) {
   return animal;
 }
 
-async function criarAnimal(body, arquivo) {
-  const { nome, sexo, tipo, idade, porte, descricao } = body;
+async function criarAnimal(dadosNovoAnimal, arquivo) {
+  const { nome, sexo, tipo, idade, porte, descricao } = dadosNovoAnimal;
   const nomeAnimal = validarNomeAnimal(nome);
   const camposFaltando = [];
   if (!nomeAnimal)     camposFaltando.push('nome');
@@ -41,25 +41,25 @@ async function criarAnimal(body, arquivo) {
   if (!idade)    camposFaltando.push('idade');
   if (!porte)    camposFaltando.push('porte');
   if (!descricao) camposFaltando.push('descrição');
-  if (!body.historico) camposFaltando.push('histórico');
+  if (!dadosNovoAnimal.historico) camposFaltando.push('histórico');
   if (!arquivo)  camposFaltando.push('foto');
   if (camposFaltando.length > 0) {
     throw new AppError(`Campos obrigatórios ausentes: ${camposFaltando.join(', ')}.`, 400);
   }
   const foto_url = arquivo ? await salvarFotoNoStorage(arquivo, nomeAnimal) : null;
-  const vacinado = body.vacinado === '1' || body.vacinado === 'true' || body.vacinado === true;
+  const vacinado = dadosNovoAnimal.vacinado === '1' || dadosNovoAnimal.vacinado === 'true' || dadosNovoAnimal.vacinado === true;
   return animaisRepository.create({
-    ...body,
+    ...dadosNovoAnimal,
     nome: nomeAnimal,
     vacinado,
     foto_url,
-    tipo: (body.tipo || '').toUpperCase(),
-    sexo: (body.sexo || '').toUpperCase(),
-    cadastradoPor: body.cadastradoPor || null,
+    tipo: (dadosNovoAnimal.tipo || '').toUpperCase(),
+    sexo: (dadosNovoAnimal.sexo || '').toUpperCase(),
+    cadastradoPor: dadosNovoAnimal.cadastradoPor || null,
   });
 }
 
-async function atualizarAnimal(id, body, arquivo, adminId) {
+async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
   const atual = await animaisRepository.findById(id);
   if (!atual) {
     throw new AppError('Animal não encontrado.', 404);
@@ -68,26 +68,26 @@ async function atualizarAnimal(id, body, arquivo, adminId) {
     throw new AppError('Você não tem permissão para editar este animal.', 403);
   }
 
-  const nomeAnimal = body.nome !== undefined ? validarNomeAnimal(body.nome) : atual.nome;
+  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : atual.nome;
   const foto_url = arquivo
     ? await salvarFotoNoStorage(arquivo, nomeAnimal)
-    : (body.foto_url || atual.foto_url);
+    : (dadosAtualizacao.foto_url || atual.foto_url);
   const vacinado =
-    body.vacinado !== undefined
-      ? body.vacinado == '1' || body.vacinado === true
+    dadosAtualizacao.vacinado !== undefined
+      ? dadosAtualizacao.vacinado == '1' || dadosAtualizacao.vacinado === true
       : atual.vacinado;
 
   await animaisRepository.update(id, {
     nome: nomeAnimal,
-    idade: body.idade || atual.idade,
-    sexo: (body.sexo || atual.sexo).toUpperCase(),
+    idade: dadosAtualizacao.idade || atual.idade,
+    sexo: (dadosAtualizacao.sexo || atual.sexo).toUpperCase(),
     vacinado,
-    status: (body.status || atual.status).toUpperCase(),
-    tipo: (body.tipo || atual.tipo).toUpperCase(),
-    descricao: body.descricao !== undefined ? body.descricao : atual.descricao,
-    raca: body.raca !== undefined ? body.raca : atual.raca,
-    porte: body.porte !== undefined ? body.porte : atual.porte,
-    historico: body.historico !== undefined ? body.historico : atual.historico,
+    status: (dadosAtualizacao.status || atual.status).toUpperCase(),
+    tipo: (dadosAtualizacao.tipo || atual.tipo).toUpperCase(),
+    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : atual.descricao,
+    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : atual.raca,
+    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : atual.porte,
+    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : atual.historico,
     foto_url,
   });
 }
@@ -100,8 +100,8 @@ async function deletarAnimal(id, adminId) {
   if (animal.cadastradoPor && animal.cadastradoPor !== adminId) {
     throw new AppError('Você não tem permissão para remover este animal.', 403);
   }
-  const count = await animaisRepository.remove(id);
-  if (!count) {
+  const quantidadeRemovida = await animaisRepository.remove(id);
+  if (!quantidadeRemovida) {
     throw new AppError('Animal não encontrado.', 404);
   }
 }
