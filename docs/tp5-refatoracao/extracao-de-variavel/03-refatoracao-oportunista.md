@@ -7,7 +7,7 @@ Segundo o capítulo 9 de *Engenharia de Software Moderna*, uma refatoração é 
 | | |
 |---|---|
 | **Arquivo** | `backend/src/middlewares/uploadFotoAcompanhamento.js` |
-| **Commit** | `5c03706` |
+| **Commit** | `ba9be83` |
 | **Smell mitigado** | S4 – Números mágicos duplicados |
 | **Diff completo** | [evidencias/texto/diff-04-upload-foto.diff](evidencias/texto/diff-04-upload-foto.diff) |
 
@@ -72,7 +72,7 @@ const upload = multer({
 
 ### Por que o comportamento não mudou
 
-O middleware também não tinha testes. Antes de alterá-lo, criamos dois testes de caracterização (commit `8d748c2`). Eles enviam ao middleware uma requisição `multipart/form-data` simulada, sem precisar subir o servidor, e verificam o tamanho a partir do qual a foto é recusada. Os dois passaram antes e depois da refatoração.
+O middleware também não tinha testes. Antes de alterá-lo, criamos dois testes de caracterização (commit `b8c1973`). Eles enviam ao middleware uma requisição `multipart/form-data` simulada, sem precisar subir o servidor, e verificam o tamanho a partir do qual a foto é recusada. Os dois passaram antes e depois da refatoração.
 
 ### O que os testes revelaram
 

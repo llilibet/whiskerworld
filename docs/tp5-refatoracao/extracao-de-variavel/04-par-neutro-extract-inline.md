@@ -10,9 +10,9 @@ Isso mostra o caráter neutro da refatoração: uma refatoração apenas reorgan
 |---|---|
 | **Arquivo** | `backend/src/services/agendamentosService.js` |
 | **Função afetada** | `validarDataVisita` |
-| **Commit anterior a A** | `5c03706` |
-| **Commit A – Extract Variable** | `5820eba` · [diff](evidencias/texto/diff-05-par-neutro-A-extract.diff) |
-| **Commit B – Inline Variable** | `bbcfba0` · [diff](evidencias/texto/diff-06-par-neutro-B-inline.diff) |
+| **Commit anterior a A** | `ba9be83` |
+| **Commit A – Extract Variable** | `125ce02` · [diff](evidencias/texto/diff-05-par-neutro-A-extract.diff) |
+| **Commit B – Inline Variable** | `8f10868` · [diff](evidencias/texto/diff-06-par-neutro-B-inline.diff) |
 | **Prova** | [evidencias/texto/prova-par-neutro.txt](evidencias/texto/prova-par-neutro.txt) |
 
 ---
@@ -36,7 +36,7 @@ function validarDataVisita(dataVisita) {
 }
 ```
 
-## Refatoração A — Extract Variable (`5820eba`)
+## Refatoração A — Extract Variable (`125ce02`)
 
 A expressão `data.getDay() === 0` ganhou o nome `ehDomingo`. Quem lê não precisa lembrar que, no JavaScript, `getDay()` devolve `0` para domingo:
 
@@ -49,7 +49,7 @@ A expressão `data.getDay() === 0` ganhou o nome `ehDomingo`. Quem lê não prec
 
 ![Diff da refatoração A](evidencias/prints/10-diff-a-extract-variable.png)
 
-## Refatoração B — Inline Variable (`bbcfba0`)
+## Refatoração B — Inline Variable (`8f10868`)
 
 A variável `ehDomingo` foi substituída de volta pela expressão `data.getDay() === 0`, no único lugar onde era usada, e a declaração foi removida. O código ficou igual ao **estado inicial**. O diff de B é o espelho do diff de A: o que A adicionou, B remove.
 
@@ -67,7 +67,7 @@ Hash do conteúdo (git blob) de agendamentosService.js em cada commit:
   depois de A: ce752c2b5c11df985b2c86ded3b6a3c867c2c6da   <- código diferente
   depois de B: 4f60b9ca3d818bfa6c91e971d2f48fa05a544f3c   <- igual ao inicial
 
-$ git diff 5c03706 bbcfba0 -- backend/src/services/agendamentosService.js
+$ git diff ba9be83 8f10868 -- backend/src/services/agendamentosService.js
 (nenhuma diferença)
 ```
 
@@ -80,10 +80,10 @@ Execução no PowerShell. A primeira e a última hash são iguais, e o diff entr
 Para reproduzir:
 
 ```powershell
-git rev-parse 5c03706:backend/src/services/agendamentosService.js
-git rev-parse 5820eba:backend/src/services/agendamentosService.js
-git rev-parse bbcfba0:backend/src/services/agendamentosService.js
-git diff 5c03706 bbcfba0 -- backend/src/services/agendamentosService.js
+git rev-parse ba9be83:backend/src/services/agendamentosService.js
+git rev-parse 125ce02:backend/src/services/agendamentosService.js
+git rev-parse 8f10868:backend/src/services/agendamentosService.js
+git diff ba9be83 8f10868 -- backend/src/services/agendamentosService.js
 ```
 
 ## Observação

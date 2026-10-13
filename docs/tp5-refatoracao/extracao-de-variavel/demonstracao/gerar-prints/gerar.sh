@@ -46,7 +46,7 @@ SRC='backend/src/services/acompanhamentosService.js backend/src/services/compati
 F=backend/src/services/agendamentosService.js
 
 # 00 - histórico
-roda "$GIT log --oneline 80dc0e4..bbcfba0"
+roda "$GIT log --oneline --first-parent 80dc0e4..2486b50"
 foto 00-historico-commits
 
 # 01/03 - versão antiga (código anterior à refatoração, testes novos)
@@ -70,28 +70,28 @@ roda "$HASH"
 foto 04-hash-compatibilidade-depois
 
 # 05 - par neutro
-roda "$GIT log --oneline -3 bbcfba0 -- $F"
+roda "$GIT log --oneline -3 8f10868 -- $F"
 comentario "hash do conteúdo do arquivo antes de A, depois de A e depois de B"
-roda "git rev-parse 5c03706:$F"
-roda "git rev-parse 5820eba:$F"
-roda "git rev-parse bbcfba0:$F"
+roda "git rev-parse ba9be83:$F"
+roda "git rev-parse 125ce02:$F"
+roda "git rev-parse 8f10868:$F"
 comentario "diferença entre o estado antes de A e depois de B (sem saída = arquivos idênticos)"
-roda "$GIT diff 5c03706 bbcfba0 -- $F"
-roda "(git diff 5c03706 bbcfba0 -- $F | Measure-Object -Line).Lines"
+roda "$GIT diff ba9be83 8f10868 -- $F"
+roda "(git diff ba9be83 8f10868 -- $F | Measure-Object -Line).Lines"
 foto 05-par-neutro-prova
 
 # 06-11 - diffs de cada refatoração
-roda "$GIT diff 6ba1fb4 532604b -- backend/src/services/acompanhamentosService.js"
+roda "$GIT diff 41f241d bd2f9d0 -- backend/src/services/acompanhamentosService.js"
 foto 06-diff-r1-tem-permissao
-roda "$GIT diff 532604b 7015bfc -- backend/src/services/compatibilidadeService.js"
+roda "$GIT diff bd2f9d0 e950511 -- backend/src/services/compatibilidadeService.js"
 foto 07-diff-r2-pontuacao-compatibilidade
-roda "$GIT diff 13d51af a7c9c4f -- backend/src/services/fotosAcompanhamentoService.js"
+roda "$GIT diff 874c062 2095e94 -- backend/src/services/fotosAcompanhamentoService.js"
 foto 08-diff-r3-fotos-acompanhamento
-roda "$GIT diff 8d748c2 5c03706 -- backend/src/middlewares/uploadFotoAcompanhamento.js"
+roda "$GIT diff b8c1973 ba9be83 -- backend/src/middlewares/uploadFotoAcompanhamento.js"
 foto 09-diff-r4-upload-foto
-roda "$GIT diff 5c03706 5820eba -- $F"
+roda "$GIT diff ba9be83 125ce02 -- $F"
 foto 10-diff-a-extract-variable
-roda "$GIT diff 5820eba bbcfba0 -- $F"
+roda "$GIT diff 125ce02 8f10868 -- $F"
 foto 11-diff-b-inline-variable
 
 rm -rf "$TMP"

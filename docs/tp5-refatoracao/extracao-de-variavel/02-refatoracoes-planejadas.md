@@ -5,7 +5,7 @@ Segundo o capítulo 9 de *Engenharia de Software Moderna*, uma refatoração é 
 As três refatorações abaixo foram planejadas assim:
 
 1. **Diagnóstico:** mapeamos `backend/src` e `client/src` e escolhemos as expressões do backend mais difíceis de ler e que envolvem regras de negócio ou de segurança (smells S1 a S3 em [01-code-smells.md](01-code-smells.md)).
-2. **Rede de segurança:** conferimos o que os testes existentes cobriam. A regra de permissão (R1) e o serviço de fotos (R3) não tinham nenhum teste, então criamos testes de caracterização antes de mexer no código (commits `6ba1fb4` e `13d51af`). A compatibilidade (R2) já tinha testes dos limites de pontuação e o script de comparação exaustiva da Extração de Método.
+2. **Rede de segurança:** conferimos o que os testes existentes cobriam. A regra de permissão (R1) e o serviço de fotos (R3) não tinham nenhum teste, então criamos testes de caracterização antes de mexer no código (commits `41f241d` e `874c062`). A compatibilidade (R2) já tinha testes dos limites de pontuação e o script de comparação exaustiva da Extração de Método.
 3. **Execução em passos pequenos:** uma refatoração por commit, rodando os testes depois de cada uma.
 4. **Verificação:** os testes e o hash da compatibilidade precisam ser iguais antes e depois.
 
@@ -16,7 +16,7 @@ As três refatorações abaixo foram planejadas assim:
 | | |
 |---|---|
 | **Arquivo** | `backend/src/services/acompanhamentosService.js` |
-| **Commit** | `532604b` |
+| **Commit** | `bd2f9d0` |
 | **Smell resolvido** | S1 – Expressão condicional complexa |
 | **Diff completo** | [evidencias/texto/diff-01-tem-permissao.diff](evidencias/texto/diff-01-tem-permissao.diff) |
 
@@ -81,7 +81,7 @@ Linhas em vermelho (`-`) foram removidas e linhas em verde (`+`) foram adicionad
 | Registrar (`R` verdadeiro) | `¬A` | `¬A` |
 | Consultar (`R` falso) | `¬A ∧ ¬D` | `¬(A ∨ D)`, que pela lei de De Morgan é `¬A ∧ ¬D` |
 
-**Testes.** Antes da refatoração, nenhum teste cobria essa regra. Criamos dois testes de caracterização (commit `6ba1fb4`) que percorrem a matriz de permissões:
+**Testes.** Antes da refatoração, nenhum teste cobria essa regra. Criamos dois testes de caracterização (commit `41f241d`) que percorrem a matriz de permissões:
 
 | Usuário | Registrar | Consultar |
 |---|---|---|
@@ -91,6 +91,46 @@ Linhas em vermelho (`-`) foram removidas e linhas em verde (`+`) foram adicionad
 
 Os dois testes passaram no código original e continuaram passando depois da refatoração.
 
+### Integração com a Consolidação de Condicionais (PR #48)
+
+Enquanto esta branch estava aberta, o PR #48 ([Consolidar Expressão Condicional](../../tp5-refatoracao-consolidar-condicionais/relatorio-consolidar-condicionais.md)) foi incorporado à `main`. Ele tratou a **mesma condição** com outra técnica: moveu a expressão para a função `acessoAoAcompanhamentoNegado`, mas manteve dentro dela a forma original, com as cinco negações. Como as duas refatorações alteraram as mesmas linhas, o Git apontou um conflito.
+
+Na integração (commit `2486b50`), as duas foram combinadas, porque se complementam:
+
+- a **Consolidação de Condicionais** deu um nome à pergunta "o acesso é negado?" e tirou a expressão de dentro de `verificarAcesso`;
+- a **Extração de Variável** reescreveu a resposta a essa pergunta de forma positiva, dentro da nova função.
+
+```js
+function acessoAoAcompanhamentoNegado(
+  paraRegistrar,
+  adotanteResponsavel,
+  administrador
+) {
+  // Registrar é exclusivo do adotante; consultar também é permitido ao administrador.
+  const temPermissao = paraRegistrar
+    ? adotanteResponsavel
+    : adotanteResponsavel || administrador;
+
+  return !temPermissao;
+}
+
+async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
+  ...
+  if (
+    acessoAoAcompanhamentoNegado(
+      paraRegistrar,
+      adotanteResponsavel,
+      administrador
+    )
+  ) {
+    throw new AppError('Você não tem permissão para acessar este acompanhamento.', 403);
+  }
+  ...
+}
+```
+
+A assinatura da função e a chamada em `verificarAcesso` ficaram como no PR #48. Os testes de permissão criados para R1 também valem para o código integrado e continuaram passando (36 de 36).
+
 ---
 
 ## R2 — Pontuação em `compatibilidadeService`
@@ -98,7 +138,7 @@ Os dois testes passaram no código original e continuaram passando depois da ref
 | | |
 |---|---|
 | **Arquivo** | `backend/src/services/compatibilidadeService.js` |
-| **Commit** | `7015bfc` |
+| **Commit** | `e950511` |
 | **Smell resolvido** | S2 – Números mágicos |
 | **Diff completo** | [evidencias/texto/diff-02-pontuacao-compatibilidade.diff](evidencias/texto/diff-02-pontuacao-compatibilidade.diff) |
 
@@ -211,7 +251,7 @@ Outra opção seria calcular `pontuacaoMaxima` a partir da tabela `pontos` (6 ca
 | | |
 |---|---|
 | **Arquivo** | `backend/src/services/fotosAcompanhamentoService.js` |
-| **Commit** | `a7c9c4f` |
+| **Commit** | `2095e94` |
 | **Smell resolvido** | S3 – Números mágicos |
 | **Diff completo** | [evidencias/texto/diff-03-fotos-acompanhamento.diff](evidencias/texto/diff-03-fotos-acompanhamento.diff) |
 
@@ -291,7 +331,7 @@ async function obterUrlTemporaria(caminho) {
 
 ### Por que o comportamento não mudou
 
-Antes da refatoração, o serviço de fotos não tinha nenhum teste. Criamos três testes de caracterização (commit `13d51af`). Eles substituem o `bucket` do Firebase Storage por um dublê e verificam:
+Antes da refatoração, o serviço de fotos não tinha nenhum teste. Criamos três testes de caracterização (commit `874c062`). Eles substituem o `bucket` do Firebase Storage por um dublê e verificam:
 
 - uma foto PNG de **exatamente 2 MB** é aceita; uma foto vazia ou com 1 byte acima de 2 MB é recusada, com a mesma mensagem;
 - um arquivo declarado como PNG, mas sem a assinatura PNG, é recusado, assim como um PNG declarado como JPEG;

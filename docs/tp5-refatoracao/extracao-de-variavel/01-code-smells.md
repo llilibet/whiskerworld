@@ -29,7 +29,7 @@ if (
 
 **Por que é um smell:** a regra de negócio é simples: *registrar* é exclusivo do adotante responsável e *consultar* também é permitido ao administrador. A condição, porém, descreve quem **não** tem permissão, com cinco negações espalhadas em dois ramos. Para entender a regra, é preciso montar uma tabela-verdade de cabeça. Esse tipo de condição é onde erros de lógica costumam passar despercebidos.
 
-**Como foi resolvido:** a condição virou a variável `temPermissao`, escrita de forma positiva e com um ramo para cada operação. Detalhes em [02-refatoracoes-planejadas.md](02-refatoracoes-planejadas.md#r1--tempermissao-em-verificaracesso).
+**Como foi resolvido:** a condição virou a variável `temPermissao`, escrita de forma positiva e com um ramo para cada operação. Na integração com o PR #48, que levou a mesma condição para a função `acessoAoAcompanhamentoNegado`, a variável passou a ficar dentro dessa função. Detalhes em [02-refatoracoes-planejadas.md](02-refatoracoes-planejadas.md#r1--tempermissao-em-verificaracesso).
 
 ---
 

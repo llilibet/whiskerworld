@@ -26,12 +26,12 @@ Parte da **TP5 – Refatoração** do Whiskerworld. Este diretório reúne tudo 
 
 | # | Refatoração | Tipo | Arquivo | Commit |
 |---|---|---|---|---|
-| R1 | Condição de acesso vira `temPermissao` | Planejada | `backend/src/services/acompanhamentosService.js` | `532604b` |
-| R2 | Limites de pontuação e `temImpedimento` ganham nome | Planejada | `backend/src/services/compatibilidadeService.js` | `7015bfc` |
-| R3 | Limite, assinatura PNG e validade da URL ganham nome | Planejada | `backend/src/services/fotosAcompanhamentoService.js` | `a7c9c4f` |
-| R4 | `tamanhoMaximoFoto` no middleware de upload | Oportunista | `backend/src/middlewares/uploadFotoAcompanhamento.js` | `5c03706` |
-| A | `ehDomingo` extraída (Extract Variable) | Par neutro | `backend/src/services/agendamentosService.js` | `5820eba` |
-| B | `ehDomingo` internalizada (Inline Variable) | Par neutro | `backend/src/services/agendamentosService.js` | `bbcfba0` |
+| R1 | Condição de acesso vira `temPermissao` | Planejada | `backend/src/services/acompanhamentosService.js` | `bd2f9d0` |
+| R2 | Limites de pontuação e `temImpedimento` ganham nome | Planejada | `backend/src/services/compatibilidadeService.js` | `e950511` |
+| R3 | Limite, assinatura PNG e validade da URL ganham nome | Planejada | `backend/src/services/fotosAcompanhamentoService.js` | `2095e94` |
+| R4 | `tamanhoMaximoFoto` no middleware de upload | Oportunista | `backend/src/middlewares/uploadFotoAcompanhamento.js` | `ba9be83` |
+| A | `ehDomingo` extraída (Extract Variable) | Par neutro | `backend/src/services/agendamentosService.js` | `125ce02` |
+| B | `ehDomingo` internalizada (Inline Variable) | Par neutro | `backend/src/services/agendamentosService.js` | `8f10868` |
 
 ## Como garantimos que o comportamento não mudou
 
@@ -39,9 +39,9 @@ Três dos quatro arquivos refatorados não tinham nenhum teste cobrindo os trech
 
 | Commit | Testes criados | O que cobrem |
 |---|---|---|
-| `6ba1fb4` | 2 | Quem pode registrar e quem pode consultar o acompanhamento (R1) |
-| `13d51af` | 3 | Limite de 2 MB, assinatura PNG e validade de 15 minutos da URL da foto (R3) |
-| `8d748c2` | 2 | Tamanho a partir do qual o middleware recusa a foto (R4) |
+| `41f241d` | 2 | Quem pode registrar e quem pode consultar o acompanhamento (R1) |
+| `874c062` | 3 | Limite de 2 MB, assinatura PNG e validade de 15 minutos da URL da foto (R3) |
+| `b8c1973` | 2 | Tamanho a partir do qual o middleware recusa a foto (R4) |
 
 | Verificação | Antes da refatoração | Depois da refatoração |
 |---|---|---|
@@ -71,13 +71,17 @@ Cada etapa ficou em um commit separado na branch `refactor/extracao-de-variavel`
 ![Histórico de commits](evidencias/prints/00-historico-commits.png)
 
 ```text
-6ba1fb4 test: caracteriza permissões de acesso ao acompanhamento
-532604b refactor: extrai variável temPermissao em verificarAcesso                (R1 - planejada)
-7015bfc refactor: extrai variáveis de pontuação em compatibilidadeService         (R2 - planejada)
-13d51af test: caracteriza validação e URL temporária das fotos de acompanhamento
-a7c9c4f refactor: extrai variáveis em fotosAcompanhamentoService                  (R3 - planejada)
-8d748c2 test: caracteriza o limite de tamanho do upload de foto
-5c03706 refactor: extrai variáveis de limite em uploadFotoAcompanhamento          (R4 - oportunista)
-5820eba refactor: extrai variável ehDomingo em validarDataVisita (par neutro A)
-bbcfba0 refactor: internaliza variável ehDomingo em validarDataVisita (par neutro B)
+41f241d test: caracteriza permissões de acesso ao acompanhamento
+bd2f9d0 refactor: extrai variável temPermissao em verificarAcesso                (R1 - planejada)
+e950511 refactor: extrai variáveis de pontuação em compatibilidadeService         (R2 - planejada)
+874c062 test: caracteriza validação e URL temporária das fotos de acompanhamento
+2095e94 refactor: extrai variáveis em fotosAcompanhamentoService                  (R3 - planejada)
+b8c1973 test: caracteriza o limite de tamanho do upload de foto
+ba9be83 refactor: extrai variáveis de limite em uploadFotoAcompanhamento          (R4 - oportunista)
+125ce02 refactor: extrai variável ehDomingo em validarDataVisita (par neutro A)
+8f10868 refactor: internaliza variável ehDomingo em validarDataVisita (par neutro B)
+96888e6 docs: documenta a Extração de Variável da TP5
+2486b50 merge: integra main (consolidar condicionais) na extracao de variavel
 ```
+
+O último commit integra a `main` depois do PR #48 (Consolidar Expressão Condicional), que também refatorou a condição de R1. As duas refatorações foram combinadas; detalhes em [02-refatoracoes-planejadas.md](02-refatoracoes-planejadas.md#integração-com-a-consolidação-de-condicionais-pr-48).
