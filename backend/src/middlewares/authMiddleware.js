@@ -3,7 +3,7 @@ const admin = require('firebase-admin');
 
 async function autenticarToken(req, res, next) {
   const authHeader = req.headers['authorization'];
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (cabecalhoAutenticacaoInvalido(authHeader)) {
     return res.status(401).json({
       mensagem: 'Você precisa estar conectado para continuar. Faça login e tente novamente.',
       codigo: 'SESSAO_AUSENTE',
@@ -28,7 +28,7 @@ async function autenticarToken(req, res, next) {
 }
 
 function apenasAdmin(req, res, next) {
-  if (!req.usuario || req.usuario.tipo !== 'ADMIN') {
+    if (usuarioNaoEhAdministrador(req.usuario)) {
     return res.status(403).json({ mensagem: 'Apenas administradores podem executar esta ação.' });
   }
   next();

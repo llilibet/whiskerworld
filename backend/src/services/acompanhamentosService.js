@@ -8,11 +8,7 @@ async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
     throw new AppError('Usuário não autenticado.', 401);
   }
 
-  if (
-    typeof adocaoId !== 'string' ||
-    !adocaoId.trim() ||
-    adocaoId.includes('/')
-  ) {
+  if (identificadorAdocaoInvalido(adocaoId)) {
     throw new AppError('Identificação da adoção inválida.', 400);
   }
 
@@ -28,9 +24,12 @@ async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
 
   const administrador = usuario.tipo === 'ADMIN';
 
-  if (
-    (paraRegistrar && !adotanteResponsavel) ||
-    (!paraRegistrar && !adotanteResponsavel && !administrador)
+   if (
+    acessoAoAcompanhamentoNegado(
+      paraRegistrar,
+      adotanteResponsavel,
+      administrador
+    )
   ) {
     throw new AppError(
       'Você não tem permissão para acessar este acompanhamento.',
