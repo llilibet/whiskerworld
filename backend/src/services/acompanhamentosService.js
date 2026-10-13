@@ -3,6 +3,25 @@ const acompanhamentosRepository = require('../repositories/acompanhamentosReposi
 const AppError = require('../errors/AppError');
 const fotosAcompanhamentoService = require('./fotosAcompanhamentoService');
 
+function identificadorAdocaoInvalido(adocaoId) {
+  return (
+    typeof adocaoId !== 'string' ||
+    !adocaoId.trim() ||
+    adocaoId.includes('/')
+  );
+}
+
+function acessoAoAcompanhamentoNegado(
+  paraRegistrar,
+  adotanteResponsavel,
+  administrador
+) {
+  return (
+    (paraRegistrar && !adotanteResponsavel) ||
+    (!paraRegistrar && !adotanteResponsavel && !administrador)
+  );
+}
+
 async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
   if (!usuario || !usuario.id) {
     throw new AppError('Usuário não autenticado.', 401);
