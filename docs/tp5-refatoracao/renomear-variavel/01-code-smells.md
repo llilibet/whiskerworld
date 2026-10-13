@@ -7,8 +7,8 @@ Analisamos os arquivos do backend e do frontend em busca de variáveis e parâme
 | # Smell | Onde | Situação |
 | :--- | :--- | :--- |
 | S1 Nomes Misteriosos (`count`) | `backend/src/services/favoritosService.js` | Resolvido por R1 |
-| S2 Nomes Genéricos (`data`) | `backend/src/services/animaisService.js` | Resolvido por R2 |
-| S3 Nomes Encurtados/Siglas | `backend/src/controllers/usuariosController.js` | Resolvido por R3 |
+| S2 Nomes Genéricos (`body`) | `backend/src/services/animaisService.js` | Resolvido por R2 |
+| S3 Nomes Encurtados/Siglas (`err`) | `backend/src/controllers/usuariosController.js` | Resolvido por R3 |
 | S4 Nomes Misteriosos (`item`, `info`) | Páginas de listagem em `client/src` | Identificado, não tratado |
 
 ### S1 — Nomes Misteriosos em removerFavorito
@@ -19,18 +19,18 @@ Analisamos os arquivos do backend e do frontend em busca de variáveis e parâme
 **Como foi resolvido:** A variável `count` foi renomeada para `quantidadeRemovida` (R1). Isso torna o contexto da verificação `if (!quantidadeRemovida)` muito mais claro e semântico, sem a necessidade de ler a implementação do repositório para entender. Detalhes em `02-refatoracoes-planejadas.md`.
 
 ### S2 — Nomes Genéricos em cadastros e atualizações
-**Onde:** Nos serviços que lidam com criação (ex: `animaisService.js`).
+**Onde:** `backend/src/services/animaisService.js`, nas funções `criarAnimal` e `atualizarAnimal`.
 
-**Por que é um smell:** É comum receber as informações do corpo da requisição em um objeto chamado simplesmente de `data` ou `payload`. Esses nomes são genéricos e não informam sobre qual entidade estamos lidando, dificultando a leitura quando a função é longa.
+**Por que é um smell:** É comum receber as informações do corpo da requisição em um objeto chamado simplesmente de `body`. Esse nome é genérico e não informa sobre qual entidade estamos lidando, dificultando a leitura quando a função é longa.
 
-**Como foi resolvido:** As variáveis chamadas `data` foram renomeadas para nomes que refletem a entidade, como `dadosNovoAnimal` ou `dadosAtualizacao` (R2).
+**Como foi resolvido:** As variáveis chamadas `body` foram renomeadas para nomes que refletem a entidade e a ação, como `dadosNovoAnimal` ou `dadosAtualizacao` (R2).
 
 ### S3 — Nomes Encurtados em blocos de erro
-**Onde:** Nos arquivos de controller, dentro dos blocos `try/catch`.
+**Onde:** `backend/src/controllers/usuariosController.js`, dentro dos blocos `try/catch`.
 
 **Por que é um smell:** Variáveis de erro frequentemente são chamadas apenas de `e` ou `err`. Embora seja uma convenção comum, em funções mais complexas, ter nomes excessivamente curtos pode causar confusão de escopo. 
 
-**Como foi resolvido:** Renomeamos variáveis como `err` para nomes explícitos como `erroCriacao` ou apenas `erro` (R3).
+**Como foi resolvido:** Renomeamos variáveis como `err` para nomes explícitos como `erro` (R3).
 
 ### S4 — Nomes Misteriosos em listagens do frontend (não tratado)
 **Onde:** Em componentes do React (`client/src/pages/AnimaisListPage.jsx`), dentro de funções de mapeamento (`.map()`).
