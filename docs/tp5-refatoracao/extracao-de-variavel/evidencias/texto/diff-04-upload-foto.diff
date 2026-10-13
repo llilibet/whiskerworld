@@ -1,0 +1,24 @@
+diff --git a/backend/src/middlewares/uploadFotoAcompanhamento.js b/backend/src/middlewares/uploadFotoAcompanhamento.js
+index 3663c57..26b6b78 100644
+--- a/backend/src/middlewares/uploadFotoAcompanhamento.js
++++ b/backend/src/middlewares/uploadFotoAcompanhamento.js
+@@ -6,14 +6,17 @@ const formatosPermitidos = new Set([
+   'image/webp',
+ ]);
+ 
++const tamanhoMaximoFoto = 2 * 1024 * 1024; // 2 MB
++const tamanhoMaximoCampo = 64 * 1024; // 64 KB
++
+ const upload = multer({
+   storage: multer.memoryStorage(),
+ 
+   limits: {
+-    fileSize: 2 * 1024 * 1024,
++    fileSize: tamanhoMaximoFoto,
+     files: 1,
+     fields: 2,
+-    fieldSize: 64 * 1024,
++    fieldSize: tamanhoMaximoCampo,
+   },
+ 
+   fileFilter: (_req, file, callback) => {

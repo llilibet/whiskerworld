@@ -1,0 +1,14 @@
+diff --git a/backend/src/services/agendamentosService.js b/backend/src/services/agendamentosService.js
+index ce752c2..4f60b9c 100644
+--- a/backend/src/services/agendamentosService.js
++++ b/backend/src/services/agendamentosService.js
+@@ -10,8 +10,7 @@ function validarDataVisita(dataVisita) {
+     throw new AppError('Data de visita inválida. Use o formato YYYY-MM-DD.', 400);
+   }
+ 
+-  const ehDomingo = data.getDay() === 0;
+-  if (ehDomingo) {
++  if (data.getDay() === 0) {
+     throw new AppError('Agendamentos só podem ser realizados de segunda a sábado. Domingos estão indisponíveis.', 400);
+   }
+ }
