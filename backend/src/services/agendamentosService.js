@@ -10,8 +10,7 @@ function validarDataVisita(dataVisita) {
     throw new AppError('Data de visita inválida. Use o formato YYYY-MM-DD.', 400);
   }
 
-  const ehDomingo = data.getDay() === 0;
-  if (ehDomingo) {
+  if (data.getDay() === 0) {
     throw new AppError('Agendamentos só podem ser realizados de segunda a sábado. Domingos estão indisponíveis.', 400);
   }
 }
