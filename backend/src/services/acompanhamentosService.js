@@ -3,16 +3,33 @@ const acompanhamentosRepository = require('../repositories/acompanhamentosReposi
 const AppError = require('../errors/AppError');
 const fotosAcompanhamentoService = require('./fotosAcompanhamentoService');
 
+function identificadorAdocaoInvalido(adocaoId) {
+  return (
+    typeof adocaoId !== 'string' ||
+    !adocaoId.trim() ||
+    adocaoId.includes('/')
+  );
+}
+
+function acessoAoAcompanhamentoNegado(
+  paraRegistrar,
+  adotanteResponsavel,
+  administrador
+) {
+  // Registrar é exclusivo do adotante; consultar também é permitido ao administrador.
+  const temPermissao = paraRegistrar
+    ? adotanteResponsavel
+    : adotanteResponsavel || administrador;
+
+  return !temPermissao;
+}
+
 async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
   if (!usuario || !usuario.id) {
     throw new AppError('Usuário não autenticado.', 401);
   }
 
-  if (
-    typeof adocaoId !== 'string' ||
-    !adocaoId.trim() ||
-    adocaoId.includes('/')
-  ) {
+  if (identificadorAdocaoInvalido(adocaoId)) {
     throw new AppError('Identificação da adoção inválida.', 400);
   }
 
@@ -28,12 +45,13 @@ async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
 
   const administrador = usuario.tipo === 'ADMIN';
 
-  // Registrar é exclusivo do adotante; consultar também é permitido ao administrador.
-  const temPermissao = paraRegistrar
-    ? adotanteResponsavel
-    : adotanteResponsavel || administrador;
-
-  if (!temPermissao) {
+  if (
+    acessoAoAcompanhamentoNegado(
+      paraRegistrar,
+      adotanteResponsavel,
+      administrador
+    )
+  ) {
     throw new AppError(
       'Você não tem permissão para acessar este acompanhamento.',
       403
