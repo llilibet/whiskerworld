@@ -1,7 +1,7 @@
-# Refatoração Planejada
+# Refatorações Planejadas
 
-A aplicação da técnica **Renomear Variável** no arquivo `backend/src/services/favoritosService.js` foi uma refatoração planejada. 
+As aplicações da técnica **Renomear Variável** no backend foram refatorações planejadas. 
 
-Ao analisar o código em busca de melhorias de legibilidade, identificamos antecipadamente que o retorno da função `favoritosRepository.remove` estava sendo armazenado em uma variável de nome genérico (`count`). 
+Ao analisar o código em busca de problemas de legibilidade, identificamos antecipadamente que variáveis de retorno de banco de dados e objetos de requisição estavam utilizando nomes muito genéricos (S1 e S2). 
 
-Planejamos a substituição para `quantidadeRemovida` visando tornar o contexto da verificação `if (!quantidadeRemovida)` mais semântico, sem alterar as regras de negócio ou o comportamento observável do sistema.
+Planejamos as substituições (como `count` para `quantidadeRemovida`) visando tornar a leitura do código mais natural e próxima da linguagem do negócio (Ubiquitous Language). A mudança exigiu apenas a alteração do identificador local. As chamadas aos repositórios e as condições de verificação permaneceram estruturalmente iguais, o que garante que o comportamento observável do sistema não foi alterado.
