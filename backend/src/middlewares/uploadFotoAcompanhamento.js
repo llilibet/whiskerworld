@@ -6,14 +6,17 @@ const formatosPermitidos = new Set([
   'image/webp',
 ]);
 
+const tamanhoMaximoFoto = 2 * 1024 * 1024; // 2 MB
+const tamanhoMaximoCampo = 64 * 1024; // 64 KB
+
 const upload = multer({
   storage: multer.memoryStorage(),
 
   limits: {
-    fileSize: 2 * 1024 * 1024,
+    fileSize: tamanhoMaximoFoto,
     files: 1,
     fields: 2,
-    fieldSize: 64 * 1024,
+    fieldSize: tamanhoMaximoCampo,
   },
 
   fileFilter: (_req, file, callback) => {

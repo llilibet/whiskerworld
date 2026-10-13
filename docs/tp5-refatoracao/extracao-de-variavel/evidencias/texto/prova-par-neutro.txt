@@ -1,0 +1,14 @@
+Prova de neutralidade do par A (Extract Variable) + B (Inline Variable)
+Arquivo: backend/src/services/agendamentosService.js
+
+Commit anterior a A : ba9be83
+Commit A (extract)  : 125ce02
+Commit B (inline)   : 8f10868
+
+Hash do conteudo (git blob) do arquivo em cada commit:
+  antes de A : 4f60b9ca3d818bfa6c91e971d2f48fa05a544f3c
+  depois de A: ce752c2b5c11df985b2c86ded3b6a3c867c2c6da
+  depois de B: 4f60b9ca3d818bfa6c91e971d2f48fa05a544f3c
+
+$ git diff ba9be83 8f10868 -- backend/src/services/agendamentosService.js
+(nenhuma diferenca: o arquivo e identico ao estado anterior a A)

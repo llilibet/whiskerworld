@@ -1,0 +1,48 @@
+diff --git a/backend/src/services/compatibilidadeService.js b/backend/src/services/compatibilidadeService.js
+index 90f3ab5..3630a82 100644
+--- a/backend/src/services/compatibilidadeService.js
++++ b/backend/src/services/compatibilidadeService.js
+@@ -22,6 +22,10 @@ const pontos = {
+   concordancia: { sim: 2, conversar: 1, nao: 0 },
+ };
+ 
++const pontuacaoMaxima = 12;
++const pontuacaoMinimaAlta = 10;
++const pontuacaoMinimaMedia = 6;
++
+ const camposEssenciais = [
+   'permiteAnimais',
+   'espacoAdequado',
+@@ -67,11 +71,11 @@ function definirNivel(pontuacao, temImpedimento) {
+     return 'Baixa';
+   }
+ 
+-  if (pontuacao >= 10) {
++  if (pontuacao >= pontuacaoMinimaAlta) {
+     return 'Alta';
+   }
+ 
+-  if (pontuacao >= 6) {
++  if (pontuacao >= pontuacaoMinimaMedia) {
+     return 'Média';
+   }
+ 
+@@ -130,7 +134,8 @@ function calcularCompatibilidade(respostas) {
+   validarRespostas(respostas);
+ 
+   const pontuacao = calcularPontuacao(respostas);
+-  const nivel = definirNivel(pontuacao, possuiImpedimento(respostas));
++  const temImpedimento = possuiImpedimento(respostas);
++  const nivel = definirNivel(pontuacao, temImpedimento);
+ 
+   const mensagens = {
+     Alta: 'Suas respostas indicam condições favoráveis para assumir os cuidados de um animal. Converse com os responsáveis sobre as necessidades específicas do pet escolhido.',
+@@ -141,7 +146,7 @@ function calcularCompatibilidade(respostas) {
+   return {
+     nivel,
+     pontuacao,
+-    pontuacaoMaxima: 12,
++    pontuacaoMaxima,
+     mensagem: mensagens[nivel],
+     orientacoes: gerarOrientacoes(respostas),
+     aviso:

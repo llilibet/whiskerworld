@@ -72,3 +72,58 @@ test('acompanhamento: descrição é salva sem espaços nas pontas (limite de 5.
     descricao: 'Comendo bem.',
   });
 });
+
+const outroAdotante = { id: 'u-2', tipo: 'ADOTANTE' };
+const administrador = { id: 'admin-1', tipo: 'ADMIN' };
+
+async function assertErro403(acao) {
+  await assert.rejects(acao, (err) => {
+    assert.equal(err.status, 403);
+    assert.equal(
+      err.message,
+      'Você não tem permissão para acessar este acompanhamento.'
+    );
+    return true;
+  });
+}
+
+test('acompanhamento: somente o adotante responsável pode registrar', async () => {
+  prepararAdocaoAprovada();
+  const dados = { descricao: 'Comendo bem.', data_acompanhamento: '2026-10-01' };
+
+  const registro = await acompanhamentosService.registrarAcompanhamento(
+    'ad-1',
+    dados,
+    adotante
+  );
+  assert.equal(registro.usuario_id, 'u-1');
+
+  await assertErro403(
+    acompanhamentosService.registrarAcompanhamento('ad-1', dados, outroAdotante)
+  );
+  await assertErro403(
+    acompanhamentosService.registrarAcompanhamento('ad-1', dados, administrador)
+  );
+});
+
+test('acompanhamento: adotante responsável e administrador podem consultar', async () => {
+  prepararAdocaoAprovada();
+  acompanhamentosRepository.listarPorAdocao = async () => [
+    { id: 'r-1', descricao: 'Comendo bem.' },
+  ];
+
+  const esperado = [{ id: 'r-1', descricao: 'Comendo bem.' }];
+
+  assert.deepEqual(
+    await acompanhamentosService.listarAcompanhamentos('ad-1', adotante),
+    esperado
+  );
+  assert.deepEqual(
+    await acompanhamentosService.listarAcompanhamentos('ad-1', administrador),
+    esperado
+  );
+
+  await assertErro403(
+    acompanhamentosService.listarAcompanhamentos('ad-1', outroAdotante)
+  );
+});

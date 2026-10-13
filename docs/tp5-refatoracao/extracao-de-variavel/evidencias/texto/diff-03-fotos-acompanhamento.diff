@@ -1,0 +1,49 @@
+diff --git a/backend/src/services/fotosAcompanhamentoService.js b/backend/src/services/fotosAcompanhamentoService.js
+index 4225fe5..1c19c48 100644
+--- a/backend/src/services/fotosAcompanhamentoService.js
++++ b/backend/src/services/fotosAcompanhamentoService.js
+@@ -2,6 +2,10 @@ const { randomUUID } = require('crypto');
+ const { bucket } = require('../database/connection');
+ const AppError = require('../errors/AppError');
+ 
++const tamanhoMaximoFoto = 2 * 1024 * 1024; // 2 MB
++const assinaturaPng = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
++const validadeUrlTemporaria = 15 * 60 * 1000; // 15 minutos
++
+ function validarFoto(file) {
+   if (!file || !Buffer.isBuffer(file.buffer)) {
+     throw new AppError('Fotografia inválida.', 400);
+@@ -9,7 +13,7 @@ function validarFoto(file) {
+ 
+   const buffer = file.buffer;
+ 
+-  if (!buffer.length || buffer.length > 2 * 1024 * 1024) {
++  if (!buffer.length || buffer.length > tamanhoMaximoFoto) {
+     throw new AppError(
+       'A fotografia deve conter dados e ter no máximo 2 MB.',
+       400
+@@ -24,9 +28,7 @@ function validarFoto(file) {
+ 
+   const png =
+     buffer.length >= 8 &&
+-    buffer.subarray(0, 8).equals(
+-      Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
+-    );
++    buffer.subarray(0, 8).equals(assinaturaPng);
+ 
+   const webp =
+     buffer.length >= 12 &&
+@@ -78,10 +80,12 @@ async function excluirFoto(caminho) {
+ }
+ 
+ async function obterUrlTemporaria(caminho) {
++  const expiraEm = Date.now() + validadeUrlTemporaria;
++
+   const [url] = await bucket.file(caminho).getSignedUrl({
+     version: 'v4',
+     action: 'read',
+-    expires: Date.now() + 15 * 60 * 1000,
++    expires: expiraEm,
+   });
+ 
+   return url;

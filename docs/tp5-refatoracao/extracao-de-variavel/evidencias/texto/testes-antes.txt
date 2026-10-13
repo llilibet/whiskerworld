@@ -1,0 +1,43 @@
+ok 1 - deve criar um erro controlado com mensagem e status HTTP
+ok 2 - acompanhamento: descrição vazia, só com espaços ou não-texto é recusada
+ok 3 - acompanhamento: descrição acima de 5.000 caracteres é recusada
+ok 4 - acompanhamento: descrição é salva sem espaços nas pontas (limite de 5.000 aceito)
+ok 5 - acompanhamento: somente o adotante responsável pode registrar
+ok 6 - acompanhamento: adotante responsável e administrador podem consultar
+ok 7 - deve remover a rota pública de cadastro para administradores
+ok 8 - deve ocultar o link de cadastro na tela de login do administrador
+ok 9 - deve bloquear acesso manual à tela de cadastro do administrador
+ok 10 - deve rejeitar agendamento em domingo
+ok 11 - deve permitir agendamento em sábado
+ok 12 - deve rejeitar nome de animal composto apenas por espaços
+ok 13 - deve rejeitar nome de animal com aspas e caracteres especiais
+ok 14 - deve aceitar nome de animal com letras e espaços
+ok 15 - compatibilidade: rejeita respostas ausentes, nulas, não-objeto ou array
+ok 16 - compatibilidade: rejeita o primeiro campo ausente ou inválido, na ordem do questionário
+ok 17 - compatibilidade: respostas ideais resultam em nível Alta, 12 pontos e nenhuma orientação
+ok 18 - compatibilidade: limites de pontuação (10 = Alta, 6 = Média, 5 = Baixa)
+ok 19 - compatibilidade: um campo essencial com "nao" força nível Baixa mesmo com pontuação alta
+ok 20 - compatibilidade: gera todas as orientações, na ordem esperada
+ok 21 - foto: aceita PNG de exatamente 2 MB e recusa vazia ou acima de 2 MB
+ok 22 - foto: exige assinatura PNG compatível com o tipo declarado
+ok 23 - foto: URL temporária expira 15 minutos após a geração
+ok 24 - upload: aceita foto com 1 byte a menos que 2 MB
+ok 25 - upload: recusa foto a partir de 2 MB
+ok 26 - registrarUsuario: exige nome, email e senha
+ok 27 - registrarUsuario: exige aceite dos termos e da política de privacidade
+ok 28 - registrarUsuario: valida formato do e-mail e tamanho da senha
+ok 29 - registrarUsuario: recusa e-mail já cadastrado no Firestore ou no Firebase Auth
+ok 30 - registrarUsuario: propaga erro inesperado ao consultar o Firebase Auth
+ok 31 - registrarUsuario: cria conta, claims, documento com consentimento e token
+ok 32 - registrarUsuario: converte o tipo informado para maiúsculas
+ok 33 - registrarUsuario: traduz erros do Firebase Auth ao criar a conta
+ok 34 - syncGoogleUsuario: cria documento e claims para usuário novo
+ok 35 - syncGoogleUsuario: usa ADOTANTE quando nenhum tipo é informado
+ok 36 - syncGoogleUsuario: respeita o tipo de um usuário já existente
+# tests 36
+# suites 0
+# pass 36
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0

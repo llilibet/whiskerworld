@@ -16,10 +16,12 @@ function acessoAoAcompanhamentoNegado(
   adotanteResponsavel,
   administrador
 ) {
-  return (
-    (paraRegistrar && !adotanteResponsavel) ||
-    (!paraRegistrar && !adotanteResponsavel && !administrador)
-  );
+  // Registrar é exclusivo do adotante; consultar também é permitido ao administrador.
+  const temPermissao = paraRegistrar
+    ? adotanteResponsavel
+    : adotanteResponsavel || administrador;
+
+  return !temPermissao;
 }
 
 async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
@@ -43,7 +45,7 @@ async function verificarAcesso(adocaoId, usuario, paraRegistrar = false) {
 
   const administrador = usuario.tipo === 'ADMIN';
 
-   if (
+  if (
     acessoAoAcompanhamentoNegado(
       paraRegistrar,
       adotanteResponsavel,
