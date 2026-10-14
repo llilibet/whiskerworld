@@ -99,8 +99,8 @@ Esses testes foram executados em duas versões do código, com a mesma suíte:
 
 | Versão | Como obter | Resultado |
 |---|---|---|
-| **Antes** | arquivos de `favoritosService`, `animaisService` e `usuariosController` como estavam antes de R1–R5 (`93bbe26^` e `b888838^`) | ver [testes-antes.txt](evidencias/texto/testes-antes.txt) |
-| **Depois** | código refatorado (esta branch) | ver [testes-depois.txt](evidencias/texto/testes-depois.txt) |
+| **Antes** | arquivos de `favoritosService`, `animaisService` e `usuariosController` como estavam antes de R1–R5 (`93bbe26^` e `b888838^`) | 60 de 60 testes passando ([testes-antes.txt](evidencias/texto/testes-antes.txt)) |
+| **Depois** | código refatorado (esta branch) | 60 de 60 testes passando ([testes-depois.txt](evidencias/texto/testes-depois.txt)) |
 
 Para gerar esses arquivos (e os diffs) com a saída real dos comandos, basta rodar, na raiz do repositório:
 

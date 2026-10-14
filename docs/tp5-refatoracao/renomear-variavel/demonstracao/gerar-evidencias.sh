@@ -88,6 +88,6 @@ trap - EXIT
 echo
 echo "== Resumo (cole no README, seção 'Como garantimos que o comportamento não mudou') =="
 for f in antes depois; do
-  printf '%-7s ' "$f:"; grep -E '^# (tests|pass|fail)' "$DEST/testes-$f.txt" | tr '\n' ' '; echo
+  printf '%-7s ' "$f:"; grep -E '^(# |ℹ )(tests|pass|fail)' "$DEST/testes-$f.txt" | tr '\n' ' '; echo
 done
 git status --short backend

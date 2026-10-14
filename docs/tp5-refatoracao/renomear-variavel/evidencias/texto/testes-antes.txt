@@ -1,0 +1,81 @@
+$ npm test   # código ANTES das renomeações (favoritos: 93bbe26^, animais/usuários: b888838^)
+
+> whiskerworld@1.0.0 test
+> node --test backend/tests/**/*.test.js
+
+✔ deve criar um erro controlado com mensagem e status HTTP (1.299393ms)
+◇ injected env (0) from .env // tip: ⌘ suppress logs { quiet: true }
+✔ acompanhamento: descrição vazia, só com espaços ou não-texto é recusada (1.684903ms)
+✔ acompanhamento: descrição acima de 5.000 caracteres é recusada (0.226953ms)
+✔ acompanhamento: descrição é salva sem espaços nas pontas (limite de 5.000 aceito) (1.249922ms)
+✔ acompanhamento: somente o adotante responsável pode registrar (0.486888ms)
+✔ acompanhamento: adotante responsável e administrador podem consultar (0.551469ms)
+✔ deve remover a rota pública de cadastro para administradores (0.957616ms)
+✔ deve ocultar o link de cadastro na tela de login do administrador (0.17139ms)
+✔ deve bloquear acesso manual à tela de cadastro do administrador (0.198119ms)
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+✔ deve rejeitar agendamento em domingo (1.647642ms)
+✔ deve permitir agendamento em sábado (0.403142ms)
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+✔ deve rejeitar nome de animal composto apenas por espaços (3.960556ms)
+✔ deve rejeitar nome de animal com aspas e caracteres especiais (0.580603ms)
+✔ deve aceitar nome de animal com letras e espaços (0.491707ms)
+◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+✔ criarAnimal repassa os dados ao repositório com tipo e sexo em maiúsculas (4.716556ms)
+✔ criarAnimal usa o cadastradoPor informado (0.54733ms)
+✔ criarAnimal interpreta vacinado como verdadeiro para "1", "true" e true (0.564643ms)
+✔ criarAnimal interpreta vacinado como falso para outros valores ou ausência (0.715924ms)
+✔ criarAnimal lista todos os campos obrigatórios ausentes em um único erro 400 (1.391023ms)
+✔ atualizarAnimal mantém todos os valores atuais quando nenhum dado novo é enviado (0.523717ms)
+✔ atualizarAnimal aplica os dados enviados e normaliza os campos em maiúsculas (1.097418ms)
+✔ atualizarAnimal rejeita com 404 quando o animal não existe (0.369208ms)
+✔ atualizarAnimal rejeita com 403 quando outro administrador cadastrou o animal (1.007499ms)
+✔ deletarAnimal remove o animal quando o repositório confirma a remoção (0.532653ms)
+✔ deletarAnimal rejeita com 404 quando o repositório não removeu nenhum registro (0.385448ms)
+✔ deletarAnimal rejeita com 404 quando o animal não existe (1.478928ms)
+✔ deletarAnimal rejeita com 403 quando outro administrador cadastrou o animal (0.29465ms)
+✔ compatibilidade: rejeita respostas ausentes, nulas, não-objeto ou array (1.443171ms)
+✔ compatibilidade: rejeita o primeiro campo ausente ou inválido, na ordem do questionário (0.384076ms)
+✔ compatibilidade: respostas ideais resultam em nível Alta, 12 pontos e nenhuma orientação (0.907542ms)
+✔ compatibilidade: limites de pontuação (10 = Alta, 6 = Média, 5 = Baixa) (0.301273ms)
+✔ compatibilidade: um campo essencial com "nao" força nível Baixa mesmo com pontuação alta (1.002349ms)
+✔ compatibilidade: gera todas as orientações, na ordem esperada (0.23591ms)
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+✔ removerFavorito rejeita com 404 quando o repositório não removeu nenhum registro (1.730748ms)
+✔ removerFavorito conclui sem erro quando pelo menos um registro foi removido (1.355578ms)
+✔ removerFavorito rejeita com 401 quando o usuário não está autenticado (0.353189ms)
+✔ removerFavorito rejeita com 400 quando o animal_id não foi informado (0.334684ms)
+◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+✔ foto: aceita PNG de exatamente 2 MB e recusa vazia ou acima de 2 MB (2.014267ms)
+✔ foto: exige assinatura PNG compatível com o tipo declarado (0.398463ms)
+✔ foto: URL temporária expira 15 minutos após a geração (1.236185ms)
+✔ upload: aceita foto com 1 byte a menos que 2 MB (13.784098ms)
+✔ upload: recusa foto a partir de 2 MB (15.018308ms)
+◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+✔ registrarUsuario responde 201 com a mensagem de sucesso e o resultado do serviço (2.792999ms)
+✔ registrarUsuario usa o status e a mensagem do erro e registra o erro no console (0.988734ms)
+✔ registrarUsuario responde 500 com mensagem padrão quando o erro não tem status nem mensagem (0.362185ms)
+✔ syncGoogleUsuario envia o tipo em maiúsculas (ADOTANTE por padrão) e devolve o resultado (0.537662ms)
+✔ syncGoogleUsuario trata o erro do serviço com o status do erro (0.582575ms)
+✔ retornaUsuarioLogado responde 401 sem usuário e devolve os dados públicos com usuário (0.282868ms)
+✔ excluirUsuario responde com a mensagem de sucesso e, em caso de erro, com o status do erro (0.459066ms)
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+✔ registrarUsuario: exige nome, email e senha (1.938946ms)
+✔ registrarUsuario: exige aceite dos termos e da política de privacidade (0.39684ms)
+✔ registrarUsuario: valida formato do e-mail e tamanho da senha (0.382624ms)
+✔ registrarUsuario: recusa e-mail já cadastrado no Firestore ou no Firebase Auth (0.563591ms)
+✔ registrarUsuario: propaga erro inesperado ao consultar o Firebase Auth (0.409424ms)
+✔ registrarUsuario: cria conta, claims, documento com consentimento e token (1.784189ms)
+✔ registrarUsuario: converte o tipo informado para maiúsculas (1.090592ms)
+✔ registrarUsuario: traduz erros do Firebase Auth ao criar a conta (2.336669ms)
+✔ syncGoogleUsuario: cria documento e claims para usuário novo (0.702651ms)
+✔ syncGoogleUsuario: usa ADOTANTE quando nenhum tipo é informado (0.41267ms)
+✔ syncGoogleUsuario: respeita o tipo de um usuário já existente (0.432878ms)
+ℹ tests 60
+ℹ suites 0
+ℹ pass 60
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2917.184099
