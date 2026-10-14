@@ -1,83 +1,75 @@
-# Code Smells Identificados — Renomear Variável
+# 1. Code smells identificados
 
-Code smells são sinais de que a estrutura interna do código pode ser melhorada. Eles não representam necessariamente erros de execução, mas podem dificultar a leitura, a manutenção e a evolução do software.
+Segundo o capítulo 9 de *Engenharia de Software Moderna*, *code smells* são sinais no código de que o design pode ser melhorado. Eles não são bugs: o sistema funciona, mas fica mais difícil de ler, testar e alterar.
 
-Nesta análise, foram identificados nomes genéricos ou abreviados em variáveis e parâmetros do projeto Whiskerworld. A técnica escolhida para os casos tratados foi **Renomear Variável (Rename Variable)**.
+Todos os casos abaixo pertencem ao mesmo grupo, **Nomes Misteriosos** (*Mysterious Name*, no catálogo de Fowler): o nome da variável não diz o que ela guarda. A refatoração que resolve esse smell é **Renomear Variável** (*Rename Variable*).
 
-## Resumo dos casos
+## Resumo
 
-| ID | Code smell | Localização | Situação |
+| # | Smell | Onde | Situação |
 |---|---|---|---|
-| S1 | Nome misterioso (`count`) | `backend/src/services/favoritosService.js` | Resolvido por R1 |
-| S2 | Nome genérico (`body`) | `backend/src/services/animaisService.js`, função `criarAnimal` | Resolvido por R2 |
-| S3 | Nome genérico (`body`) | `backend/src/services/animaisService.js`, função `atualizarAnimal` | Resolvido por R3 |
+| S1 | Nome misterioso (`count`) | `backend/src/services/favoritosService.js`, `removerFavorito` | Resolvido por R1 |
+| S2 | Nome genérico (`body`) | `backend/src/services/animaisService.js`, `criarAnimal` | Resolvido por R2 |
+| S3 | Nome genérico (`body`) | `backend/src/services/animaisService.js`, `atualizarAnimal` | Resolvido por R3 |
 | S4 | Nome abreviado (`err`) | `backend/src/controllers/usuariosController.js` | Resolvido por R4 |
-| S5 | Nome misterioso (`count`) | `backend/src/services/animaisService.js`, função `deletarAnimal` | Resolvido por R5 |
-| S6 | Nome genérico (`val`) | `client/src/pages/AnimaisListPage.jsx` | Identificado, não tratado nesta etapa |
+| S5 | Nome misterioso (`count`) | `backend/src/services/animaisService.js`, `deletarAnimal` | Resolvido por R5 |
+| S6 | Nome vago (`result`, `atual`) | `usuariosController.js` e `atualizarAnimal` | Resolvido por O1 e O2 (oportunista) |
+| S7 | Nome genérico (`val`) | `client/src/pages/AnimaisListPage.jsx` | Identificado, **não tratado** |
+| S8 | Nome abreviado (`err`) | `animaisController.js`, `agendamentosController.js`, `favoritosController.js`, `authMiddleware.js` | Identificado, **não tratado** |
 
-## S1 — Nome misterioso em `removerFavorito`
+## S1 — `count` em `removerFavorito`
 
-**Localização:** `backend/src/services/favoritosService.js`, função `removerFavorito`.
+**Onde:** `backend/src/services/favoritosService.js`.
 
-**Problema:** A variável `count` não informa claramente o significado do valor retornado pela operação de remoção.
+**Por que é um smell:** `count` é um nome genérico. Quem lê `if (!count)` precisa descobrir no repositório que o valor é o número de favoritos removidos (`favoritosRepository.remove` devolve `snap.size`, ou `0` quando não achou nada).
 
-**Refatoração aplicada:** O nome foi alterado para `quantidadeRemovida`, deixando mais claro o significado esperado do valor utilizado na condição `if`.
+**Como foi resolvido:** a variável virou `quantidadeRemovida` (R1). Agora a condição `if (!quantidadeRemovida)` se lê como "se nada foi removido".
 
-**Resultado esperado:** Maior legibilidade sem alteração da operação de remoção ou da condição de erro.
+## S2 e S3 — `body` em `criarAnimal` e `atualizarAnimal`
 
-## S2 — Nome genérico em `criarAnimal`
+**Onde:** `backend/src/services/animaisService.js`.
 
-**Localização:** `backend/src/services/animaisService.js`, função `criarAnimal`.
+**Por que é um smell:** `body` descreve *de onde* o dado veio (o corpo da requisição HTTP), não *o que ele é*. As duas funções são longas, e o nome `body` aparece 10 vezes em `criarAnimal` e 19 em `atualizarAnimal`, sem dizer se o objeto é um animal novo ou uma atualização.
 
-**Problema:** O parâmetro `body` não informa qual entidade está sendo cadastrada.
+**Como foi resolvido:** `body` virou `dadosNovoAnimal` em `criarAnimal` (R2) e `dadosAtualizacao` em `atualizarAnimal` (R3). Cada nome agora diz a finalidade do objeto naquela função.
 
-**Refatoração aplicada:** O parâmetro foi renomeado para `dadosNovoAnimal`, e suas referências no escopo da função foram atualizadas.
+## S4 — `err` em `usuariosController`
 
-**Resultado esperado:** Facilitar a identificação dos dados utilizados no cadastro de um animal.
+**Onde:** `backend/src/controllers/usuariosController.js`, na função `handleError` e nos quatro blocos `catch`.
 
-## S3 — Nome genérico em `atualizarAnimal`
+**Por que é um smell:** `err` é uma abreviação. O resto do código do projeto usa nomes por extenso em português (`usuarioId`, `animalId`, `mensagem`), e `err` destoa desse padrão.
 
-**Localização:** `backend/src/services/animaisService.js`, função `atualizarAnimal`.
+**Como foi resolvido:** `err` virou `erro` (R4).
 
-**Problema:** O nome `body` não evidencia que o objeto contém dados destinados à atualização de um animal.
+## S5 — `count` em `deletarAnimal`
 
-**Refatoração aplicada:** O parâmetro foi renomeado para `dadosAtualizacao`, com atualização de suas referências no escopo da função.
+**Onde:** `backend/src/services/animaisService.js`.
 
-**Resultado esperado:** Tornar o código mais compreensível durante a manutenção da rotina de atualização.
+**Por que é um smell:** é o mesmo problema de S1 em outra função.
 
-## S4 — Nome abreviado no tratamento de erros
+**Como foi resolvido:** `count` virou `quantidadeRemovida` (R5). Usar o mesmo nome em `favoritosService` e `animaisService` deixa as duas funções consistentes.
 
-**Localização:** `backend/src/controllers/usuariosController.js`.
+## S6 — `result` e `atual` (tratados de forma oportunista)
 
-**Problema:** O identificador `err` é uma abreviação que pode tornar a leitura menos clara, especialmente quando aparece em diversos blocos de tratamento de exceções.
+Estes dois casos foram vistos **depois** das renomeações principais, enquanto escrevíamos os testes de caracterização. Por isso estão documentados em [03-refatoracao-oportunista.md](03-refatoracao-oportunista.md).
 
-**Refatoração aplicada:** O nome foi alterado para `erro` na função `handleError` e nos blocos `catch` correspondentes.
+- **`result`** em `usuariosController.js` (`registrarUsuario` e `syncGoogleUsuario`): guarda o retorno do serviço de usuários. O nome não diz nada além de "é um resultado". Virou `resultado`, que também segue o padrão de nomes em português do arquivo.
+- **`atual`** em `atualizarAnimal`: é o animal que já está salvo, usado 15 vezes na função. Sozinho, "atual" não diz atual *de quê*, e fica perto de `dadosAtualizacao`, o que confunde. Virou `animalAtual`.
 
-**Resultado esperado:** Melhorar a clareza do tratamento de exceções, preservando a lógica de registro e resposta dos erros.
+## S7 — `val` no frontend (não tratado)
 
-## S5 — Nome misterioso em `deletarAnimal`
+**Onde:** `client/src/pages/AnimaisListPage.jsx`, nos quatro `.map(([val, label]) => ...)` que geram os botões de filtro (espécie, sexo, porte e idade).
 
-**Localização:** `backend/src/services/animaisService.js`, função `deletarAnimal`.
+**Por que é um smell:** `val` é genérico; o valor é o código do filtro (`'GATO'`, `'MACHO'`, `'PEQUENO'`, ...). Um nome como `valorFiltro` seria mais claro.
 
-**Problema:** O nome `count` não comunica claramente o significado do retorno da operação de remoção de um animal.
+**Situação:** identificado e **não tratado**. O frontend não tem testes automatizados, e esta entrega priorizou o backend, onde dá para provar a preservação do comportamento.
 
-**Refatoração aplicada:** A variável foi renomeada para `quantidadeRemovida`.
+## S8 — `err` nos demais controllers (não tratado)
 
-**Resultado esperado:** Tornar a condição de verificação mais expressiva e consistente com o significado esperado do retorno.
+**Onde:** `animaisController.js`, `agendamentosController.js`, `favoritosController.js` e `authMiddleware.js` ainda usam `err`.
 
-## S6 — Nome genérico em filtros do frontend
-
-**Localização:** `client/src/pages/AnimaisListPage.jsx`, nos arrays utilizados para gerar filtros com `.map()`.
-
-**Problema:** O parâmetro `val` é genérico e não descreve claramente o papel dos valores utilizados nos filtros de espécie, sexo, porte e idade.
-
-**Situação:** O problema foi identificado, mas não foi tratado nesta etapa, que priorizou as renomeações no backend.
-
-**Possível melhoria futura:** Avaliar a substituição de `val` por um nome mais descritivo, como `valorFiltro`, atualizando todas as referências dentro dos respectivos callbacks. Essa mudança deve ser validada antes de ser considerada concluída.
+**Situação:** identificado e **não tratado**. A mesma renomeação de R4 se aplicaria, mas esses arquivos pertencem a outras refatorações da equipe, e mexer neles aumentaria o risco de conflito entre os PRs.
 
 ## Conclusão
 
-Os casos S1 a S5 foram tratados por meio da técnica Renomear Variável. O caso S6 permanece identificado como oportunidade de melhoria futura e não deve ser apresentado como resolvido.
-
-A confirmação de preservação do comportamento depende da validação das alterações por meio de testes e da comparação entre as versões anterior e posterior.
-
+Os casos S1 a S6 foram tratados com Renomear Variável. S7 e S8 ficam registrados como oportunidades futuras e **não são apresentados como resolvidos**.

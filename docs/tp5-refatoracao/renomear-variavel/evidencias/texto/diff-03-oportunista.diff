@@ -1,0 +1,79 @@
+diff --git a/backend/src/controllers/usuariosController.js b/backend/src/controllers/usuariosController.js
+index 1351428..bb0e8d1 100644
+--- a/backend/src/controllers/usuariosController.js
++++ b/backend/src/controllers/usuariosController.js
+@@ -8,8 +8,8 @@ function handleError(res, erro) {
+ 
+ async function registrarUsuario(req, res) {
+   try {
+-    const result = await usuariosService.registrarUsuario(req.body);
+-    return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso.', ...result });
++    const resultado = await usuariosService.registrarUsuario(req.body);
++    return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso.', ...resultado });
+   } catch (erro) { return handleError(res, erro); }
+ }
+ 
+@@ -17,8 +17,8 @@ async function syncGoogleUsuario(req, res) {
+   try {
+     const { id: uid, email, nome } = req.usuario;
+     const tipo = (req.body?.tipo || 'ADOTANTE').toUpperCase();
+-    const result = await usuariosService.syncGoogleUsuario({ uid, email, nome, tipo });
+-    return res.json(result);
++    const resultado = await usuariosService.syncGoogleUsuario({ uid, email, nome, tipo });
++    return res.json(resultado);
+   } catch (erro) { return handleError(res, erro); }
+ }
+ 
+diff --git a/backend/src/services/animaisService.js b/backend/src/services/animaisService.js
+index c6feb7c..70bcca4 100644
+--- a/backend/src/services/animaisService.js
++++ b/backend/src/services/animaisService.js
+@@ -60,34 +60,34 @@ async function criarAnimal(dadosNovoAnimal, arquivo) {
+ }
+ 
+ async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
+-  const atual = await animaisRepository.findById(id);
+-  if (!atual) {
++  const animalAtual = await animaisRepository.findById(id);
++  if (!animalAtual) {
+     throw new AppError('Animal não encontrado.', 404);
+   }
+-  if (atual.cadastradoPor && atual.cadastradoPor !== adminId) {
++  if (animalAtual.cadastradoPor && animalAtual.cadastradoPor !== adminId) {
+     throw new AppError('Você não tem permissão para editar este animal.', 403);
+   }
+ 
+-  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : atual.nome;
++  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : animalAtual.nome;
+   const foto_url = arquivo
+     ? await salvarFotoNoStorage(arquivo, nomeAnimal)
+-    : (dadosAtualizacao.foto_url || atual.foto_url);
++    : (dadosAtualizacao.foto_url || animalAtual.foto_url);
+   const vacinado =
+     dadosAtualizacao.vacinado !== undefined
+       ? dadosAtualizacao.vacinado == '1' || dadosAtualizacao.vacinado === true
+-      : atual.vacinado;
++      : animalAtual.vacinado;
+ 
+   await animaisRepository.update(id, {
+     nome: nomeAnimal,
+-    idade: dadosAtualizacao.idade || atual.idade,
+-    sexo: (dadosAtualizacao.sexo || atual.sexo).toUpperCase(),
++    idade: dadosAtualizacao.idade || animalAtual.idade,
++    sexo: (dadosAtualizacao.sexo || animalAtual.sexo).toUpperCase(),
+     vacinado,
+-    status: (dadosAtualizacao.status || atual.status).toUpperCase(),
+-    tipo: (dadosAtualizacao.tipo || atual.tipo).toUpperCase(),
+-    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : atual.descricao,
+-    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : atual.raca,
+-    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : atual.porte,
+-    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : atual.historico,
++    status: (dadosAtualizacao.status || animalAtual.status).toUpperCase(),
++    tipo: (dadosAtualizacao.tipo || animalAtual.tipo).toUpperCase(),
++    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : animalAtual.descricao,
++    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : animalAtual.raca,
++    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : animalAtual.porte,
++    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : animalAtual.historico,
+     foto_url,
+   });
+ }

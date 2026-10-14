@@ -1,299 +1,133 @@
-# Refatoração: Renomear Variável (Rename Variable)
+# Refatoração: Renomear Variável (*Rename Variable*)
 
-Este diretório documenta a aplicação da técnica **Renomear Variável (Rename Variable)** no projeto Whiskerworld, como parte do Trabalho Prático 5 — Refatoração.
+Parte do **TP5 – Refatoração** do Whiskerworld. Este diretório reúne tudo o que foi feito com a refatoração **Renomear Variável**, do catálogo de Martin Fowler, tomando como referência o [capítulo 9 de *Engenharia de Software Moderna*](https://engsoftmoderna.info/cap9.html).
 
-A técnica consiste em alterar o nome de uma variável ou parâmetro para tornar sua finalidade mais clara, sem modificar o comportamento observável do sistema.
+> **Renomear Variável:** trocar o nome de uma variável ou parâmetro por outro que explique melhor o que ela guarda, atualizando todas as referências. O comportamento do sistema não muda.
 
-## 1. Resumo das refatorações
+## Por que escolhemos Renomear Variável
 
-Foram identificados nomes genéricos ou pouco descritivos em funções do backend. As alterações buscaram melhorar a legibilidade e facilitar a manutenção do código.
+- **Resolve o smell "Nome Misterioso".** O projeto tem nomes como `count`, `body` e `err`, que não dizem o que o valor representa ([01-code-smells.md](01-code-smells.md)).
+- **É a mais segura das refatorações.** Só mudam identificadores locais. Nenhum `module.exports`, rota ou resposta da API foi alterado, então o frontend e os demais módulos não precisaram de ajuste.
+- **Complementa as outras técnicas da equipe.** A Extração de Método e a Extração de Variável criaram funções e variáveis novas; Renomear Variável melhora os nomes das que já existiam.
 
-| ID | Nome anterior | Nome novo | Arquivo | Classificação |
+## Navegação
+
+| # | Documento | O que contém |
+|---|---|---|
+| 1 | [01-code-smells.md](01-code-smells.md) | *Code smells* encontrados, por que são problema e quais foram tratados ou não |
+| 2 | [02-refatoracoes-planejadas.md](02-refatoracoes-planejadas.md) | Refatorações **planejadas** (R1 a R5): justificativa e código antes/depois |
+| 3 | [03-refatoracao-oportunista.md](03-refatoracao-oportunista.md) | Refatorações **oportunistas** (O1 e O2), feitas durante a escrita dos testes |
+| 4 | [04-par-neutro-extract-inline.md](04-par-neutro-extract-inline.md) | Par **A + B** que se anulam, com prova |
+| — | [evidencias/texto/](evidencias/texto/README.md) | Diffs, resultados dos testes e prova do par neutro, em texto |
+| — | [evidencias/prints/](evidencias/prints/) | Prints do terminal com os testes antes e depois |
+| — | [demonstracao/gerar-evidencias.sh](demonstracao/gerar-evidencias.sh) | Script que gera as evidências a partir da saída real dos comandos |
+
+## Resumo
+
+| # | Refatoração | Tipo | Arquivo | Commit |
 |---|---|---|---|---|
-| R1 | `count` | `quantidadeRemovida` | `backend/src/services/favoritosService.js` | Planejada |
-| R2 | `body` | `dadosNovoAnimal` | `backend/src/services/animaisService.js` | Planejada |
-| R3 | `body` | `dadosAtualizacao` | `backend/src/services/animaisService.js` | Planejada |
-| R4 | `err` | `erro` | `backend/src/controllers/usuariosController.js` | Planejada |
-| R5 | `count` | `quantidadeRemovida` | `backend/src/services/animaisService.js` | Planejada |
+| R1 | `count` → `quantidadeRemovida` | Planejada | `backend/src/services/favoritosService.js` | `93bbe26` |
+| R2 | `body` → `dadosNovoAnimal` | Planejada | `backend/src/services/animaisService.js` | `b888838` |
+| R3 | `body` → `dadosAtualizacao` | Planejada | `backend/src/services/animaisService.js` | `b888838` |
+| R4 | `err` → `erro` | Planejada | `backend/src/controllers/usuariosController.js` | `b888838` |
+| R5 | `count` → `quantidadeRemovida` | Planejada | `backend/src/services/animaisService.js` | `b888838` |
+| O1 | `result` → `resultado` | Oportunista | `backend/src/controllers/usuariosController.js` | `488d276` |
+| O2 | `atual` → `animalAtual` | Oportunista | `backend/src/services/animaisService.js` | `488d276` |
+| A | `quantidadeRemovida` → `totalRemovido` | Par neutro | `backend/src/services/favoritosService.js` | `11c6d59` |
+| B | `totalRemovido` → `quantidadeRemovida` | Par neutro | `backend/src/services/favoritosService.js` | `f2c0e9f` |
 
-As refatorações foram realizadas por meio da substituição dos identificadores e da atualização de suas referências nos respectivos escopos. As chamadas aos repositórios, as condições de validação e as respostas do sistema foram mantidas.
+R1 a R5 e O1/O2 são casos da **mesma técnica** (Renomear Variável) aplicados em lugares diferentes; não são técnicas distintas.
 
-## 2. Evidências de antes e depois
+## Evidência de "antes e depois"
 
-### R1 — Renomeação de `count` para `quantidadeRemovida`
+### R1 — `favoritosService.js`
 
-**Arquivo:** `backend/src/services/favoritosService.js`
-
-**Code smell:** Nome Misterioso (*Mysterious Name*).
-
-**Antes:**
-
-```javascript
-const count = await favoritosRepository.remove(usuarioId, animalId);
-
-if (!count) {
-  throw new AppError('Favorito não encontrado.', 404);
-}
+```diff
+-  const count = await favoritosRepository.remove(usuarioId, animalId);
+-  if (!count) {
++  const quantidadeRemovida = await favoritosRepository.remove(usuarioId, animalId);
++  if (!quantidadeRemovida) {
+     throw new AppError('Favorito não encontrado.', 404);
+   }
 ```
 
-**Depois:**
+### R2 e R3 — `animaisService.js`
 
-```javascript
-const quantidadeRemovida = await favoritosRepository.remove(usuarioId, animalId);
-
-if (!quantidadeRemovida) {
-  throw new AppError('Favorito não encontrado.', 404);
-}
+```diff
+-async function criarAnimal(body, arquivo) {
+-  const { nome, sexo, tipo, idade, porte, descricao } = body;
++async function criarAnimal(dadosNovoAnimal, arquivo) {
++  const { nome, sexo, tipo, idade, porte, descricao } = dadosNovoAnimal;
 ```
 
-**Justificativa:** O nome `count` não explica claramente o significado do valor retornado pelo repositório. O nome `quantidadeRemovida` torna explícito que o valor representa a quantidade de registros removidos.
-
-**Comportamento esperado:** A operação de remoção e a condição de erro permanecem iguais. A mudança tem como objetivo melhorar a compreensão do código.
-
-**Evidência:** `evidencias/diff-renomear-variavel.diff`.
-
-### R2 — Renomeação de `body` para `dadosNovoAnimal`
-
-**Arquivo:** `backend/src/services/animaisService.js`
-
-**Code smell:** Nome Genérico.
-
-**Antes:**
-
-```javascript
-async function criarAnimal(body, arquivo) {
-  const { nome, sexo, tipo, idade, porte, descricao } = body;
-
-  if (!body.historico) {
-    camposFaltando.push('histórico');
-  }
-
-  const vacinado =
-    body.vacinado === '1' ||
-    body.vacinado === 'true' ||
-    body.vacinado === true;
-
-  return animaisRepository.create({
-    ...body,
-    nome: nomeAnimal,
-    vacinado,
-    foto_url,
-    tipo: (body.tipo || '').toUpperCase(),
-    sexo: (body.sexo || '').toUpperCase(),
-    cadastradoPor: body.cadastradoPor || null,
-  });
-}
+```diff
+-async function atualizarAnimal(id, body, arquivo, adminId) {
++async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
 ```
 
-**Depois:**
+### R4 — `usuariosController.js`
 
-```javascript
-async function criarAnimal(dadosNovoAnimal, arquivo) {
-  const { nome, sexo, tipo, idade, porte, descricao } = dadosNovoAnimal;
-
-  if (!dadosNovoAnimal.historico) {
-    camposFaltando.push('histórico');
-  }
-
-  const vacinado =
-    dadosNovoAnimal.vacinado === '1' ||
-    dadosNovoAnimal.vacinado === 'true' ||
-    dadosNovoAnimal.vacinado === true;
-
-  return animaisRepository.create({
-    ...dadosNovoAnimal,
-    nome: nomeAnimal,
-    vacinado,
-    foto_url,
-    tipo: (dadosNovoAnimal.tipo || '').toUpperCase(),
-    sexo: (dadosNovoAnimal.sexo || '').toUpperCase(),
-    cadastradoPor: dadosNovoAnimal.cadastradoPor || null,
-  });
-}
+```diff
+-function handleError(res, err) {
+-  console.error(err);
++function handleError(res, erro) {
++  console.error(erro);
 ```
 
-**Justificativa:** O parâmetro `body` é genérico. `dadosNovoAnimal` indica que o objeto contém os dados usados no cadastro de um animal.
+### R5 — `animaisService.js`
 
-**Comportamento esperado:** As propriedades acessadas, os dados enviados ao repositório e as validações permanecem iguais.
-
-### R3 — Renomeação de `body` para `dadosAtualizacao`
-
-**Arquivo:** `backend/src/services/animaisService.js`
-
-**Code smell:** Nome Genérico.
-
-**Antes:**
-
-```javascript
-async function atualizarAnimal(id, body, arquivo, adminId) {
-  const nomeAnimal =
-    body.nome !== undefined
-      ? validarNomeAnimal(body.nome)
-      : atual.nome;
-
-  const foto_url = arquivo
-    ? await salvarFotoNoStorage(arquivo, nomeAnimal)
-    : (body.foto_url || atual.foto_url);
-
-  const vacinado =
-    body.vacinado !== undefined
-      ? body.vacinado == '1' || body.vacinado === true
-      : atual.vacinado;
-
-  await animaisRepository.update(id, {
-    nome: nomeAnimal,
-    idade: body.idade || atual.idade,
-    sexo: (body.sexo || atual.sexo).toUpperCase(),
-    vacinado,
-    status: (body.status || atual.status).toUpperCase(),
-    tipo: (body.tipo || atual.tipo).toUpperCase(),
-    descricao: body.descricao !== undefined ? body.descricao : atual.descricao,
-    raca: body.raca !== undefined ? body.raca : atual.raca,
-    porte: body.porte !== undefined ? body.porte : atual.porte,
-    historico: body.historico !== undefined ? body.historico : atual.historico,
-    foto_url,
-  });
-}
+```diff
+-  const count = await animaisRepository.remove(id);
+-  if (!count) {
++  const quantidadeRemovida = await animaisRepository.remove(id);
++  if (!quantidadeRemovida) {
 ```
 
-**Depois:**
+Os diffs completos estão em [evidencias/texto/](evidencias/texto/README.md). O antes/depois comentado de cada refatoração está em [02-refatoracoes-planejadas.md](02-refatoracoes-planejadas.md).
 
-```javascript
-async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
-  const nomeAnimal =
-    dadosAtualizacao.nome !== undefined
-      ? validarNomeAnimal(dadosAtualizacao.nome)
-      : atual.nome;
+## Como garantimos que o comportamento não mudou
 
-  const foto_url = arquivo
-    ? await salvarFotoNoStorage(arquivo, nomeAnimal)
-    : (dadosAtualizacao.foto_url || atual.foto_url);
+Renomear uma variável não deveria mudar nada, mas isso precisa ser **verificado**. Os arquivos `favoritosService.js`, `animaisService.js` (criar, atualizar e remover) e `usuariosController.js` não tinham testes para os trechos alterados. Por isso criamos **testes de caracterização**: testes que registram como o código se comporta e que devem passar igualmente no código original e no refatorado.
 
-  const vacinado =
-    dadosAtualizacao.vacinado !== undefined
-      ? dadosAtualizacao.vacinado == '1' || dadosAtualizacao.vacinado === true
-      : atual.vacinado;
+| Arquivo de teste | Testes | O que cobre |
+|---|---|---|
+| `backend/tests/favoritosService.test.js` | 4 | `removerFavorito`: remove, 404 quando nada foi removido, 401 sem usuário, 400 sem `animal_id` |
+| `backend/tests/animaisServiceCaracterizacao.test.js` | 13 | `criarAnimal`, `atualizarAnimal` e `deletarAnimal`: dados repassados ao repositório, maiúsculas, `vacinado`, valores mantidos na atualização, 400, 403 e 404 |
+| `backend/tests/usuariosController.test.js` | 7 | `handleError` e blocos `catch`: status e mensagem do erro, 500 padrão, 201, 401 |
 
-  await animaisRepository.update(id, {
-    nome: nomeAnimal,
-    idade: dadosAtualizacao.idade || atual.idade,
-    sexo: (dadosAtualizacao.sexo || atual.sexo).toUpperCase(),
-    vacinado,
-    status: (dadosAtualizacao.status || atual.status).toUpperCase(),
-    tipo: (dadosAtualizacao.tipo || atual.tipo).toUpperCase(),
-    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : atual.descricao,
-    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : atual.raca,
-    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : atual.porte,
-    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : atual.historico,
-    foto_url,
-  });
-}
+Esses testes foram executados em duas versões do código, com a mesma suíte:
+
+| Versão | Como obter | Resultado |
+|---|---|---|
+| **Antes** | arquivos de `favoritosService`, `animaisService` e `usuariosController` como estavam antes de R1–R5 (`93bbe26^` e `b888838^`) | ver [testes-antes.txt](evidencias/texto/testes-antes.txt) |
+| **Depois** | código refatorado (esta branch) | ver [testes-depois.txt](evidencias/texto/testes-depois.txt) |
+
+Para gerar esses arquivos (e os diffs) com a saída real dos comandos, basta rodar, na raiz do repositório:
+
+```bash
+bash docs/tp5-refatoracao/renomear-variavel/demonstracao/gerar-evidencias.sh
 ```
 
-**Justificativa:** O novo nome descreve a finalidade do parâmetro, que é representar os dados recebidos para a atualização de um animal.
+| Testes – antes | Testes – depois |
+|---|---|
+| ![Testes antes](evidencias/prints/01-testes-antes.png) | ![Testes depois](evidencias/prints/02-testes-depois.png) |
 
-**Comportamento esperado:** A lógica de atualização e as regras para preservar valores existentes permanecem iguais.
+## Histórico de commits
 
-### R4 — Renomeação de `err` para `erro`
+Cada etapa ficou em um commit separado, para que antes e depois possam ser comparados com `git diff`:
 
-**Arquivo:** `backend/src/controllers/usuariosController.js`
-
-**Code smell:** Nome Abreviado.
-
-**Antes:**
-
-```javascript
-function handleError(res, err) {
-  console.error(err);
-  const status = err.status || 500;
-  return res.status(status).json({
-    mensagem: err.message || 'Erro interno.'
-  });
-}
+```text
+93bbe26 refactor: renomeia variavel count para quantidadeRemovida no favoritosService   (R1)
+b888838 refactor: renomeia variaveis genericas em animaisService e usuariosController   (R2 a R5)
+a5f2b96 test: caracteriza favoritosService, animaisService e usuariosController antes de renomear variáveis
+488d276 refactor: renomeia result para resultado e atual para animalAtual               (O1 e O2, oportunista)
+11c6d59 refactor: renomeia quantidadeRemovida para totalRemovido                        (par neutro A)
+f2c0e9f refactor: renomeia totalRemovido de volta para quantidadeRemovida               (par neutro B)
 ```
 
-**Depois:**
+> Os hashes valem enquanto o PR for integrado com **merge commit** (não use "Squash and merge"), porque o squash cria um commit novo e os commits acima deixam de existir na `main`.
 
-```javascript
-function handleError(res, erro) {
-  console.error(erro);
-  const status = erro.status || 500;
-  return res.status(status).json({
-    mensagem: erro.message || 'Erro interno.'
-  });
-}
-```
+## Limites desta entrega
 
-Nos blocos `catch` do mesmo arquivo, o parâmetro também foi renomeado:
-
-**Antes:**
-
-```javascript
-} catch (err) {
-  return handleError(res, err);
-}
-```
-
-**Depois:**
-
-```javascript
-} catch (erro) {
-  return handleError(res, erro);
-}
-```
-
-**Justificativa:** O nome `erro` é mais explícito do que `err` e facilita a leitura do tratamento de exceções.
-
-**Comportamento esperado:** O registro do erro, a definição do status HTTP e a resposta JSON continuam com a mesma lógica.
-
-### R5 — Renomeação de `count` para `quantidadeRemovida` em `deletarAnimal`
-
-**Arquivo:** `backend/src/services/animaisService.js`
-
-**Code smell:** Nome Misterioso.
-
-**Antes:**
-
-```javascript
-const count = await animaisRepository.remove(id);
-
-if (!count) {
-  throw new AppError('Animal não encontrado.', 404);
-}
-```
-
-**Depois:**
-
-```javascript
-const quantidadeRemovida = await animaisRepository.remove(id);
-
-if (!quantidadeRemovida) {
-  throw new AppError('Animal não encontrado.', 404);
-}
-```
-
-**Justificativa:** Assim como no caso R1, o nome anterior não deixava claro o significado do valor retornado pelo repositório. O novo identificador torna explícito o significado esperado da variável no contexto da exclusão.
-
-**Comportamento esperado:** A chamada ao repositório e a condição que produz o erro permanecem iguais.
-
-**Observação:** R5 é um caso adicional da mesma técnica, e não uma quinta técnica de refatoração.
-
-## 3. Evidências complementares
-
-Os diffs das alterações estão disponíveis em:
-
-- `evidencias/diff-renomear-variavel.diff`: alteração de R1.
-- `evidencias/diff-s2-s3.diff`: alterações de R2, R3, R4 e R5.
-
-Esses arquivos permitem visualizar as linhas removidas e adicionadas.
-
-Os resultados dos testes antes e depois deverão ser documentados separadamente, utilizando execuções verificáveis. Não se deve afirmar que os testes passaram sem apresentar os resultados reais.
-
-## 4. Conclusão
-
-A técnica Renomear Variável foi aplicada para tornar os nomes de variáveis e parâmetros mais descritivos nos serviços de favoritos e animais e no controlador de usuários.
-
-As mudanças apresentadas alteram os identificadores e suas referências, sem modificar intencionalmente as operações, as condições ou as respostas associadas a esses trechos.
-
-A confirmação de que o comportamento externo foi preservado depende da execução dos testes e da comparação entre as versões anterior e posterior.
-
+- **S7** (`val` no frontend) e **S8** (`err` nos demais controllers) foram identificados e **não foram tratados** ([01-code-smells.md](01-code-smells.md)).
+- O frontend não tem testes automatizados; por isso a entrega se concentrou no backend.

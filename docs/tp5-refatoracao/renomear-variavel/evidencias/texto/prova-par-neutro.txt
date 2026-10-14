@@ -1,0 +1,19 @@
+# Prova do par neutro (Rename Variable A + Rename Variable B)
+# Arquivo: backend/src/services/favoritosService.js
+
+$ git log --oneline 488d276..f2c0e9f -- backend/src/services/favoritosService.js
+f2c0e9f refactor: renomeia totalRemovido de volta para quantidadeRemovida em removerFavorito (par neutro B)
+11c6d59 refactor: renomeia quantidadeRemovida para totalRemovido em removerFavorito (par neutro A)
+
+# hash (blob) do conteúdo do arquivo: antes de A, depois de A e depois de B
+$ git rev-parse 488d276:backend/src/services/favoritosService.js
+3cbabded0baaef0c56bb842ee1f497fc61f082cb
+$ git rev-parse 11c6d59:backend/src/services/favoritosService.js
+29666e973474c7f0ae1dc5100b62160c33d7f073
+$ git rev-parse f2c0e9f:backend/src/services/favoritosService.js
+3cbabded0baaef0c56bb842ee1f497fc61f082cb
+
+# diferença entre o estado antes de A e depois de B (sem saída = arquivos idênticos)
+$ git diff 488d276 f2c0e9f -- backend/src/services/favoritosService.js
+$ git diff 488d276 f2c0e9f -- backend/src/services/favoritosService.js | wc -l
+0
