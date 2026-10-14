@@ -16,4 +16,5 @@ $ git rev-parse f2c0e9f:backend/src/services/favoritosService.js
 # diferença entre o estado antes de A e depois de B (sem saída = arquivos idênticos)
 $ git diff 488d276 f2c0e9f -- backend/src/services/favoritosService.js
 $ git diff 488d276 f2c0e9f -- backend/src/services/favoritosService.js | wc -l
+
 0
