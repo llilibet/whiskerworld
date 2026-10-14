@@ -27,4 +27,4 @@ Um **diff** compara duas versões de um arquivo e mostra só o que mudou:
 | [testes-depois.txt](testes-depois.txt) | `npm test` com o código **refatorado** | Os mesmos testes continuam passando. |
 | [prova-par-neutro.txt](prova-par-neutro.txt) | `git rev-parse` e `git diff` nos commits do par A + B | O arquivo tem o mesmo hash antes de A e depois de B; o diff entre os dois é vazio. |
 
-> Nos arquivos `testes-*.txt`, cada linha `ok N - ...` é um teste que passou. O resumo final (`# pass`, `# fail`) indica os totais.
+> Nos arquivos `testes-*.txt`, cada linha`ok N - ...` é um teste que passou. O resumo final (`# pass`, `# fail`) indica os totais.
