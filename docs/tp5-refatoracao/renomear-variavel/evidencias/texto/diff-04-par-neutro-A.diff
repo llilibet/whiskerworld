@@ -10,6 +10,6 @@ index 3cbabde..29666e9 100644
 -  if (!quantidadeRemovida) {
 +  const totalRemovido = await favoritosRepository.remove(usuarioId, animalId);
 +  if (!totalRemovido) {
-     throw new AppError('Favorito não encontrado.', 404);
+     throw new AppError('Favorito não encontrado', 404);
    }
  }
