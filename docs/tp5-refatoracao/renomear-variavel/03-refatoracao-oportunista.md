@@ -10,7 +10,7 @@ Commit: `488d276` — diff completo: [diff-03-oportunista.diff](evidencias/texto
 
 ## O1 — `result` → `resultado` (`usuariosController.js`)
 
-**Problema:** `result` guarda o retorno de `usuariosService.registrarUsuario` e de `usuariosService.syncGoogleUsuario`. É um nome em inglês, genérico, em um arquivo em que tudo mais está em português (`mensagem`, `erro`, `usuario`).
+**Problema:** `result` possui o retorno de `usuariosService.registrarUsuario` e de `usuariosService.syncGoogleUsuario`. É um nome em inglês, genérico, em um arquivo em que tudo mais está em português (`mensagem`, `erro`, `usuario`).
 
 **Antes**
 
