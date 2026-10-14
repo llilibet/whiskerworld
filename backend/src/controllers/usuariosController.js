@@ -8,8 +8,8 @@ function handleError(res, erro) {
 
 async function registrarUsuario(req, res) {
   try {
-    const result = await usuariosService.registrarUsuario(req.body);
-    return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso.', ...result });
+    const resultado = await usuariosService.registrarUsuario(req.body);
+    return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso.', ...resultado });
   } catch (erro) { return handleError(res, erro); }
 }
 
@@ -17,8 +17,8 @@ async function syncGoogleUsuario(req, res) {
   try {
     const { id: uid, email, nome } = req.usuario;
     const tipo = (req.body?.tipo || 'ADOTANTE').toUpperCase();
-    const result = await usuariosService.syncGoogleUsuario({ uid, email, nome, tipo });
-    return res.json(result);
+    const resultado = await usuariosService.syncGoogleUsuario({ uid, email, nome, tipo });
+    return res.json(resultado);
   } catch (erro) { return handleError(res, erro); }
 }
 

@@ -60,34 +60,34 @@ async function criarAnimal(dadosNovoAnimal, arquivo) {
 }
 
 async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
-  const atual = await animaisRepository.findById(id);
-  if (!atual) {
+  const animalAtual = await animaisRepository.findById(id);
+  if (!animalAtual) {
     throw new AppError('Animal não encontrado.', 404);
   }
-  if (atual.cadastradoPor && atual.cadastradoPor !== adminId) {
+  if (animalAtual.cadastradoPor && animalAtual.cadastradoPor !== adminId) {
     throw new AppError('Você não tem permissão para editar este animal.', 403);
   }
 
-  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : atual.nome;
+  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : animalAtual.nome;
   const foto_url = arquivo
     ? await salvarFotoNoStorage(arquivo, nomeAnimal)
-    : (dadosAtualizacao.foto_url || atual.foto_url);
+    : (dadosAtualizacao.foto_url || animalAtual.foto_url);
   const vacinado =
     dadosAtualizacao.vacinado !== undefined
       ? dadosAtualizacao.vacinado == '1' || dadosAtualizacao.vacinado === true
-      : atual.vacinado;
+      : animalAtual.vacinado;
 
   await animaisRepository.update(id, {
     nome: nomeAnimal,
-    idade: dadosAtualizacao.idade || atual.idade,
-    sexo: (dadosAtualizacao.sexo || atual.sexo).toUpperCase(),
+    idade: dadosAtualizacao.idade || animalAtual.idade,
+    sexo: (dadosAtualizacao.sexo || animalAtual.sexo).toUpperCase(),
     vacinado,
-    status: (dadosAtualizacao.status || atual.status).toUpperCase(),
-    tipo: (dadosAtualizacao.tipo || atual.tipo).toUpperCase(),
-    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : atual.descricao,
-    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : atual.raca,
-    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : atual.porte,
-    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : atual.historico,
+    status: (dadosAtualizacao.status || animalAtual.status).toUpperCase(),
+    tipo: (dadosAtualizacao.tipo || animalAtual.tipo).toUpperCase(),
+    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : animalAtual.descricao,
+    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : animalAtual.raca,
+    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : animalAtual.porte,
+    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : animalAtual.historico,
     foto_url,
   });
 }
