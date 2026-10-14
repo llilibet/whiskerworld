@@ -25,8 +25,8 @@ async function removerFavorito(usuarioId, animalId) {
   if (!animalId) {
     throw new AppError('animal_id obrigatório.', 400);
   }
-  const quantidadeRemovida = await favoritosRepository.remove(usuarioId, animalId);
-  if (!quantidadeRemovida) {
+  const totalRemovido = await favoritosRepository.remove(usuarioId, animalId);
+  if (!totalRemovido) {
     throw new AppError('Favorito não encontrado.', 404);
   }
 }
