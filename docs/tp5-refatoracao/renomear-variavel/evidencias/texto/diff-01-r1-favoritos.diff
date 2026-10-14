@@ -11,5 +11,5 @@ index 223992b..3cbabde 100644
 +  const quantidadeRemovida = await favoritosRepository.remove(usuarioId, animalId);
 +  if (!quantidadeRemovida) {
      throw new AppError('Favorito não encontrado.', 404);
-   }
+}
  }
