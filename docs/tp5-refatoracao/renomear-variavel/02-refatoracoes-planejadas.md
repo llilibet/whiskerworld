@@ -18,7 +18,7 @@ Segundo o capítulo 9 de *Engenharia de Software Moderna*, uma refatoração é 
 
 ## R1 — `count` → `quantidadeRemovida`
 
-**Justificativa:** remover um favorito retorna o número de registros apagados. Com `count`, a condição de erro 404 não explica o motivo. Com `quantidadeRemovida`, a leitura é direta: "se nenhum favorito foi removido, o favorito não existia".
+**Justificativa:** A operação de exclusão de um favorito devolve o total de registros apagados. O termo genérico `count` torna a validação do erro 404 pouco intuitiva. Ao utilizar `quantidadeRemovida`, a interpretação da lógica torna-se imediata: "se nenhuma quantidade foi removida, infere-se que o favorito não existia".
 
 **Antes**
 
@@ -40,7 +40,7 @@ if (!quantidadeRemovida) {
 
 ## R2 — `body` → `dadosNovoAnimal`
 
-**Justificativa:** `criarAnimal` valida o nome, confere campos obrigatórios, interpreta `vacinado` e monta o objeto enviado ao repositório. O parâmetro aparece em todas essas etapas. O novo nome diz qual objeto é.
+**Justificativa:** A função `criarAnimal` é responsável por validar o nome, verificar campos obrigatórios, processar o status de `vacinado` e estruturar o objeto que será persistido no repositório. O parâmetro transita por todas essas etapas. A nova nomenclatura expressa com clareza a real finalidade desse objeto ao longo de todo o fluxo.
 
 **Antes**
 
