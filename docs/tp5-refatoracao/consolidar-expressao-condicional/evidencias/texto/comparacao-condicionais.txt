@@ -1,0 +1,7 @@
+﻿OK - Respostas do question├írio: 11 casos equivalentes
+OK - Dados obrigat├│rios do agendamento: 216 casos equivalentes
+OK - Cabe├ºalho de autentica├º├úo: 9 casos equivalentes
+OK - Perfil de administrador: 8 casos equivalentes
+
+Total: 244 casos equivalentes.
+Todas as compara├º├Áes passaram.
