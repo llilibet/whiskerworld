@@ -1,4 +1,4 @@
-# 4. Par neutro (refatorações A e B que se anulam)
+# 4. Par neutro (refatorações A e B que se cancelam)
 
 O TP5 pede um **par de refatorações A e B** em que B desfaz as transformações de A, sem impacto no sistema.
 
