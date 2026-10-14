@@ -86,12 +86,12 @@ Na Consolidação de Expressão Condicional, a documentação apresenta resultad
 
 ## 5. Links para o código e as evidências
 
-- **[Extração de Método](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/extracao-de-metodo)** — documentação, código antes e depois e evidências dos testes.
-- **[Extração de Variável](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/extracao-de-variavel)** — documentação, justificativas e evidências das refatorações.
-- **[Renomeação de Variável](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/renomear-variavel)** — documentação, exemplos de código e resultados dos testes.
-- **[Consolidação de Expressão Condicional](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao-consolidar-condicionais)** — documentação e evidências das refatorações.
+- **[Extração de Método](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/extracao-de-metodo)** — documentação das refatorações, exemplos de código antes e depois e evidências dos testes.
+- **[Extração de Variável](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/extracao-de-variavel)** — justificativas, alterações realizadas e evidências de validação.
+- **[Renomeação de Variável](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/renomear-variavel)** — documentação das renomeações, diffs e resultados dos testes antes e depois.
+- **[Consolidação de Expressão Condicional](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/consolidar-expressao-condicional)** — relatório, demonstração de equivalência e evidências das condições refatoradas.
 
-As pastas de cada técnica reúnem a documentação das alterações, os exemplos de código antes e depois e as evidências utilizadas para verificar a preservação do comportamento do sistema.
+As documentações individuais reúnem os arquivos afetados, os exemplos de código antes e depois e as evidências utilizadas para avaliar a preservação do comportamento do sistema.
 
 ## 6. Aprendizados e dificuldades
 
