@@ -16,7 +16,7 @@ index 7813c45..1351428 100644
  }
  
  async function registrarUsuario(req, res) {
-   try {
+   try   {
      const result = await usuariosService.registrarUsuario(req.body);
      return res.status(201).json({ mensagem: 'Usuário cadastrado com sucesso.', ...result });
 -  } catch (err) { return handleError(res, err); }
