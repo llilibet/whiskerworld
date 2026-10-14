@@ -1,42 +1,167 @@
-# Refatorações Planejadas
+# 2. Refatorações planejadas
 
-As aplicações da técnica **Renomear Variável (Rename Variable)** foram planejadas após a identificação de nomes genéricos ou abreviados no backend do projeto Whiskerworld.
+Segundo o capítulo 9 de *Engenharia de Software Moderna*, uma refatoração é **planejada** quando é tratada como uma tarefa própria, e não como um ajuste feito no meio de outra tarefa. As cinco renomeações abaixo (R1 a R5) foram feitas assim:
 
-A intenção foi melhorar a legibilidade e tornar mais explícito o significado dos identificadores, preservando as operações executadas e as regras existentes.
+1. **Diagnóstico:** procuramos nomes genéricos (`count`, `body`, `err`) em `backend/src` (smells S1 a S5 em [01-code-smells.md](01-code-smells.md)).
+2. **Execução:** uma renomeação por vez, trocando o nome na declaração e em todas as referências dentro do escopo da função.
+3. **Verificação:** `git diff` para conferir que só os identificadores mudaram e testes automatizados antes e depois. Os testes de `favoritosService`, `animaisService` (criar, atualizar, remover) e `usuariosController` foram escritos para esta entrega, porque essas partes não tinham testes. Veja [README.md](README.md#como-garantimos-que-o-comportamento-não-mudou).
 
-## R1 — `count` para `quantidadeRemovida`
+| ID | De → Para | Arquivo | Commit | Diff |
+|---|---|---|---|---|
+| R1 | `count` → `quantidadeRemovida` | `favoritosService.js` | `93bbe26` | [diff-01](evidencias/texto/diff-01-r1-favoritos.diff) |
+| R2 | `body` → `dadosNovoAnimal` | `animaisService.js` (`criarAnimal`) | `b888838` | [diff-02](evidencias/texto/diff-02-r2-r5-animais-usuarios.diff) |
+| R3 | `body` → `dadosAtualizacao` | `animaisService.js` (`atualizarAnimal`) | `b888838` | [diff-02](evidencias/texto/diff-02-r2-r5-animais-usuarios.diff) |
+| R4 | `err` → `erro` | `usuariosController.js` | `b888838` | [diff-02](evidencias/texto/diff-02-r2-r5-animais-usuarios.diff) |
+| R5 | `count` → `quantidadeRemovida` | `animaisService.js` (`deletarAnimal`) | `b888838` | [diff-02](evidencias/texto/diff-02-r2-r5-animais-usuarios.diff) |
 
-**Arquivo:** `backend/src/services/favoritosService.js`.
+---
 
-A alteração foi planejada para deixar explícito o significado esperado do retorno da operação de remoção de um favorito. O novo nome facilita a compreensão da condição que verifica se houve remoção.
+## R1 — `count` → `quantidadeRemovida`
 
-## R2 — `body` para `dadosNovoAnimal`
+**Justificativa:** remover um favorito retorna o número de registros apagados. Com `count`, a condição de erro 404 não explica o motivo. Com `quantidadeRemovida`, a leitura é direta: "se nenhum favorito foi removido, o favorito não existia".
 
-**Arquivo:** `backend/src/services/animaisService.js`, função `criarAnimal`.
+**Antes**
 
-O parâmetro foi renomeado para indicar que o objeto contém os dados utilizados no cadastro de um animal. Todas as referências ao parâmetro no escopo da função foram atualizadas.
+```js
+const count = await favoritosRepository.remove(usuarioId, animalId);
+if (!count) {
+  throw new AppError('Favorito não encontrado.', 404);
+}
+```
 
-## R3 — `body` para `dadosAtualizacao`
+**Depois**
 
-**Arquivo:** `backend/src/services/animaisService.js`, função `atualizarAnimal`.
+```js
+const quantidadeRemovida = await favoritosRepository.remove(usuarioId, animalId);
+if (!quantidadeRemovida) {
+  throw new AppError('Favorito não encontrado.', 404);
+}
+```
 
-A alteração torna mais clara a finalidade do objeto utilizado na atualização de um animal. As referências foram atualizadas sem a intenção de modificar as regras de atualização dos dados.
+## R2 — `body` → `dadosNovoAnimal`
 
-## R4 — `err` para `erro`
+**Justificativa:** `criarAnimal` valida o nome, confere campos obrigatórios, interpreta `vacinado` e monta o objeto enviado ao repositório. O parâmetro aparece em todas essas etapas. O novo nome diz qual objeto é.
 
-**Arquivo:** `backend/src/controllers/usuariosController.js`.
+**Antes**
 
-O identificador foi expandido para uma forma mais descritiva na função `handleError` e nos blocos `catch`. O objetivo foi melhorar a legibilidade do tratamento de exceções.
+```js
+async function criarAnimal(body, arquivo) {
+  const { nome, sexo, tipo, idade, porte, descricao } = body;
+  ...
+  if (!body.historico) camposFaltando.push('histórico');
+  ...
+  return animaisRepository.create({
+    ...body,
+    nome: nomeAnimal,
+    tipo: (body.tipo || '').toUpperCase(),
+    sexo: (body.sexo || '').toUpperCase(),
+    cadastradoPor: body.cadastradoPor || null,
+  });
+}
+```
 
-## R5 — `count` para `quantidadeRemovida`
+**Depois**
 
-**Arquivo:** `backend/src/services/animaisService.js`, função `deletarAnimal`.
+```js
+async function criarAnimal(dadosNovoAnimal, arquivo) {
+  const { nome, sexo, tipo, idade, porte, descricao } = dadosNovoAnimal;
+  ...
+  if (!dadosNovoAnimal.historico) camposFaltando.push('histórico');
+  ...
+  return animaisRepository.create({
+    ...dadosNovoAnimal,
+    nome: nomeAnimal,
+    tipo: (dadosNovoAnimal.tipo || '').toUpperCase(),
+    sexo: (dadosNovoAnimal.sexo || '').toUpperCase(),
+    cadastradoPor: dadosNovoAnimal.cadastradoPor || null,
+  });
+}
+```
 
-O nome foi alterado para comunicar melhor o significado esperado do retorno da operação de remoção de um animal, mantendo a chamada ao repositório e a condição de erro.
+## R3 — `body` → `dadosAtualizacao`
 
-## Preservação do comportamento
+**Justificativa:** em `atualizarAnimal` o objeto contém só os campos que o administrador quer mudar; os demais mantêm o valor atual. `dadosAtualizacao` deixa isso claro e evita confundir com o animal já salvo.
 
-Nas cinco alterações, a intenção foi modificar os identificadores e atualizar suas referências, sem modificar as operações, as condições ou as respostas do sistema.
+**Antes**
 
-A comprovação de que o comportamento observável foi preservado deve ser feita por meio de testes e comparação das versões anterior e posterior. Os resultados devem ser registrados somente após a execução e verificação efetivas desses procedimentos.
+```js
+async function atualizarAnimal(id, body, arquivo, adminId) {
+  ...
+  const nomeAnimal = body.nome !== undefined ? validarNomeAnimal(body.nome) : atual.nome;
+  ...
+    idade: body.idade || atual.idade,
+    descricao: body.descricao !== undefined ? body.descricao : atual.descricao,
+  ...
+}
+```
 
+**Depois**
+
+```js
+async function atualizarAnimal(id, dadosAtualizacao, arquivo, adminId) {
+  ...
+  const nomeAnimal = dadosAtualizacao.nome !== undefined ? validarNomeAnimal(dadosAtualizacao.nome) : atual.nome;
+  ...
+    idade: dadosAtualizacao.idade || atual.idade,
+    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : atual.descricao,
+  ...
+}
+```
+
+> Nesta etapa a variável `atual` ainda não tinha sido renomeada. Isso foi feito depois, de forma oportunista (ver [03-refatoracao-oportunista.md](03-refatoracao-oportunista.md)).
+
+## R4 — `err` → `erro`
+
+**Justificativa:** deixar o tratamento de erros no padrão de nomes por extenso do restante do código.
+
+**Antes**
+
+```js
+function handleError(res, err) {
+  console.error(err);
+  const status = err.status || 500;
+  return res.status(status).json({ mensagem: err.message || 'Erro interno.' });
+}
+...
+  } catch (err) { return handleError(res, err); }
+```
+
+**Depois**
+
+```js
+function handleError(res, erro) {
+  console.error(erro);
+  const status = erro.status || 500;
+  return res.status(status).json({ mensagem: erro.message || 'Erro interno.' });
+}
+...
+  } catch (erro) { return handleError(res, erro); }
+```
+
+## R5 — `count` → `quantidadeRemovida` em `deletarAnimal`
+
+**Justificativa:** mesmo motivo de R1, aplicado à remoção de animais.
+
+**Antes**
+
+```js
+const count = await animaisRepository.remove(id);
+if (!count) {
+  throw new AppError('Animal não encontrado.', 404);
+}
+```
+
+**Depois**
+
+```js
+const quantidadeRemovida = await animaisRepository.remove(id);
+if (!quantidadeRemovida) {
+  throw new AppError('Animal não encontrado.', 404);
+}
+```
+
+---
+
+## O que não mudou
+
+Nas cinco refatorações, as chamadas aos repositórios, as condições `if`, os códigos HTTP e as mensagens de erro ficaram idênticos. Mudaram apenas nomes de variáveis locais e de parâmetros. Nenhum `module.exports` foi alterado, então controllers, rotas e frontend continuam funcionando sem nenhuma mudança.
