@@ -89,7 +89,7 @@ Na Consolidação de Expressão Condicional, a documentação apresenta resultad
 - **[Extração de Método](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/extracao-de-metodo)** — documentação, código antes e depois e evidências dos testes.
 - **[Extração de Variável](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/extracao-de-variavel)** — documentação, justificativas e evidências das refatorações.
 - **[Renomeação de Variável](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao/renomear-variavel)** — documentação, exemplos de código e resultados dos testes.
-- **[Consolidação de Expressão Condicional](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao-consolidar-condicionais)** — relatório e evidências da refatoração.
+- **[Consolidação de Expressão Condicional](https://github.com/llilibet/whiskerworld/tree/main/docs/tp5-refatoracao-consolidar-condicionais)** — documentação e evidências das refatorações.
 
 As pastas de cada técnica reúnem a documentação das alterações, os exemplos de código antes e depois e as evidências utilizadas para verificar a preservação do comportamento do sistema.
 
