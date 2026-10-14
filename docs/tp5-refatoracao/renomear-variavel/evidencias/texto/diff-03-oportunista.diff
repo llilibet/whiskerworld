@@ -71,7 +71,7 @@ index c6feb7c..70bcca4 100644
 +    status: (dadosAtualizacao.status || animalAtual.status).toUpperCase(),
 +    tipo: (dadosAtualizacao.tipo || animalAtual.tipo).toUpperCase(),
 +    descricao: dadosAtualizacao.descricao !== undefined ? dadosAtualizacao.descricao : animalAtual.descricao,
-+    raca: dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : animalAtual.raca,
++    raca:dadosAtualizacao.raca !== undefined ? dadosAtualizacao.raca : animalAtual.raca,
 +    porte: dadosAtualizacao.porte !== undefined ? dadosAtualizacao.porte : animalAtual.porte,
 +    historico: dadosAtualizacao.historico !== undefined ? dadosAtualizacao.historico : animalAtual.historico,
      foto_url,
