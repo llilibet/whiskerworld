@@ -9,7 +9,7 @@ index 29666e9..3cbabde 100644
 -  const totalRemovido = await favoritosRepository.remove(usuarioId, animalId);
 -  if (!totalRemovido) {
 +  const quantidadeRemovida = await favoritosRepository.remove(usuarioId, animalId);
-+  if (!quantidadeRemovida) {
++  if(!quantidadeRemovida) {
      throw new AppError('Favorito não encontrado.', 404);
    }
  }
