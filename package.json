@@ -21,7 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
-    "firebase-admin": "^13.10.0",
+    "firebase-admin": "^14.5.1",
     "multer": "^2.5.0"
   },
   "devDependencies": {
