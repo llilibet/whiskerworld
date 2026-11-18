@@ -1,0 +1,51 @@
+# Etapa 1 — Integração Contínua
+# Roda em todo PR. Com a proteção de branch ativa (job "testes" obrigatório),
+# nenhum PR entra na main com teste falhando. No push na main, este mesmo
+# workflow é chamado pelo deploy-producao.yml antes de publicar.
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    name: testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+
+      - name: Instala dependências
+        run: npm ci && npm ci --prefix client
+
+      - name: Testes do backend
+        run: npm test
+
+      - name: Testes do frontend
+        run: npm test --prefix client
+
+      - name: Build do frontend
+        run: npm run build --prefix client
+
+      - name: Auditoria de dependências (backend)
+        run: npm audit --omit=dev --audit-level=critical
+
+      - name: Auditoria de dependências (frontend)
+        run: npm audit --prefix client --audit-level=critical

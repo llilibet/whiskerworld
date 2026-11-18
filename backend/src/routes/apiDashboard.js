@@ -4,6 +4,11 @@ const router = express.Router();
 /* ─────────────────────────────────────────────
    Metadados da API
 ───────────────────────────────────────────── */
+// Chave web do Firebase usada no login do dashboard. Vem do ambiente para que
+// o preview possa usar um projeto Firebase de testes.
+const FIREBASE_WEB_API_KEY =
+  process.env.FIREBASE_WEB_API_KEY || "AIzaSyAa-WtoNOa8EMvhDXU6ohNwp-8aNt90Wa0";
+
 const API_INFO = {
   title: "Whiskerworld API",
   version: "1.0",
@@ -449,7 +454,7 @@ async function doLogin(){
   if(!email||!pass){s.textContent="Preencha e-mail e senha.";s.style.color="#f93e3e";return;}
   s.textContent="Autenticando...";s.style.color="#aaa";
   try{
-    const r=await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAa-WtoNOa8EMvhDXU6ohNwp-8aNt90Wa0",{
+    const r=await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_WEB_API_KEY}",{
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({email,password:pass,returnSecureToken:true})

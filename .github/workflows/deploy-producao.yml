@@ -1,0 +1,124 @@
+# Etapas 3, 4 e 5 — Entrega Contínua em produção
+#
+# Merge na main → CI → aguarda aprovação no environment "production" →
+# deploy na Vercel → smoke test → rollback automático se o smoke test falhar.
+#
+# A aprovação manual vem das regras do environment "production" no GitHub
+# (Settings → Environments → production → Required reviewers). Remover essa
+# regra transforma a Entrega Contínua em Implantação Contínua, sem mudar este
+# arquivo. Ver docs/entrega-implantacao-continua/configuracao.md.
+name: Deploy em produção
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-producao
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: deploy
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: ${{ steps.publicar.outputs.url }}
+    outputs:
+      url: ${{ steps.publicar.outputs.url }}
+      anterior: ${{ steps.anterior.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instala a Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Guarda a versão de produção atual (para rollback)
+        id: anterior
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          resposta=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&teamId=$VERCEL_ORG_ID&target=production&state=READY&limit=1" || echo '{}')
+          url=$(echo "$resposta" | jq -r '.deployments[0].url // empty')
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Versão de produção atual: ${url:-nenhuma}"
+
+      - name: Baixa a configuração de produção da Vercel
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Publica
+        id: publicar
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Publicado em $url"
+
+  smoke-test:
+    name: smoke-test
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verifica o sistema no ar
+        env:
+          # Testa o domínio público quando configurado; senão, a URL do deploy.
+          SMOKE_URL: ${{ vars.PRODUCTION_URL || needs.deploy.outputs.url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: npm run smoke
+
+  rollback:
+    name: rollback
+    needs: [deploy, smoke-test]
+    if: failure() && needs.deploy.result == 'success' && needs.deploy.outputs.anterior != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instala a Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Volta para a versão anterior (Instant Rollback)
+        run: |
+          echo "Smoke test falhou. Voltando para ${{ needs.deploy.outputs.anterior }}"
+          vercel rollback "${{ needs.deploy.outputs.anterior }}" --yes --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Resumo
+        run: |
+          {
+            echo "## ⚠️ Rollback executado"
+            echo ""
+            echo "O smoke test falhou em \`${{ needs.deploy.outputs.url }}\`."
+            echo "A produção voltou para \`${{ needs.deploy.outputs.anterior }}\`."
+            echo ""
+            echo "Corrija o problema e faça um novo merge, ou use \`git revert\` no merge que causou a falha."
+          } >> "$GITHUB_STEP_SUMMARY"

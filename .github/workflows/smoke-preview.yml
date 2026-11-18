@@ -1,0 +1,35 @@
+# Etapas 2 e 4 — Smoke test no preview de cada PR
+#
+# A integração da Vercel com o GitHub publica um preview por PR e avisa o
+# GitHub com um evento deployment_status. Este workflow roda o mesmo smoke test
+# de produção na URL do preview, antes do merge.
+name: Smoke test do preview
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    name: smoke-test-preview
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      !contains(github.event.deployment_status.environment, 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verifica o preview
+        env:
+          SMOKE_URL: ${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: npm run smoke
