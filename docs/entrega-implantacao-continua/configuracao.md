@@ -20,13 +20,14 @@ O pipeline proposto no [README](README.md) está implementado nos arquivos abaix
 
    | Variável | Production | Preview |
    |---|---|---|
-   | `FIREBASE_SERVICE_ACCOUNT` | conta de serviço do Firebase de produção | conta de serviço do Firebase de **testes** |
-   | `FIREBASE_STORAGE_BUCKET` | bucket de produção | bucket de testes |
-   | `JWT_SECRET` | chave forte | outra chave |
+   | `FIREBASE_SERVICE_ACCOUNT` | conteúdo do JSON da conta de serviço de produção | conteúdo do JSON da conta de serviço de **testes** |
+   | `FIREBASE_STORAGE_BUCKET` | (opcional) | bucket de testes (obrigatório: sem ele, o backend usa o bucket de produção) |
    | `FIREBASE_WEB_API_KEY` | (opcional) | chave web do Firebase de testes |
    | `VITE_FIREBASE_*` | (opcional) | configuração web do Firebase de testes (ver [`client/.env.example`](../../client/.env.example)) |
 
    Sem as variáveis opcionais, o app usa o projeto de produção (`whiskerworld-ea08d`). **No Preview, elas devem ser preenchidas**, senão o preview grava dados reais.
+
+   O projeto de testes não usa o Storage (exigiria o plano Blaze), então o upload de fotos não funciona no preview. O login com Google também pode falhar no preview, porque cada URL de preview é um domínio diferente; use e-mail e senha.
 
 3. Em **Settings → Tokens** da conta Vercel, crie um token para o GitHub Actions.
 4. No terminal, rode `npx vercel link` na raiz do projeto. O arquivo `.vercel/project.json` criado tem o `orgId` e o `projectId`. A pasta `.vercel/` está no `.gitignore` e não deve ser versionada.
