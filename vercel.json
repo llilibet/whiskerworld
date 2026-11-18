@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "git": {
+    "deploymentEnabled": {
+      "main": false
+    }
+  },
   "builds": [
     {
       "src": "backend/server.js",
@@ -8,33 +13,21 @@
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "frontend-react" }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
-    {
-      "src": "/animais(.*)",
-      "dest": "/backend/server.js"
-    },
-    {
-      "src": "/usuarios(.*)",
-      "dest": "/backend/server.js"
-    },
-    {
-      "src": "/agendamentos(.*)",
-      "dest": "/backend/server.js"
-    },
-    {
-      "src": "/favoritos(.*)",
-      "dest": "/backend/server.js"
-    },
-    {
-      "src": "/uploads(.*)",
-      "dest": "/backend/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/$1"
-    }
+    { "src": "/api/(.*)", "dest": "/backend/server.js" },
+    { "src": "/docs(.*)", "dest": "/backend/server.js" },
+    { "src": "/animais(.*)", "dest": "/backend/server.js" },
+    { "src": "/usuarios(.*)", "dest": "/backend/server.js" },
+    { "src": "/agendamentos(.*)", "dest": "/backend/server.js" },
+    { "src": "/favoritos(.*)", "dest": "/backend/server.js" },
+    { "src": "/uploads(.*)", "dest": "/backend/server.js" },
+    { "src": "/compatibilidade(.*)", "dest": "/backend/server.js" },
+    { "src": "/adocoes(.*)", "dest": "/backend/server.js" },
+    { "src": "/acompanhamentos(.*)", "dest": "/backend/server.js" },
+    { "src": "/(.*\\.[a-zA-Z0-9]+)$", "dest": "/client/$1" },
+    { "src": "/(.*)", "dest": "/client/index.html" }
   ]
 }

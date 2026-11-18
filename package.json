@@ -11,6 +11,7 @@
     "build:frontend": "cd client && npm run build",
     "install:all": "npm install && cd client && npm install",
     "test": "node --test backend/tests/**/*.test.js",
+    "smoke": "node scripts/smoke-test.js",
     "test:controller:agendamento": "node backend/scripts/teste-controller-agendamento.js"
   },
   "keywords": [],
@@ -21,7 +22,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "firebase-admin": "^13.10.0",
-    "multer": "^2.0.2"
+    "multer": "^2.5.0"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
